@@ -35,3 +35,7 @@ Object.assign(window.UI_DICT.en,{"Inspiration":"Inspiration","Ganzes Aromenrad":
 /* Update 47: Aroma-Basen */
 Object.assign(window.UI_DICT.fr,{"Aromatische Basis":"Base aromatique","Alle Basen":"Toutes les bases"});
 Object.assign(window.UI_DICT.en,{"Aromatische Basis":"Aromatic base","Alle Basen":"All bases"});
+
+/* Update 48: Geschirr & Material */
+Object.assign(window.UI_DICT.fr,{"Geschirr & Material":"Vaisselle & accessoires","Alle":"Tous","＋ Geschirr":"＋ Vaisselle","Geschirr einfügen":"Ajouter de la vaisselle"});
+Object.assign(window.UI_DICT.en,{"Geschirr & Material":"Tableware & props","Alle":"All","＋ Geschirr":"＋ Tableware","Geschirr einfügen":"Add tableware"});

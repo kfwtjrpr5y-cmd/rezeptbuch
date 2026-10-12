@@ -33,7 +33,7 @@
   }
   async function gh(path, opts = {}) {
     if (opts.method === "PUT" && opts.body && typeof XMLHttpRequest !== "undefined") return xhrPut(contentsURL(path), { ...headers(false), "Content-Type": "application/json" }, JSON.stringify(opts.body), path);
-    const ac = typeof AbortController !== "undefined" ? new AbortController() : null; const to = ac ? setTimeout(() => ac.abort(), opts.raw ? 300e3 : 120e3) : 0;
+    const ac = !opts.raw && !opts.method && typeof AbortController !== "undefined" ? new AbortController() : null; const to = ac ? setTimeout(() => ac.abort(), 90e3) : 0;
     try { return await fetch(contentsURL(path), { method: opts.method || "GET", headers: { ...headers(opts.raw), ...(opts.body ? { "Content-Type": "application/json" } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: "no-store", signal: ac ? ac.signal : undefined }); }
     finally { clearTimeout(to); }
   }
@@ -96,7 +96,17 @@
     const j = await r.json();
     let text;
     if (j.content && j.encoding === "base64") text = dec.decode(bytesFromB64(j.content));
-    else { const rr = await gh("recipes.json", { raw: true }); text = await rr.text(); }
+    else {
+      const rr = await gh("recipes.json", { raw: true });
+      if (!rr.ok) throw err("unavailable", "Rezepte konnten nicht geladen werden (" + rr.status + ").");
+      const total = +(rr.headers.get("content-length") || 0) || (j.size || 0);
+      if (rr.body && rr.body.getReader && total > 2e6) {
+        const rd = rr.body.getReader(); const parts = []; let got = 0, last = 0;
+        for (;;) { const { done, value } = await rd.read(); if (done) break; parts.push(value); got += value.length;
+          if (Date.now() - last > 400) { last = Date.now(); setStatus(`Rezepte werden geladen … ${(got / 1048576).toFixed(1)} von ${(total / 1048576).toFixed(1)} MB`); } }
+        const all = new Uint8Array(got); let o = 0; for (const p of parts) { all.set(p, o); o += p.length; } text = dec.decode(all);
+      } else text = await rr.text();
+    }
     const parsed = JSON.parse(text || "{}");
     return { map: parsed.recipes || parsed, sha: j.sha };
   }
@@ -106,7 +116,7 @@
     if (syncing) return syncing;
     syncing = (async () => {
       try { const res = await fetchRemote(); map = res.map; sha = res.sha; for (const m of pendingMuts) { try { m(map); } catch (e) {} } cacheLocal(); emit(); setStatus(""); }
-      catch (e) { setStatus(e && e.code === "auth" ? e.message : "Offline – du siehst die zuletzt geladene Version."); }
+      catch (e) { setStatus(e && e.code === "auth" ? e.message : (Object.keys(map).length ? "Offline – du siehst die zuletzt geladene Version." : "Rezepte konnten nicht geladen werden: " + ((e && e.message) || e) + " – Seite neu laden.")); }
       finally { syncing = null; }
     })();
     return syncing;
@@ -174,7 +184,8 @@
     try {
       let blob = null, cache = null;
       try { cache = await caches.open(PHOTO_CACHE); const hit = await cache.match(cacheKey(path)); if (hit) blob = await hit.blob(); } catch (e) {}
-      if (!blob && cfg) {
+      if (!blob && String(path).startsWith("photos/mat-")) { const mm = await matMap(); if (mm) { for (const k in mm) if (!urls[k] && k !== path) { try { urls[k] = URL.createObjectURL(new Blob([bytesFromB64(mm[k])], { type: "image/jpeg" })); } catch (e) {} } if (mm[path]) blob = new Blob([bytesFromB64(mm[path])], { type: "image/jpeg" }); } }
+      if (!blob && cfg && !String(path).startsWith("photos/mat-")) {
         const r = await gh(path, { raw: true });
         if (r.ok) { blob = await r.blob(); if (cache) cache.put(cacheKey(path), new Response(blob, { headers: { "Content-Type": "image/jpeg" } })).catch(() => {}); }
       }
@@ -182,7 +193,9 @@
       if (blob) { urls[path] = URL.createObjectURL(blob); notify(); } else { missing.add(path); notify(); }
     } catch (e) {} finally { pending.delete(path); active--; pump(); }
   }
-  let wfP = null;
+  let wfP = null, mfP = null;
+  function matMap() { if (!mfP) mfP = (async () => { try { return await readJSON("material-fotos.json"); } catch (e) { mfP = null; return null; } })(); return mfP; }
+  const loadMaterialPhotos = async () => { const mm = await matMap(); if (!mm) return 0; let n = 0; for (const k in mm) if (!urls[k]) { try { urls[k] = URL.createObjectURL(new Blob([bytesFromB64(mm[k])], { type: "image/jpeg" })); n++; } catch (e) {} } notify(); return Object.keys(mm).length; };
   function wfMap() { if (!wfP) wfP = (async () => { try { return await readJSON("wissen-fotos.json"); } catch (e) { return null; } })(); return wfP; }
   function pump() { while (active < 6 && queue.length) { active++; loadPhoto(queue.shift()); } }
   function photoURL(path) {
@@ -270,6 +283,7 @@
   }
   window.RB = { readJSON, writeJSON, photoURL, peekURL: (p) => (p && (String(p).startsWith("data:") || String(p).startsWith("blob:")) ? p : urls[p] || ""), photoBlob, bulkSet, bulkDelete, sync, get configured() { return !!cfg; }, get recipes() { return map; } };
   window.RB.download = download;
+  window.RB.loadMaterialPhotos = loadMaterialPhotos;
   window.RB.existingPaths = () => existingPaths();
   window.RB.missing = missing;
   // Einmal beim Start: welche Fotos liegen wirklich im Repo? (für die Sortierung «ohne Foto zuhinterst»)
@@ -410,6 +424,17 @@
         let n = 0; const stop = saveTicker(m, "Ergänzungen werden gespeichert");
         try { await writeAll((mm) => { for (const id in j.patch) { if (mm[id]) { Object.assign(mm[id], j.patch[id]); n++; } } }, "Ergänzungen: " + (j.title || "Patch")); } finally { stop(); }
         m.textContent = `Fertig: ${n} Rezepte ergänzt.`;
+        return "reload";
+      }
+      if (j.format === "rezeptbuch-material" && Array.isArray(j.entries)) {
+        let n = 0; let stop = saveTicker(m, "Material wird gespeichert");
+        try { await writeAll((mm) => { for (const x of j.entries) { if (!x || !x.id) continue; const old = mm[x.id] || {}; mm[x.id] = { ...x, type: "material", fav: old.fav, mynote: old.mynote, updatedAt: Date.now() }; n++; } }, "Material importiert: " + j.entries.length); } finally { stop(); }
+        if (j.photos && Object.keys(j.photos).length) {
+          stop = saveTicker(m, `${n} Gegenstände gespeichert. Fotos werden gespeichert (eine Datei)`);
+          try { await writeJSON("material-fotos.json", (mm) => { Object.assign(mm, j.photos); }, "Material: Fotos (" + Object.keys(j.photos).length + ")"); } finally { stop(); }
+          mfP = null;
+        }
+        m.textContent = `Fertig: ${n} Gegenstände gespeichert.`;
         return "reload";
       }
       if (j.format === "rezeptbuch-wissen" || (Array.isArray(j.entries) && !j.recipes)) {

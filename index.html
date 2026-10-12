@@ -476,6 +476,13 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .inspb{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:18px;align-items:start}.inspl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}.inspl h5{margin:0 0 4px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}.inspl p{margin:0 0 4px;font-size:.9rem;line-height:1.45}.inspl p span{color:var(--muted)}
 @media (max-width:700px){.inspb{grid-template-columns:1fr}}
 .wheel{width:100%;height:auto;display:block;font-family:var(--f-body,inherit);fill:#3a2a28}.wheel text{fill:#3a2a28}.wheel .wc{font-family:var(--f-display);font-size:20px;font-weight:600}
+.matgrid .ph img{width:100%;height:100%;object-fit:cover;display:block}.card.mat .body h2{font-size:.98rem}.card.mat .meta span{white-space:nowrap}.matfav{position:absolute;top:8px;right:10px;color:#fff;font-size:1.1rem;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.mbox{width:min(760px,100%);text-align:left}.mbig{position:relative;background:var(--sunk);border-radius:16px;overflow:hidden;display:grid;place-items:center;min-height:300px;max-height:62vh}.mbig img{max-width:100%;max-height:62vh;object-fit:contain;display:block}
+.mnav{position:absolute;top:50%;transform:translateY(-50%);border:0;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.85);font-size:1.5rem;cursor:pointer}.mnav.l{left:10px}.mnav.r{right:10px}
+.mthumbs{display:flex;gap:8px;margin:10px 0;overflow-x:auto}.mthumbs button{border:2px solid transparent;border-radius:10px;padding:0;overflow:hidden;width:64px;height:64px;flex:none;cursor:pointer;background:var(--sunk)}.mthumbs button.on{border-color:var(--accent)}.mthumbs img{width:100%;height:100%;object-fit:cover}
+.minfo{margin:12px 2px 4px}.minfo h2{margin:2px 0 6px}.minfo p{margin:4px 0}
+.mpick{width:min(980px,100%)}.matgrid.small{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px;text-align:left}.matgrid.small .body h2{font-size:.82rem}.matgrid.small .meta{font-size:.72rem}.card.mat.added .ph{outline:3px solid var(--accent);outline-offset:2px}
+.citcap{font-size:.78rem;color:var(--muted);padding:4px 6px 2px;line-height:1.3}
 .fbases{margin:10px 0 24px}.bases{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}.base{margin:0;text-align:center}.bpie{max-width:150px;margin:0 auto}.pie{width:100%;height:auto}.pie text{fill:#3b2f2a;font-family:var(--f-body,inherit)}.base figcaption{display:flex;flex-direction:column;gap:2px;margin-top:6px;font-size:.88rem}.base figcaption i{color:var(--accent)}.base figcaption small{color:var(--muted,#777);line-height:1.35}.inspbases{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}.inspbases h5{display:flex;align-items:center;gap:10px;margin:0 0 8px}.inspbases .bases{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}.inspbases .bpie{max-width:110px}
 .ffruit{margin:20px 0}.slegend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:8px;font-size:.85rem}.slegend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}.mtx.fruit td{text-align:center}.fs{display:inline-block;width:14px;height:14px;border-radius:50%;margin-right:8px;vertical-align:-2px}.fdot{display:inline-block;width:14px;height:14px;border-radius:4px}
 .fwheel{max-width:900px;margin:10px 0 24px}.fwheel path.cu{cursor:pointer}.fwheel path.cu:hover{filter:brightness(.92)}.fwheel .inspl{margin-top:12px}.fmatrix,.faxis{margin:24px 0}.mtx{border-collapse:collapse;width:100%;font-size:.9rem}.mtx th,.mtx td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.mtx thead th{color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
@@ -913,6 +920,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
       <li><button type="button" data-page="mine">Meine Rezepte<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="insta">Feed<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="kalender">Kalender<span aria-hidden="true">›</span></button></li>
+      <li><button type="button" data-page="material">Geschirr &amp; Material<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="mix">Mix &amp; Match<span aria-hidden="true">›</span></button></li>
     </ul>
   </nav>
@@ -950,7 +958,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
 <div class="toast" id="toast" hidden></div>
 
 <script src="welt.js?v=1"></script>
-<script src="store.js?v=46"></script>
+<script src="store.js?v=47"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
@@ -977,7 +985,7 @@ function setLang(l){wLang=l;try{localStorage.setItem("rb-wlang",l)}catch(e){}loa
 /* ---------- ganze Oberfläche übersetzen (lang.js = Wörterbuch Deutsch → FR/EN) ---------- */
 let UID=null,uiReady=null;let UI_ORIG_TITLE=document.title;
 function loadUI(){if(wLang==="de")return Promise.resolve();if(window.UI_DICT)return Promise.resolve();
-  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=47";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
+  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=48";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
 const NUMRE=/\d+(?:[.,:/]\d+)*/g;
 function trUI(t){if(!UID||!t)return t;const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(t);const core=m[2].replace(/\s+/g," ");if(!core)return t;
   let r=UID[core];if(r==null){const nums=core.match(NUMRE);if(nums){const v=UID[core.replace(NUMRE,"{n}")];if(v!=null){let i=0;r=v.replace(/\{n\}/g,()=>nums[i++]||"")}}}
@@ -1609,7 +1617,7 @@ function showCategory(g,v){ // aus einem Rezept: alle Rezepte dieser Kategorie z
 function closeView(){current=null;editing=false;$("#view").hidden=true;document.body.style.overflow="";const h=pageHash();try{history.pushState(null,"",location.pathname+location.search+h)}catch(e){location.hash=h}}
 window.addEventListener("popstate",()=>route(false));
 function route(push){const h=decodeURIComponent(location.hash.slice(1));
-  if(["saison","wissen","insta","kalender","mix"].includes(h)){hideView();showPage(h,push)}
+  if(["saison","wissen","insta","kalender","mix","material"].includes(h)){hideView();showPage(h,push)}
   else if(h.startsWith("mix/")){hideView();openBoard(h.slice(4),push)}
   else if(h.startsWith("wissen/")){hideView();openWissen(h.slice(7),push)}
   else if(h&&recipes.some(r=>r.id===h))openRecipe(h,false);
@@ -1783,6 +1791,51 @@ const SCOL={"Frühling":"#f6d84c","Sommer":"#f4a23c","Herbst":"#e06a2c","Winter"
 function fruitHTML(f,L){const uses=f["uses"+L]||f.uses,sea=f.seasons||[],seaL=f["seasons"+L]||sea;const sl=x=>{const i=sea.indexOf(x);return i>=0?seaL[i]:x};
   return `<section class="ffruit"><div class="slegend">${sea.map((x,i)=>`<span><i style="background:${SCOL[x]||"#ccc"}"></i>${esc(seaL[i])}</span>`).join("")}</div><div class="stablewrap"><table class="mtx fruit"><thead><tr><th></th>${uses.map(u=>`<th>${esc(u)}</th>`).join("")}</tr></thead><tbody>${f.rows.map(r=>{const ss=[].concat(r.season||[]);const bg=ss.length>1?`linear-gradient(90deg,${ss.map((x,i)=>`${SCOL[x]||"#ccc"} ${i/ss.length*100}% ${(i+1)/ss.length*100}%`).join(",")})`:(SCOL[ss[0]]||"#ccc");
     return `<tr><th><span class="fs" style="background:${bg}" title="${esc(ss.map(sl).join(", "))}"></span>${esc(r["fruit"+L]||r.fruit)}</th>${uses.map((u,i)=>`<td>${(r.uses||[]).includes(i)?`<span class="fdot" style="background:${bg}"></span>`:""}</td>`).join("")}</tr>`}).join("")}</tbody></table></div></section>`}
+
+
+/* ---------- Geschirr & Material ---------- */
+let matCat="",matLoaded=false;
+const MATCATS=()=>{const o=[];for(const m of materials)if(!o.includes(m.cat))o.push(m.cat);return o};
+const matCatL=m=>wLang==="fr"?(m.cat_fr||m.cat):wLang==="en"?(m.cat_en||m.cat):m.cat;
+function ensureMatPhotos(){if(matLoaded||!window.RB||!window.RB.loadMaterialPhotos)return;matLoaded=true;window.RB.loadMaterialPhotos().then(()=>{document.querySelectorAll("img[data-photo]").forEach(im=>{if(!im.getAttribute("src")){const u=peek(im.dataset.photo);if(u)im.src=u}})}).catch(()=>{matLoaded=false})}
+function matCard(m,attr){const ph=(m.photos||[])[0];return `<div class="card mat" role="button" tabindex="0" ${attr}><div class="ph" ${(m.photos||[]).length>1?`data-gal="${esc(m.photos.join("|"))}"`:""}>${ph?`<img alt="" loading="lazy" data-photo="${esc(ph)}" src="${peek(ph)}">`:""}${m.fav?'<span class="matfav">♥</span>':""}</div><div class="body"><h2>${esc(m.title)}</h2><div class="meta"><span>${esc(m.k||"")}</span>${m.size?`<span>${esc(m.size)}</span>`:""}</div></div></div>`}
+function matChips(cur,attr){const cats=MATCATS();return `<div class="chaps"><button type="button" ${attr}="" aria-pressed="${!cur}">Alle<small>${materials.length}</small></button>${cats.map(c=>{const m=materials.find(x=>x.cat===c);return `<button type="button" ${attr}="${esc(c)}" aria-pressed="${cur===c}">${esc(matCatL(m))}<small>${materials.filter(x=>x.cat===c).length}</small></button>`}).join("")}</div>`}
+function matHTML(){ensureMatPhotos();
+  if(!materials.length)return `<div class="phead"><h2>Geschirr <em>&amp; Material</em></h2></div><div class="empty"><h2>${loaded?"Noch kein Material":"Wird geladen …"}</h2><p>Importiere den Katalog über «Rezept importieren › Rezeptsammlung (.json)».</p></div>`;
+  const list=materials.filter(m=>!matCat||m.cat===matCat);
+  return `<div class="phead"><h2>Geschirr <em>&amp; Material</em></h2><span class="ro">${list.length} ${list.length===1?"Gegenstand":"Gegenstände"}</span></div>${matChips(matCat,"data-mc")}<div class="grid matgrid">${list.map(m=>matCard(m,`data-mat="${esc(m.id)}"`)).join("")}</div>`}
+function bindMat(){const pg=$("#page");pg.querySelectorAll("[data-mc]").forEach(b=>b.onclick=()=>{matCat=b.dataset.mc;renderPage()});
+  pg.querySelectorAll("[data-mat]").forEach(c=>{c.onclick=()=>openMat(c.dataset.mat);c.onkeydown=e=>{if(e.key==="Enter")openMat(c.dataset.mat)}})}
+function openMat(id){const m=materials.find(x=>x.id===id);if(!m)return;let i=0;const ps=m.photos||[];
+  const w=document.createElement("div");w.className="pmodal matmodal";
+  const draw=()=>{w.innerHTML=`<div class="scrim"></div><div class="pbox mbox"><button type="button" class="pclose" aria-label="Schliessen">✕</button>
+    <div class="mbig">${ps[i]?`<img alt="" data-photo="${esc(ps[i])}" src="${peek(ps[i])}">`:""}${ps.length>1?`<button type="button" class="mnav l" data-d="-1" aria-label="Zurück">‹</button><button type="button" class="mnav r" data-d="1" aria-label="Weiter">›</button>`:""}</div>
+    ${ps.length>1?`<div class="mthumbs">${ps.map((p,k)=>`<button type="button" data-i="${k}" class="${k===i?"on":""}"><img alt="" data-photo="${esc(p)}" src="${peek(p)}"></button>`).join("")}</div>`:""}
+    <div class="minfo"><span class="ro">${esc(m.k||"")} · ${esc(matCatL(m))}</span><h2>${esc(m.title)}</h2>${m.size?`<p><b>${esc(m.size)}</b></p>`:""}${m.note?`<p class="ro">${esc(m.note)}</p>`:""}</div>
+    ${canWrite?`<div class="pact"><button type="button" class="btn ghost" id="mfav">${m.fav?"♥ Favorit":"♡ Favorit"}</button><button type="button" class="btn primary" id="mmix">＋ Mix-Board</button></div>`:""}</div>`;
+    const close=()=>{w.remove();document.removeEventListener("keydown",key)};w.querySelector(".scrim").onclick=close;w.querySelector(".pclose").onclick=close;
+    w.querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>{i=(i+ +b.dataset.d+ps.length)%ps.length;draw()});
+    w.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{i=+b.dataset.i;draw()});
+    const f=w.querySelector("#mfav");if(f)f.onclick=async()=>{m.fav=!m.fav;draw();try{await saveDoc(m.id,{...strip(m),type:"material"})}catch(x){toast(errText(x))}};
+    const mx=w.querySelector("#mmix");if(mx)mx.onclick=()=>{close();matToBoard(m,ps[i])}};
+  const key=e=>{if(e.key==="Escape"){w.remove();document.removeEventListener("keydown",key)}else if(ps.length>1&&(e.key==="ArrowRight"||e.key==="ArrowLeft")){i=(i+(e.key==="ArrowRight"?1:-1)+ps.length)%ps.length;draw()}};
+  document.addEventListener("keydown",key);draw();document.body.appendChild(w)}
+function matItem(b,m,ph){const its=b.items||[];let colX=40;for(const it of its)if(!it.mat)colX=Math.max(colX,(it.x||0)+(it.w||310)+40);
+  const W=240,G=30,cols=[0,1,2].map(k=>colX+k*(W+G));const bottom=cols.map(cx=>its.filter(it=>it.mat&&Math.abs((it.x||0)-cx)<W/2).reduce((a,it)=>Math.max(a,(it.y||0)+Math.round((it.w||W)*1.35)+50),40));
+  const k=bottom.indexOf(Math.min(...bottom));return {id:uid("it"),kind:"img",photo:ph,cap:m.title,mat:m.id,x:cols[k],y:bottom[k]+(bottom[k]>40?G:0),w:W}}
+function matToBoard(m,ph){const w=document.createElement("div");w.className="pmodal";
+  w.innerHTML=`<div class="scrim"></div><div class="pbox"><button type="button" class="pclose" aria-label="Schliessen">✕</button><h2>Zu Mix-Board</h2><p class="psub2">«${esc(m.title)}»</p>
+    <div class="psec">${boards.length?[...boards].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).map(b=>`<button type="button" class="mhit" data-b="${esc(b.id)}"><span class="mi">${(b.items||[]).length}</span><span>${esc(b.title||"Ohne Titel")}${(b.items||[]).some(i=>i.mat===m.id)?"<small>schon drin</small>":""}</span></button>`).join(""):'<p class="ro">Noch keine Boards.</p>'}</div>
+    <div class="pact"><button type="button" class="btn primary big" id="nb">+ Neues Board damit</button></div></div>`;
+  const close=()=>w.remove();w.querySelector(".scrim").onclick=close;w.querySelector(".pclose").onclick=close;
+  w.querySelectorAll("[data-b]").forEach(x=>x.onclick=async()=>{const b=boards.find(y=>y.id===x.dataset.b);if(!Array.isArray(b.items))boardItems(b);b.items.push(matItem(b,m,ph));close();try{await saveDoc(b.id,{...strip(b),type:"board"});toast(`Zu «${b.title}» hinzugefügt`)}catch(e){toast(errText(e))}});
+  w.querySelector("#nb").onclick=()=>{close();newBoard([],"",[matItem({items:[]},m,ph)])};document.body.appendChild(w)}
+function matPicker(onPick){ensureMatPhotos();let cat="";const w=document.createElement("div");w.className="pmodal";
+  const draw=()=>{const list=materials.filter(m=>!cat||m.cat===cat);w.innerHTML=`<div class="scrim"></div><div class="pbox mpick"><button type="button" class="pclose" aria-label="Schliessen">✕</button><h2>Geschirr einfügen</h2><p class="psub2">Antippen zum Einfügen – du kannst mehrere wählen.</p>${matChips(cat,"data-pc2")}<div class="grid matgrid small">${list.map(m=>matCard(m,`data-pk="${esc(m.id)}"`)).join("")}</div><div class="pact"><button type="button" class="btn primary" id="mpx">Fertig</button></div></div>`;
+    const close=()=>w.remove();w.querySelector(".scrim").onclick=close;w.querySelector(".pclose").onclick=close;w.querySelector("#mpx").onclick=close;
+    w.querySelectorAll("[data-pc2]").forEach(b=>b.onclick=()=>{cat=b.dataset.pc2;draw()});
+    w.querySelectorAll("[data-pk]").forEach(c=>c.onclick=()=>{const m=materials.find(x=>x.id===c.dataset.pk);if(m){c.classList.add("added");onPick(m,(m.photos||[])[0])}})};
+  draw();document.body.appendChild(w)}
 
 /* ---------- Mix & Match: Zeichnen, Anstreichen ---------- */
 const HLC={y:"#fde68a",p:"#fbcfe8",g:"#bbf7d0",b:"#bfdbfe"};
@@ -2430,7 +2483,7 @@ function showPage(p,push=true){state.page=p;if(p!=="article")state.article=null;
   if(p!=="recipes")renderPage();window.scrollTo({top:0});window.dispatchEvent(new Event("rb-rendered"))}
 function renderPage(){const pg=$("#page");if(state.page==="saison")pg.innerHTML=saisonHTML(),bindSaison();else if(state.page==="wissen")pg.innerHTML=wissenListHTML(),bindWissenList();else if(state.page==="article")renderArticle();
   else if(state.page==="insta")pg.innerHTML=instaHTML(),bindInsta();else if(state.page==="kalender")pg.innerHTML=kalenderHTML(),bindKalender();
-  else if(state.page==="mix")pg.innerHTML=mixHTML(),bindMix();else if(state.page==="board")pg.innerHTML=boardHTML(),bindBoard()}
+  else if(state.page==="mix")pg.innerHTML=mixHTML(),bindMix();else if(state.page==="material")pg.innerHTML=matHTML(),bindMat();else if(state.page==="board")pg.innerHTML=boardHTML(),bindBoard()}
 const monthSpan=ms=>{const a=ms[0],b=ms[ms.length-1];const s=x=>MONTHS[x-1].slice(0,3);if(ms.length===12)return "ganzes Jahr";let start=ms.find((m,i)=>!ms.includes(m===1?12:m-1))||a;let end=start;while(ms.includes(end%12+1)&&end%12+1!==start)end=end%12+1;return ms.length>(R(start,end).length)?ms.map(s).join(", "):`${s(start)} – ${s(end)}`};
 function produceRecipes(name){const p=PRODUCE.find(x=>x[0]===name);hideView();showPage("recipes");for(const k in state.f)state.f[k].clear();
   const stem=norm(name.split(/[ ,&/]/)[0]).replace(/(n|en|e)$/,"");$("#q").value=wLang==="de"?stem:trUI(name);state.q=stem;render();toast(tf("Rezepte mit {p}",{p:trUI(name)}))}
@@ -3165,7 +3218,7 @@ function renderWissenEditor(w){const pg=$("#page");const d=w||{title:"",category
     $("#wSave").disabled=true;try{await db.collection("recipes").doc(id).set(data);toast("Gespeichert");state.article=id;wissen=[...wissen.filter(x=>x.id!==id),{...data,id}];openWissen(id,!w)}catch(x){toast(errText(x));$("#wSave").disabled=false}}}
 
 /* ================= Planung: Instafeed · Content-Kalender · Mix-Ideen ================= */
-let posts=[],boards=[],igp=null;
+let posts=[],boards=[],igp=null,materials=[];
 const PST={idee:{l:"Idee",c:"#cdbcb6"},entwurf:{l:"Entwurf",c:"#e3b7aa"},geplant:{l:"Geplant",c:"#a8645f"},gepostet:{l:"Gepostet",c:"#7d9a6a"}};
 const PTY={post:"Post",karussell:"Karussell",reel:"Reel",story:"Story"};
 const WD=["Mo","Di","Mi","Do","Fr","Sa","So"];
@@ -3362,8 +3415,8 @@ function askName(def,title){return new Promise(res=>{const w=document.createElem
   document.body.appendChild(w);const i=w.querySelector("#nmIn");i.focus();i.select();
   w.querySelector("form").onsubmit=e=>{e.preventDefault();const v=i.value.trim();if(!v){i.focus();return}w.remove();res(v)};w.querySelector("#nmX").onclick=()=>{w.remove();res(null)}})}
 function bindMix(){const n=$("#mx-new");if(n)n.onclick=()=>newBoard([]);$("#page").querySelectorAll("[data-board]").forEach(b=>b.onclick=()=>openBoard(b.dataset.board))}
-async function newBoard(recs,title){const name=await askName(title||"","Wie soll das Board heissen?");if(!name)return;
-  const id=uid("mix");const d={type:"board",title:name,recipes:recs,notes:"",status:"Idee",items:[],createdAt:Date.now(),updatedAt:Date.now()};
+async function newBoard(recs,title,items){const name=await askName(title||"","Wie soll das Board heissen?");if(!name)return;
+  const id=uid("mix");const d={type:"board",title:name,recipes:recs,notes:"",status:"Idee",items:items||[],createdAt:Date.now(),updatedAt:Date.now()};
   try{await saveDoc(id,d);boards.push({...d,id});openBoard(id)}catch(x){toast(errText(x))}}
 function openBoard(id,push=true){state.board=id;showPage("board",push)}
 let bT,bDel=false,bZoom=1;
@@ -3377,7 +3430,7 @@ function recCardHTML(b,it){const r=recipes.find(x=>x.id===it.rid);if(!r)return "
   return `<div class="cimg">${hasPhoto(r)?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:recPh(r)}</div><b class="ctit" data-rid="${esc(r.id)}">${esc(trTitle(r))}</b><div class="cing">${ing}</div>${st}`}
 const PIC={y:"#fff3a8",p:"#ffd1dc",g:"#cdeccd",b:"#cfe6f7",o:"#ffd9b0",w:"#ffffff"};
 function itemHTML(b,it){const head=`<div class="chd" data-drag="${it.id}"><span class="grip">⋮⋮</span>${it.kind==="note"&&canWrite?Object.keys(PIC).map(c=>`<button type="button" class="pdot" data-pc="${it.id}:${c}" style="background:${PIC[c]}" aria-label="Farbe"></button>`).join(""):""}${it.glue?`<button type="button" class="unglue" data-unglue="${it.id}" title="Lösen">⛓</button>`:""}<span class="sp"></span>${canWrite?`<button type="button" class="rmit" data-rmit="${it.id}" title="Entfernen">×</button>`:""}</div>`;
-  const body=it.kind==="rec"?recCardHTML(b,it):it.kind==="note"?`<textarea class="postit" data-note="${it.id}">${esc(it.text||"")}</textarea>`:`<img alt="" class="citimg" data-photo="${esc(it.photo)}" src="${peek(it.photo)}">`;
+  const body=it.kind==="rec"?recCardHTML(b,it):it.kind==="note"?`<textarea class="postit" data-note="${it.id}">${esc(it.text||"")}</textarea>`:`<img alt="" class="citimg" data-photo="${esc(it.photo)}" src="${peek(it.photo)}">${it.cap?`<div class="citcap">${esc(it.cap)}</div>`:""}`;
   return `<div class="cit ${it.kind}" id="${it.id}" style="left:${it.x}px;top:${it.y}px;${it.w?`width:${it.w}px;`:""}${it.kind==="note"?`--pc:${PIC[it.color||"y"]};`:""}">${head}${body}</div>`}
 let bFull=false,bDraw=false,bPen="#3a2a28";
 const BGS=["#f3eeeb","#ffffff","#eef3ee","#eaf1f7","#f7efe2","#2f2a28"];
@@ -3388,7 +3441,7 @@ function boardHTML(){const b=boards.find(x=>x.id===state.board);if(!b)return `<d
       <button type="button" class="btn ghost" id="bd-post">Post planen</button>${canWrite?`<button type="button" class="btn ${bDel?"sure":"danger"}" id="bd-del">${bDel?"Wirklich löschen?":"Löschen"}</button>`:""}</div>
     <div class="board ${bFull?"full":""}" id="boardEl"><input class="bdtitle" id="bd-title" value="${esc(b.title||"")}" aria-label="Name des Boards" placeholder="Name des Boards">
       ${canWrite?`<div class="cbar"><div class="cadd"><input id="bd-q" type="search" placeholder="＋ Rezept suchen …" class="pesearch"><div id="bd-res" class="lres pop"></div></div>
-        <button type="button" class="btn ghost" id="bd-note">＋ Post-it</button><button type="button" class="btn ghost" id="bd-img">＋ Foto / Skizze</button><input type="file" id="bd-file" accept="image/*" multiple hidden>
+        <button type="button" class="btn ghost" id="bd-note">＋ Post-it</button><button type="button" class="btn ghost" id="bd-img">＋ Foto / Skizze</button>${materials.length?`<button type="button" class="btn ghost" id="bd-mat">＋ Geschirr</button>`:""}<input type="file" id="bd-file" accept="image/*" multiple hidden>
         <span class="tsep"></span><button type="button" class="btn ghost ${bDraw?"on":""}" id="bd-draw" title="Zeichnen (Apple Pencil zeichnet immer)">✏︎ Stift</button>${["#3a2a28","#c0392b","#2f7a48","#2d6cb5","#e0a100"].map(c=>`<button type="button" class="pdot big ${bPen===c?"on":""}" data-pen="${c}" style="background:${c}" aria-label="Stiftfarbe"></button>`).join("")}<button type="button" class="btn ghost" id="bd-undo" title="Letzten Strich löschen">↶</button>
         <span class="tsep"></span>${BGS.map(c=>`<button type="button" class="pdot big ${((b.bg||BGS[0])===c)?"on":""}" data-bg="${c}" style="background:${c}" aria-label="Hintergrund"></button>`).join("")}<input type="color" id="bd-bgc" value="${esc(b.bg||BGS[0])}" title="Eigene Hintergrundfarbe">
         <span class="sp"></span><button type="button" class="btn ghost" data-zoom="-1">−</button><button type="button" class="btn ghost" data-zoom="0">${Math.round(bZoom*100)} %</button><button type="button" class="btn ghost" data-zoom="1">＋</button><button type="button" class="btn primary small" id="bd-full">${bFull?"✕ Schliessen":"⤢ Vollbild"}</button></div>`:""}
@@ -3440,6 +3493,7 @@ function bindBoard(){const pg=$("#page");const b=boards.find(x=>x.id===state.boa
   const cw=$("#cwrap");const place=()=>{const z=bZoom;return {x:Math.round((cw.scrollLeft+60)/z),y:Math.round((cw.scrollTop+60)/z)}};
   const nb=$("#bd-note");if(nb)nb.onclick=()=>{const p=place();b.items.push({id:uid("it"),kind:"note",color:"y",text:"",x:p.x,y:p.y,w:230});save();rer()};
   const fi=$("#bd-file");const ib=$("#bd-img");if(ib)ib.onclick=()=>fi.click();
+  const bm=$("#bd-mat");if(bm)bm.onclick=()=>matPicker(async(m,ph)=>{const it=matItem(b,m,ph);b.items.push(it);await save();rer();const el=document.getElementById(it.id);if(el)el.scrollIntoView({block:"nearest",inline:"nearest"});toast("Eingefügt: "+m.title)});
   if(fi)fi.onchange=async()=>{const fs=[...fi.files];fi.value="";if(!fs.length)return;toast("Wird hochgeladen …");try{let p=place();for(const f of fs){const id=await uploadImage(f,1600);b.items.push({id:uid("it"),kind:"img",photo:id,x:p.x,y:p.y,w:300});p={x:p.x+320,y:p.y}}await save();rer();toast("Eingefügt")}catch(x){toast((x&&x.message)||errText(x))}};
   // Zeichnen (Stift/Apple Pencil)
   if(cw&&canWrite){cw.onpointerdown=e=>{const pen=e.pointerType==="pen";if(!(bDraw||pen))return;if(e.target.closest("textarea,input,button,summary"))return;e.preventDefault();
@@ -3496,7 +3550,7 @@ render();
   if(!db){loaded=true;$("#empty").hidden=false;$("#empty").innerHTML="<h2>Noch nicht verbunden</h2><p>Öffne die Einstellungen (⚙︎) und verbinde die App mit deinem GitHub-Repository.</p>";$("#sub").textContent="";return}
   db.collection("recipes").onSnapshot(snap=>{
     const all=snap.docs.map(d=>({...d.data(),id:d.id}));{const st=all.find(r=>r.type==="settings");if(st&&st.owner&&st.owner!==OWNER){OWNER=st.owner;try{localStorage.setItem("rb-owner",OWNER)}catch(e){}applyOwner()}if(st&&st.region&&st.region!==REGION){REGION=st.region;try{localStorage.setItem("rb-region",REGION)}catch(e){}}}wissen=all.filter(r=>r.type==="wissen");
-    posts=all.filter(r=>r.type==="post");boards=all.filter(r=>r.type==="board");igp=all.find(r=>r.type==="igprofile")||igp;
+    posts=all.filter(r=>r.type==="post");materials=all.filter(r=>r.type==="material").sort((a,b)=>(a.order??999)-(b.order??999));boards=all.filter(r=>r.type==="board");igp=all.find(r=>r.type==="igprofile")||igp;
     recipes=all.filter(r=>!r.type).map(r=>{r._hay=hayOf(r);return r});const first=!loaded;loaded=true;computeDupes();render();
     if(state.page!=="recipes")renderPage();if(first)route(false);
     if(current&&!editing)showView();
