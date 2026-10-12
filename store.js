@@ -376,6 +376,12 @@
         m.textContent = `Fertig: ${n} Rezepte auf ${j.lang === "fr" ? "Französisch" : "Englisch"} gespeichert.`;
         return "reload";
       }
+      if (j.format === "rezeptbuch-patch" && j.patch) {
+        let n = 0;
+        await writeAll((mm) => { for (const id in j.patch) { if (mm[id]) { Object.assign(mm[id], j.patch[id]); n++; } } }, "Ergänzungen: " + (j.title || "Patch"));
+        m.textContent = `Fertig: ${n} Rezepte ergänzt.`;
+        return "reload";
+      }
       if (j.format === "rezeptbuch-wissen" || (Array.isArray(j.entries) && !j.recipes)) {
         let n = 0;
         await writeAll((mm) => { for (const x of j.entries || []) { if (!x || !x.id || !x.title) continue; const old = mm[x.id]; mm[x.id] = { ...x, type: "wissen", links: old && old.links ? old.links : (x.links || []), updatedAt: Date.now() }; n++; } }, "Wissen importiert: " + (j.entries || []).length);

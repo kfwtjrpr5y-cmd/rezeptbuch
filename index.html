@@ -460,6 +460,24 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .paper.big{min-height:320px;border-radius:14px;box-shadow:inset 26px 0 0 -25px #f2b8b0,0 2px 10px rgba(80,40,30,.08)}
 .cit.note{width:240px}.citimg{display:block;width:100%;border-radius:0 0 16px 16px;cursor:zoom-in}
 .paperwrap{display:flex;flex-direction:column;gap:6px}
+.board.full{position:fixed;inset:0;z-index:85;background:var(--bg,#fbf6f3);padding:10px 14px;gap:8px;overflow:hidden;display:flex;flex-direction:column}.board.full .bdtitle{font-size:1.4rem}.board.full .paperwrap,.board.full #bd-make{display:none}.board.full .cwrap{flex:1;height:auto}
+.cwrap{height:calc(100vh - 150px)!important;min-height:420px}.cwrap.drawing{cursor:crosshair}
+.ink{position:absolute;left:0;top:0;pointer-events:none;z-index:4}
+.tsep{width:1px;height:24px;background:var(--line);margin:0 4px}
+.pdot{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.18);padding:0;cursor:pointer;flex:none}.pdot.big{width:22px;height:22px}.pdot.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--accent)}
+#bd-bgc{width:30px;height:26px;border:0;background:none;padding:0;cursor:pointer}
+.btn.on{background:var(--accent);color:#fff}
+.cit.note{width:230px;background:var(--pc,#fff3a8);box-shadow:2px 4px 12px rgba(80,40,30,.16);border-radius:4px}.cit.note .chd{border-bottom:0;gap:4px}
+.postit{width:100%;min-height:170px;border:0;resize:vertical;background:transparent repeating-linear-gradient(transparent 0 27px,rgba(0,0,0,.07) 27px 28px);padding:4px 12px 10px;font:1.25rem/28px Caveat,cursive;color:#3a2a28;background-attachment:local}
+.lt mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 1px;cursor:pointer}
+.hlbar{position:fixed;z-index:95;display:flex;gap:6px;background:#fff;border-radius:999px;padding:6px 8px;box-shadow:0 4px 16px rgba(0,0,0,.18)}.hlbar button{width:26px;height:26px;border-radius:50%;border:1px solid rgba(0,0,0,.12);cursor:pointer;font-size:.9rem}
+.ln{cursor:text}
+.cinsp{margin:0 0 18px}.insp{background:var(--surface);border-radius:20px;box-shadow:var(--shadow);padding:14px 18px}.insph{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}.insph .sp{flex:1}.insph b{font-family:var(--f-display);font-size:1.2rem}
+.inspb{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:18px;align-items:start}.inspl{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px}.inspl h5{margin:0 0 4px;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}.inspl p{margin:0 0 4px;font-size:.9rem;line-height:1.45}.inspl p span{color:var(--muted)}
+@media (max-width:700px){.inspb{grid-template-columns:1fr}}
+.wheel{width:100%;height:auto;display:block;font-family:var(--f-body,inherit);fill:#3a2a28}.wheel text{fill:#3a2a28}.wheel .wc{font-family:var(--f-display);font-size:20px;font-weight:600}
+.fwheel{max-width:900px;margin:10px 0 24px}.fwheel path.cu{cursor:pointer}.fwheel path.cu:hover{filter:brightness(.92)}.fwheel .inspl{margin-top:12px}.fmatrix,.faxis{margin:24px 0}.mtx{border-collapse:collapse;width:100%;font-size:.9rem}.mtx th,.mtx td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.mtx thead th{color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.axis{width:100%;max-width:720px;height:auto;display:block}.axis line{stroke:var(--line);stroke-width:1.5}.axis .ax{font-size:13px;fill:var(--muted);font-weight:700}.axp circle{fill:var(--accent)}.axp text{font-size:11px;fill:#3a2a28}.axp.lnk{cursor:pointer}.axp.lnk:hover text{fill:var(--accent);text-decoration:underline}
 /* ===== Buch «La cuisine de référence végétale»: hellblau ===== */
 .card.book .ph{background:#dcecf6}
 .illph{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}.illph svg.ill{width:100%;height:100%;display:block}.card .illph svg.ill{transform:scale(1.22);transform-origin:50% 60%}
@@ -871,6 +889,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
       </select>
     </div>
     <div class="chaps" id="chaps" hidden></div>
+    <div class="cinsp" id="cinsp" hidden></div>
     <div class="grid" id="grid"></div>
     <div class="empty" id="empty">
       <h2>Rezepte werden geladen</h2>
@@ -929,7 +948,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
 <div class="toast" id="toast" hidden></div>
 
 <script src="welt.js?v=1"></script>
-<script src="store.js?v=44"></script>
+<script src="store.js?v=45"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
@@ -956,7 +975,7 @@ function setLang(l){wLang=l;try{localStorage.setItem("rb-wlang",l)}catch(e){}loa
 /* ---------- ganze Oberfläche übersetzen (lang.js = Wörterbuch Deutsch → FR/EN) ---------- */
 let UID=null,uiReady=null;let UI_ORIG_TITLE=document.title;
 function loadUI(){if(wLang==="de")return Promise.resolve();if(window.UI_DICT)return Promise.resolve();
-  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=45";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
+  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=46";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
 const NUMRE=/\d+(?:[.,:/]\d+)*/g;
 function trUI(t){if(!UID||!t)return t;const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(t);const core=m[2].replace(/\s+/g," ");if(!core)return t;
   let r=UID[core];if(r==null){const nums=core.match(NUMRE);if(nums){const v=UID[core.replace(NUMRE,"{n}")];if(v!=null){let i=0;r=v.replace(/\{n\}/g,()=>nums[i++]||"")}}}
@@ -979,7 +998,7 @@ const LR={de:{ing:"Zutaten",prep:"Zubereitung",qty:"Menge",p:"Zubereiten",t:"Ges
 
 let recipes=[]; let wissen=[]; let loaded=false;
 let db=null, assets=null, canWrite=false;
-const state={page:"recipes",article:null,board:null,q:"",sort:"page",dupOnly:false,f:{collection:new Set(),section:new Set(),mealTypes:new Set(),dishTypes:new Set(),diet:new Set(),mainIngredients:new Set(),nutri:new Set(),time:new Set(),fav:new Set(),source:new Set(),kind:new Set(),equip:new Set(),suits:new Set(),season:new Set(),inspo:new Set()}};
+const state={page:"recipes",article:null,board:null,q:"",sort:"page",dupOnly:false,f:{cuisine:new Set(),collection:new Set(),section:new Set(),mealTypes:new Set(),dishTypes:new Set(),diet:new Set(),mainIngredients:new Set(),nutri:new Set(),time:new Set(),fav:new Set(),source:new Set(),kind:new Set(),equip:new Set(),suits:new Set(),season:new Set(),inspo:new Set()}};
 try{const s=JSON.parse(localStorage.getItem("rb-sort")||'""');if(s)state.sort=s}catch(e){}
 $("#sort").value=state.sort;
 
@@ -995,6 +1014,7 @@ const totalTime=r=>{const t=r.time||{};return t.total||t.prep||null};
 const GROUPS=[
   {key:"collection",title:"Sammlung"},
   {key:"mealTypes",title:"Mahlzeit"},
+  {key:"cuisine",title:"Küche"},
   {key:"dishTypes",title:"Art",limit:14},
   {key:"mainIngredients",title:"Zutat",limit:18,search:true},
   {key:"diet",title:"Ernährung"},
@@ -1009,10 +1029,16 @@ const GROUPS=[
   {key:"source",title:"Quelle",limit:10},
   {key:"fav",title:"Markiert",fixed:{fav:{label:"♥ Favoriten"},cooked:{label:"Schon gekocht"},notcooked:{label:"Noch nie gekocht"},comment:{label:"Mit Kommentar"}}},
 ];
+const CUIS=[["mexikanisch", "Mexikanisch", "Mexicaine", "Mexican", "Amerikanisch"], ["lateinamerikanisch", "Lateinamerikanisch & Karibik", "Latino-américaine & caribéenne", "Latin American & Caribbean", "Amerikanisch"], ["nordamerikanisch", "Nordamerikanisch", "Nord-américaine", "North American", "Amerikanisch"], ["franzoesisch", "Französisch", "Française", "French", "Europäisch"], ["italienisch", "Italienisch", "Italienne", "Italian", "Europäisch"], ["iberisch", "Spanisch & Portugiesisch", "Espagnole & portugaise", "Spanish & Portuguese", "Europäisch"], ["mitteleuropaeisch", "Schweizerisch & Mitteleuropäisch", "Suisse & d'Europe centrale", "Swiss & Central European", "Europäisch"], ["nordeuropaeisch", "Britisch & Nordisch", "Britannique & nordique", "British & Nordic", "Europäisch"], ["osteuropaeisch", "Osteuropäisch", "D'Europe de l'Est", "Eastern European", "Europäisch"], ["griechisch", "Griechisch & Türkisch", "Grecque & turque", "Greek & Turkish", "Nahöstlich"], ["nahoestlich", "Nahöstlich (Levante, Persien)", "Moyen-orientale (Levant, Perse)", "Middle Eastern (Levant, Persia)", "Nahöstlich"], ["nordafrikanisch", "Nordafrikanisch", "Nord-africaine", "North African", "Afrikanisch"], ["westafrikanisch", "West- & Zentralafrikanisch", "D'Afrique de l'Ouest & centrale", "West & Central African", "Afrikanisch"], ["ostafrikanisch", "Ost- & Südafrikanisch (Äthiopien …)", "D'Afrique de l'Est & australe", "East & Southern African", "Afrikanisch"], ["indisch", "Indisch & Südasiatisch", "Indienne & sud-asiatique", "Indian & South Asian", "Asiatisch"], ["chinesisch", "Chinesisch", "Chinoise", "Chinese", "Asiatisch"], ["japanisch", "Japanisch", "Japonaise", "Japanese", "Asiatisch"], ["koreanisch", "Koreanisch", "Coréenne", "Korean", "Asiatisch"], ["thai", "Thailändisch", "Thaïlandaise", "Thai", "Asiatisch"], ["vietnamesisch", "Vietnamesisch", "Vietnamienne", "Vietnamese", "Asiatisch"], ["suedostasiatisch", "Indonesisch & Malaysisch", "Indonésienne & malaisienne", "Indonesian & Malaysian", "Asiatisch"]];
+const CUISG={"Asiatisch":["Asiatique","Asian"],"Europäisch":["Européenne","European"],"Amerikanisch":["Américaine","American"],"Afrikanisch":["Africaine","African"],"Nahöstlich":["Moyen-orientale","Middle Eastern"]};
+(()=>{try{const F=window.UI_DICT.fr,E=window.UI_DICT.en;for(const c of CUIS){F[c[1]]=F[c[1]]||c[2];E[c[1]]=E[c[1]]||c[3]}for(const [k,v] of Object.entries(CUISG)){F[k]=F[k]||v[0];E[k]=E[k]||v[1]}F["Küche"]=F["Küche"]||"Cuisine";E["Küche"]=E["Küche"]||"Cuisine"}catch(e){}})();
+const cuisL=id=>{const c=CUIS.find(x=>x[0]===id);return c?c[1]:id};
+const cuisIds=label=>{const g=CUIS.filter(c=>c[4]===label).map(c=>c[0]);if(g.length)return g;const c=CUIS.find(x=>x[1]===label);return c?[c[0]]:[]};
 const expanded={}; let ingQuery="";
 function valuesOf(r,key){
   if(key==="nutri")return Object.keys(NUTRI).filter(k=>NUTRI[k].test(r));
   if(key==="time"){const t=totalTime(r);return t?Object.keys(TIME).filter(k=>t<=TIME[k].max):[]}
+  if(key==="cuisine"){const ids=Array.isArray(r.cuisine)?r.cuisine:r.cuisine?[r.cuisine]:[];const o=[];for(const id of ids){const c=CUIS.find(x=>x[0]===id);if(!c)continue;o.push(c[1]);if(!o.includes(c[4]))o.push(c[4])}return o}
   if(key==="inspo")return [r.inspo?"inspo":"rezept"];
   if(key==="equip")return equipOf(r);
   if(key==="suits")return suitsOf(r);
@@ -1169,6 +1195,7 @@ function render(){
 
   if(act.length>1)act.push(`<button type="button" class="more" id="clearAll">Alle Filter löschen</button>`);
   $("#active").innerHTML=act.join("");
+  {const ci=$("#cinsp");const v=[...state.f.cuisine];const fw=flavorW();if(v.length===1&&fw){const ids=cuisIds(v[0]).filter(id=>fw.flavor.cuisines[id]);if(ids.length){ci.hidden=false;ci.innerHTML=inspHTML(v[0],ids,fw);ci.querySelectorAll("[data-w2]").forEach(b=>b.onclick=()=>openWissen(b.dataset.w2));ci.querySelectorAll("[data-ik]").forEach(b=>b.onclick=()=>{inspKind=b.dataset.ik;render()})}else{ci.hidden=true}}else{ci.hidden=true;ci.innerHTML=""}}
   {const ch=$("#chaps");const books=[...state.f.collection,...state.f.source];
     if(books.length===1){const b=books[0];const m=new Map();for(const r of recipes)if((r.collection===b||r.source===b)&&r.section){const e=m.get(r.section)||{n:0,p:1e9};e.n++;e.p=Math.min(e.p,r.page||1e9);m.set(r.section,e)}
       const secs=[...m.entries()].sort((x,y)=>x[1].p-y[1].p||x[0].localeCompare(y[0],"de"));
@@ -1383,7 +1410,7 @@ const fmtDate=t=>t?new Date(t).toLocaleDateString("de-CH",{day:"numeric",month:"
 const BOOK="La cuisine de référence végétale";
 const BOOKS=[BOOK,"La cuisine de référence","La pâtisserie de référence","Le savoir-faire de la Pâtisserie française","La Pâtisserie française","Le savoir-faire des Desserts à l'assiette","Der perfekte Teller","Le Bar de référence","Pain et Snacking"];
 const isBookName=b=>!!b&&BOOKS.some(x=>String(b).includes(x));
-const isBook=r=>!!r&&(BOOKS.includes(r.source)||BOOKS.includes(r.collection));
+const isBook=r=>!!r&&(r.book===true||BOOKS.includes(r.source)||BOOKS.includes(r.collection));
 const BOOKIC=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10q8-3 16 1v28q-8-4-16-1z" fill="#fff" stroke="#3f6f93" stroke-width="2.2" stroke-linejoin="round"/><path d="M40 10q-8-3-16 1v28q8-4 16-1z" fill="#fff" stroke="#3f6f93" stroke-width="2.2" stroke-linejoin="round"/></svg>`;
 const bookBadge=r=>isBook(r)?`<span class="bkbadge" title="${esc(r.source||BOOK)}${r.page?", "+trUI("S.")+" "+r.page:""}">${BOOKIC}${r.ref&&r.page?`<b>${esc(r.page)}</b>`:""}</span>`:"";
 const recPh=r=>(hasPhoto(r)?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:r.ill?`<div class="illph">${IL(ilT(isBook(r)?{...r.ill,temp:""}:r.ill))}</div>`:r.ref?`<div class="refph">${BOOKIC}<b>${esc(trUI("S."))} ${esc(r.page||"")}</b></div>`:`<div class="noimg">${esc((r.title||"?")[0])}</div>`)+bookBadge(r);
@@ -1641,7 +1668,7 @@ function photoSheet(r){
   const msg=t=>{const m=o.querySelector("#phMsg");if(m)m.textContent=t};
   const set=async b=>{if(!b)return;msg("Foto wird gespeichert …");o.querySelectorAll(".phact button").forEach(x=>x.disabled=true);
     const url=URL.createObjectURL(b);o.querySelector(".phbig").innerHTML=`<img alt="" src="${url}">`;
-    try{const res=await assets.upload(await shrink(b),{type:"image/jpeg"});const d=strip(r);if(!d.photo||!hasPhoto(r)||isBook(r))d.photo=d.photo&&hasPhoto(r)?d.photo:res.id;if(d.photo!==res.id)d.photos=[...(d.photos||[]),res.id];if(!d.cooked){d.cooked=true;d.cookedAt=Date.now()}await save(r.id,d,false);toast("Foto gespeichert");close()}
+    try{const res={id:await uploadImage(b,1600)};const d=strip(r);if(!d.photo||!hasPhoto(r)||isBook(r))d.photo=d.photo&&hasPhoto(r)?d.photo:res.id;if(d.photo!==res.id)d.photos=[...(d.photos||[]),res.id];if(!d.cooked){d.cooked=true;d.cookedAt=Date.now()}await save(r.id,d,false);toast("Foto gespeichert");close()}
     catch(e){msg(errText(e));o.querySelectorAll(".phact button").forEach(x=>x.disabled=false)}};
   const onPaste=e=>{const f=[...((e.clipboardData&&e.clipboardData.files)||[])].find(f=>f.type.startsWith("image/"));if(f){e.preventDefault();set(f)}};
   const onKey=e=>{if(e.key==="Escape"){e.stopPropagation();close()}};
@@ -1654,7 +1681,7 @@ function photoSheet(r){
 }
 
 /* ---------- Meine Rezepte, eigene Fotos, Skizze, Notizen ---------- */
-const isOwn=r=>!!r&&(r.own===true||(r.own!==false&&(/instagram|cuisine\.atable/i.test(r.source||"")||/^(caros? rezepte|meine rezepte)$/i.test(r.collection||""))));
+const isOwn=r=>!!r&&r.own===true;
 function ownPics(r){const l=[...(r.photos||[])];if(r.sketch)l.push(r.sketch);for(const c of commentsOf(r))for(const p of c.photos||[])l.push(p);return l.filter(Boolean)}
 function galAttr(r,big){const own=ownPics(r);if(!own.length)return "";const all=[...(hasPhoto(r)?[r.photo]:[]),...own];return `data-gal="${esc(all.join("|"))}"`}
 function openMine(){for(const k in state.f)state.f[k].clear();state.q="";$("#q").value="";state.mine=true;showPage("recipes");render();window.scrollTo({top:0})}
@@ -1673,7 +1700,7 @@ function ownHTML(r){
   if(canWrite)o+=`<div class="ownadd">${own&&!r.sketch?`<button type="button" class="tag link" data-own="sketch">＋ Inspo-Skizze</button>`:""}${own&&!showNotes?`<button type="button" class="tag link" data-own="noteson">＋ Handschriftliche Notizen</button>`:""}<button type="button" class="tag link" data-own="photos">＋ Fotos</button>${own?"":`<button type="button" class="tag link" data-own="mine">＋ Zu «Meine Rezepte»</button>`}<input type="file" id="ownFile" accept="image/*" multiple hidden></div>`;
   return o}
 function bindOwn(r){const v=$("#view");const fi=$("#ownFile");if(!fi)return;let mode="";
-  const upl=async files=>{const ids=[];toast("Wird hochgeladen …");for(const f of files)ids.push((await assets.upload(await shrink(f),{type:"image/jpeg"})).id);return ids};
+  const upl=async files=>{const ids=[];toast("Wird hochgeladen …");for(const f of files)ids.push((await uploadImage(f,1600)));return ids};
   fi.onchange=async()=>{const files=[...fi.files];fi.value="";if(!files.length)return;try{const ids=await upl(mode==="sketch"?files.slice(0,1):files);const d=strip(r);
     if(mode==="sketch")d.sketch=ids[0];else if(mode==="notes"){d.notes=[...(d.notes||[]),...ids];d.notesOn=true}else{if(!hasPhoto(r)&&!isBook(r))d.photo=ids.shift();d.photos=[...(d.photos||[]),...ids];if(!d.cooked){d.cooked=true;d.cookedAt=Date.now()}}
     await save(r.id,d,false);toast("Gespeichert")}catch(e){toast(errText(e))}};
@@ -1700,10 +1727,47 @@ function openImportMenu(){
   pi.onchange=async()=>{const fs=[...pi.files];if(!fs.length)return;if(!window.RB||!window.RB.importFiles){msg("Import nicht verfügbar.");return}o.querySelectorAll(".impopt").forEach(b=>b.disabled=true);await window.RB.importFiles(fs,o.querySelector("#impMsg"))};
   const oi=o.querySelector("#impOwnIn");o.querySelector('[data-k="own"]').onclick=()=>oi.click();
   oi.onchange=async()=>{const fs=[...oi.files];if(!fs.length)return;o.querySelectorAll(".impopt").forEach(b=>b.disabled=true);
-    try{const ids=[];for(let i=0;i<fs.length;i++){msg(`Foto ${i+1} von ${fs.length} wird hochgeladen …`);ids.push((await assets.upload(await shrink(fs[i]),{type:"image/jpeg"})).id)}
+    try{const ids=[];for(let i=0;i<fs.length;i++){msg(`Foto ${i+1} von ${fs.length} wird hochgeladen …`);ids.push((await uploadImage(fs[i],1600)))}
       close();importQueue=[{title:"",own:true,collection:"Meine Rezepte",photo:ids[0],photos:ids.slice(1),ingredients:[],steps:[],mealTypes:[],dishTypes:[],diet:[]}];draftTotal=1;openDraft()}
     catch(e){msg(errText(e));o.querySelectorAll(".impopt").forEach(b=>b.disabled=false)}};
 }
+
+/* ---------- Aromen-Räder (eigene Darstellung, Daten aus dem Wissen-Import) ---------- */
+let inspKind="spices";
+const flavorW=()=>wissen.find(w=>w.flavor&&w.flavor.cuisines);
+const FKIND={spices:["Gewürze & Kräuter","Épices & herbes","Spices & herbs"],fats:["Fette","Matières grasses","Fats"],acids:["Säuren","Acides","Acids"]};
+const kl=k=>{const x=FKIND[k];return wLang==="fr"?x[1]:wLang==="en"?x[2]:x[0]};
+function flavorItems(c,kind){const L=wLang==="de"?"":"_"+wLang;const pick=f=>{const a=c[f+L]||c[f]||[];const en=c[f+"_en"]||[];const nv=new Set([...(c[f+"_nonveg_en"]||[])]);return a.filter((x,i)=>!nv.has(en[i]))};
+  if(kind==="spices")return [...pick("spices"),...pick("herbs")];if(kind==="fats")return pick("fats");return [...pick("acids"),...pick("acids_garnish")]}
+const GCOL={"Asiatisch":["#e7a3b3","#f4d2da"],"Europäisch":["#ecc96b","#f7e6b5"],"Amerikanisch":["#ef9f6c","#f9d5bd"],"Afrikanisch":["#9cc27a","#d7e9c6"],"Nahöstlich":["#86b6d3","#cfe3ef"]};
+function sunburst(fw,kind,only){const cu=fw.flavor.cuisines;const ids=CUIS.map(c=>c[0]).filter(id=>cu[id]&&(!only||only.includes(id)));
+  const items=[];for(const id of ids){const c=CUIS.find(x=>x[0]===id);for(const it of flavorItems(cu[id],kind))items.push({id,g:c[4],t:it})}
+  if(!items.length)return "";const N=items.length,S=800,cx=S/2,cy=S/2,R0=only?70:80,R1=only?0:130,R2=only?150:200,R3=390;const A=i=>i/N*Math.PI*2-Math.PI/2;
+  const arc=(a0,a1,r0,r1)=>{const L=a1-a0>Math.PI?1:0;const p=(a,r)=>`${(cx+r*Math.cos(a)).toFixed(1)} ${(cy+r*Math.sin(a)).toFixed(1)}`;return `M${p(a0,r1)} A${r1} ${r1} 0 ${L} 1 ${p(a1,r1)} L${p(a1,r0)} A${r0} ${r0} 0 ${L} 0 ${p(a0,r0)}Z`};
+  const lab=(a,r,txt,size,anchorOut)=>{let deg=a*180/Math.PI;const flip=Math.cos(a)<0;if(flip)deg+=180;return `<text x="${(cx+r*Math.cos(a)).toFixed(1)}" y="${(cy+r*Math.sin(a)).toFixed(1)}" transform="rotate(${deg.toFixed(1)} ${(cx+r*Math.cos(a)).toFixed(1)} ${(cy+r*Math.sin(a)).toFixed(1)})" text-anchor="${flip?(anchorOut?"end":"start"):(anchorOut?"start":"end")}" dominant-baseline="middle" font-size="${size}">${esc(txt)}</text>`};
+  let o="";let i=0;const fs=Math.max(7,Math.min(13,2*Math.PI*R2/N*.75));
+  // outer items
+  items.forEach((it,k)=>{const a0=A(k),a1=A(k+1);o+=`<path d="${arc(a0,a1,R2,R3)}" fill="${GCOL[it.g][1]}" stroke="#fff" stroke-width="1"/>`;o+=lab((a0+a1)/2,R2+8,it.t.length>28?it.t.slice(0,27)+"…":it.t,fs,true)});
+  // cuisines ring
+  let k=0;for(const id of ids){const n=items.filter(x=>x.id===id).length;if(!n)continue;const c=CUIS.find(x=>x[0]===id);const a0=A(k),a1=A(k+n);o+=`<path d="${arc(a0,a1,R1||R0,R2)}" fill="${GCOL[c[4]][0]}" stroke="#fff" stroke-width="2" data-cu="${id}" class="cu"><title>${esc(trUI(c[1]))}</title></path>`;
+    const t=trUI(c[1]).replace(/ \(.*\)/,"");o+=lab((a0+a1)/2,(R1||R0)+6,t.length>22?t.slice(0,21)+"…":t,Math.max(8,Math.min(14,(a1-a0)*(R1||R0)*.8)),true);k+=n}
+  // groups ring
+  if(!only){k=0;for(const g of Object.keys(GCOL)){const n=items.filter(x=>x.g===g).length;if(!n)continue;const a0=A(k),a1=A(k+n);o+=`<path d="${arc(a0,a1,R0,R1)}" fill="${GCOL[g][0]}" stroke="#fff" stroke-width="3" opacity=".75"/>`;o+=lab((a0+a1)/2,(R0+R1)/2,trUI(g),12,false).replace('text-anchor="end"','text-anchor="middle"').replace('text-anchor="start"','text-anchor="middle"');k+=n}}
+  return `<svg class="wheel" viewBox="0 0 ${S} ${S}" role="img" aria-label="${esc(kl(kind))}">${o}<circle cx="${cx}" cy="${cy}" r="${R0-4}" fill="#fff"/><text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" class="wc">${esc(kl(kind))}</text></svg>`}
+function inspHTML(label,ids,fw){const cu=fw.flavor.cuisines;
+  return `<div class="insp"><div class="insph"><b>${esc(trUI("Inspiration"))}: ${esc(trUI(label))}</b><span class="sp"></span>${Object.keys(FKIND).map(k=>`<button type="button" class="chip" data-ik="${k}" aria-pressed="${inspKind===k}">${esc(kl(k))}</button>`).join("")}<button type="button" class="ilink" data-w2="${esc(fw.id)}">${esc(trUI("Ganzes Aromenrad"))} →</button></div>
+    <div class="inspb"><div class="inspw">${sunburst(fw,inspKind,ids)}</div><div class="inspl">${ids.map(id=>{const c=cu[id];return `<div><h5>${esc(trUI(cuisL(id)))}</h5>${Object.keys(FKIND).map(k=>{const l=flavorItems(c,k);return l.length?`<p><span>${esc(kl(k))}:</span> ${l.map(esc).join(", ")}</p>`:""}).join("")}</div>`}).join("")}</div></div></div>`}
+function flavorArticleHTML(w){const f=w.flavor||{};let o="";
+  if(f.cuisines){const K=w._fk||w.flavorKind||"spices";const only=w._only||null;o+=`<section class="fwheel"><div class="insph">${Object.keys(FKIND).map(k=>`<button type="button" class="chip" data-fk="${k}" aria-pressed="${K===k}">${esc(kl(k))}</button>`).join("")}<span class="sp"></span>${only?`<button type="button" class="chip" data-fall>← ${esc(trUI("Alle Küchen"))}</button>`:`<span class="ro">${esc(trUI("Tippe auf eine Küche zum Vergrössern"))}</span>`}</div>${sunburst(w,K,only)}${only?`<div class="inspl">${only.map(id=>{const c=f.cuisines[id];return `<div><h5>${esc(trUI(cuisL(id)))}</h5>${Object.keys(FKIND).map(k=>{const l=flavorItems(c,k);return l.length?`<p><span>${esc(kl(k))}:</span> ${l.map(esc).join(", ")}</p>`:""}).join("")}</div>`}).join("")}</div>`:""}</section>`}
+  const L=wLang==="de"?"":"_"+wLang;
+  if(f.salad&&f.salad.rows){const s=f.salad;const rows=s["rows"+L]||s.rows,cols=s["cols"+L]||s.cols;const cells=s["cells"+L]||s.cells||[];o+=`<section class="fmatrix"><h3>${esc(s["title"+L]||s.title||"")}</h3><div class="stablewrap"><table class="mtx"><thead><tr><th></th>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr><th>${esc(r)}</th>${(cells[i]||[]).map(c=>`<td>${esc(Array.isArray(c)?c.join(", "):c||"")}</td>`).join("")}</tr>`).join("")}</tbody></table></div></section>`}
+  if(f.axis&&Array.isArray(f.axis.points)){const a=f.axis;const P=a.points;o+=`<section class="faxis"><h3>${esc(a["title"+L]||a.title||"")}</h3><svg viewBox="-10 -10 620 420" class="axis"><line x1="0" y1="200" x2="600" y2="200"/><line x1="300" y1="0" x2="300" y2="400"/>${["x","y"].map(k=>{const t=a[k]||{};const lo=t["min"+L]||t.min||"",hi=t["max"+L]||t.max||"";return k==="x"?`<text x="4" y="192" class="ax">${esc(lo)}</text><text x="596" y="192" text-anchor="end" class="ax">${esc(hi)}</text>`:`<text x="306" y="396" class="ax">${esc(lo)}</text><text x="306" y="12" class="ax">${esc(hi)}</text>`}).join("")}${P.map(p=>{const x=300+(+p.x||0)*280,y=200-(+p.y||0)*180;return `<g ${p.recipe?`data-rid="${esc(p.recipe)}" class="axp lnk"`:'class="axp"'}><circle cx="${x}" cy="${y}" r="5"/><text x="${x+8}" y="${y+4}">${esc(p["name"+L]||p.name||p.title||"")}</text></g>`}).join("")}</svg></section>`}
+  return o}
+
+/* ---------- Mix & Match: Zeichnen, Anstreichen ---------- */
+const HLC={y:"#fde68a",p:"#fbcfe8",g:"#bbf7d0",b:"#bfdbfe"};
+function hlText(t,m){const rs=(m&&m.r)?m.r:(m?[[0,t.length,"y"]]:[]);if(!rs.length)return esc(t);const pts=[...rs].sort((a,b)=>a[0]-b[0]);let o="",p=0;
+  for(const [a,b,c] of pts){const A=Math.max(p,a),B=Math.min(t.length,b);if(A>=B)continue;o+=esc(t.slice(p,A))+`<mark style="--hl:${HLC[c]||HLC.y}" data-hs="${A}">${esc(t.slice(A,B))}</mark>`;p=B}return o+esc(t.slice(p))}
 function showView(){
   const v=$("#view");const r=recipes.find(x=>x.id===current);
   if(!r&&current!=="__new"){v.hidden=true;return}
@@ -1770,7 +1834,7 @@ function showView(){
   bindCommentImgs(r);bindOwn(r);
   const cs=$("#cmtSave");if(cs)cs.onclick=async()=>{const t=$("#cmt").value.trim();const pend=cPend[r.id]||[];if(!t&&!pend.length){toast("Schreib zuerst einen Kommentar oder füge ein Bild ein");return}
     cs.disabled=true;let photos=[];
-    if(pend.length){cs.textContent="Bild wird hochgeladen …";try{for(const x of pend)photos.push((await assets.upload(await shrink(x.blob),{type:"image/jpeg"})).id)}catch(e){toast(errText(e));cs.disabled=false;cs.textContent="Kommentar speichern";return}}
+    if(pend.length){cs.textContent="Bild wird hochgeladen …";try{for(const x of pend)photos.push((await uploadImage(x.blob,1600)))}catch(e){toast(errText(e));cs.disabled=false;cs.textContent="Kommentar speichern";return}}
     pend.forEach(x=>URL.revokeObjectURL(x.url));cPend[r.id]=[];
     const c={text:t,at:Date.now()};if(photos.length)c.photos=photos;
     const list=[...commentsOf(r),c];const d=withComments(r,list);if(photos.length&&!d.cooked){d.cooked=true;d.cookedAt=Date.now()}await save(r.id,d,false);toast("Kommentar gespeichert")};
@@ -2999,6 +3063,7 @@ function renderArticle(){const pg=$("#page");const id=state.article;
       <h2>${esc(wt(w,"title"))}</h2>${others.length?`<p class="wother">${others.map(esc).join(" · ")}</p>`:""}
       ${w.book?`<div class="srcline">${IC.book}<span class="srcname">${esc(w.book)}</span>${w.bookPage?`<span class="bookref">${L.book}: ${L.page} ${esc(w.bookPage)}</span>`:""}</div>`:""}
       ${w.kind==="sheet"?`<div class="shhero">${w.sheet&&w.sheet.hero?shImg(w.sheet.hero):w.sheet&&w.sheet.mode==="draw"?PICT(w):(w.sheet&&w.sheet.icons||[]).map(p=>shImg(p,"shico")).join("")}</div>`:""}
+      ${w.flavor?flavorArticleHTML(w):""}
       ${tech?"":(w.illus||[]).length?`<div class="illrow">${w.illus.map((x,k)=>`<figure>${IL(ilT(x))}<figcaption><b>${k+1}</b> ${esc(wLang!=="de"&&x["cap_"+wLang]?x["cap_"+wLang]:x.cap||"")}</figcaption></figure>`).join("")}</div>`:""}
       ${w.kind==="sheet"?sheetHTML(w):tech||`<div class="wbody">${bodyHTML(wt(w,"body"))}</div>`}
       ${wissen.filter(x=>x.forTech===w.id&&x.kind==="sheet").map(x=>`<section class="sheetemb"><h3><button type="button" class="ilink" data-w2="${esc(x.id)}">${esc(trUI("Schritt für Schritt"))}: ${esc(wt(x,"title"))}</button></h3>${sheetHTML(x)}</section>`).join("")}
@@ -3008,6 +3073,7 @@ function renderArticle(){const pg=$("#page");const id=state.article;
       ${rel.length?`<h3 class="relh small">${L.more}</h3><div class="grid relg">${rel.map(card).join("")}</div>`:""}
     </section>`;
   $("#wPrint").onclick=()=>wPrintDialog([w]);
+  pg.querySelectorAll("[data-fk]").forEach(x=>x.onclick=()=>{w._fk=x.dataset.fk;renderArticle()});pg.querySelectorAll(".fwheel path.cu").forEach(x=>x.onclick=()=>{w._only=[x.dataset.cu];renderArticle()});const fa=pg.querySelector("[data-fall]");if(fa)fa.onclick=()=>{w._only=null;renderArticle()};pg.querySelectorAll(".axp.lnk").forEach(x=>x.onclick=()=>openRecipe(x.dataset.rid));
   $("#wBack").onclick=()=>showPage("wissen");$("#wCatBtn").onclick=()=>{wCat=w.category||"Allgemein";showPage("wissen")};
   pg.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>setLang(b.dataset.lang));
   pg.querySelectorAll("[data-rid]").forEach(c=>c.onclick=()=>openRecipe(c.dataset.rid));
@@ -3285,57 +3351,92 @@ function boardItems(b){if(!Array.isArray(b.items))b.items=[];const have=new Set(
   for(const rid of b.recipes||[])if(!have.has(rid)){b.items.push({id:uid("it"),kind:"rec",rid,x:40+(n%4)*340,y:40+Math.floor(n/4)*520});n++}
   b.items=b.items.filter(i=>i.kind!=="rec"||(b.recipes||[]).includes(i.rid));return b.items}
 function recCardHTML(b,it){const r=recipes.find(x=>x.id===it.rid);if(!r)return "";const mk=(b.marks||{})[r.id]||{};
-  const line=(k,txt)=>{const m=mk[k];return `<li class="ln ${m?"lnmark":""}" data-k="${k}"><span>${esc(txt)}</span>${canWrite?`<button type="button" class="lc" data-cm="${k}" title="Kommentar">✎</button>`:""}${m&&m.c?`<span class="cmt2">${esc(m.c)}</span>`:""}</li>`};
+  const line=(k,txt)=>{const m=mk[k];return `<li class="ln" data-k="${k}"><span class="lt">${hlText(txt,m)}</span>${canWrite?`<button type="button" class="lc" data-cm="${k}" title="Kommentar">✎</button>`:""}${m&&m.c?`<span class="cmt2">${esc(m.c)}</span>`:""}</li>`};
   const ing=(r.ingredients||[]).map((g,gi)=>`${g.group?`<h5>${esc(g.group)}</h5>`:""}<ul>${(g.items||[]).map((i,ii)=>line(`i${gi}.${ii}`,[fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:""))).join("")}</ul>`).join("");
   const st=(r.steps||[]).length?`<details ${it.open?"open":""} data-open="${it.id}"><summary>Zubereitung (${r.steps.length})</summary><ol>${r.steps.map((x,i)=>line("s"+i,x)).join("")}</ol></details>`:"";
   return `<div class="cimg">${hasPhoto(r)?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:recPh(r)}</div><b class="ctit" data-rid="${esc(r.id)}">${esc(trTitle(r))}</b><div class="cing">${ing}</div>${st}`}
-function itemHTML(b,it){const head=`<div class="chd" data-drag="${it.id}"><span class="grip">⋮⋮</span>${it.glue?`<button type="button" class="unglue" data-unglue="${it.id}" title="Lösen">⛓</button>`:""}<span class="sp"></span>${canWrite?`<button type="button" class="rmit" data-rmit="${it.id}" title="Entfernen">×</button>`:""}</div>`;
-  const body=it.kind==="rec"?recCardHTML(b,it):it.kind==="note"?`<textarea class="paper" data-note="${it.id}" placeholder="Notiz …">${esc(it.text||"")}</textarea>`:`<img alt="" class="citimg" data-photo="${esc(it.photo)}" src="${peek(it.photo)}">`;
-  return `<div class="cit ${it.kind}" id="${it.id}" style="left:${it.x}px;top:${it.y}px;${it.w?`width:${it.w}px`:""}">${head}${body}</div>`}
+const PIC={y:"#fff3a8",p:"#ffd1dc",g:"#cdeccd",b:"#cfe6f7",o:"#ffd9b0",w:"#ffffff"};
+function itemHTML(b,it){const head=`<div class="chd" data-drag="${it.id}"><span class="grip">⋮⋮</span>${it.kind==="note"&&canWrite?Object.keys(PIC).map(c=>`<button type="button" class="pdot" data-pc="${it.id}:${c}" style="background:${PIC[c]}" aria-label="Farbe"></button>`).join(""):""}${it.glue?`<button type="button" class="unglue" data-unglue="${it.id}" title="Lösen">⛓</button>`:""}<span class="sp"></span>${canWrite?`<button type="button" class="rmit" data-rmit="${it.id}" title="Entfernen">×</button>`:""}</div>`;
+  const body=it.kind==="rec"?recCardHTML(b,it):it.kind==="note"?`<textarea class="postit" data-note="${it.id}">${esc(it.text||"")}</textarea>`:`<img alt="" class="citimg" data-photo="${esc(it.photo)}" src="${peek(it.photo)}">`;
+  return `<div class="cit ${it.kind}" id="${it.id}" style="left:${it.x}px;top:${it.y}px;${it.w?`width:${it.w}px;`:""}${it.kind==="note"?`--pc:${PIC[it.color||"y"]};`:""}">${head}${body}</div>`}
+let bFull=false,bDraw=false,bPen="#3a2a28";
+const BGS=["#f3eeeb","#ffffff","#eef3ee","#eaf1f7","#f7efe2","#2f2a28"];
 function boardHTML(){const b=boards.find(x=>x.id===state.board);if(!b)return `<div class="phead"><button type="button" class="btn" data-back>← Mix &amp; Match</button></div><div class="empty"><h2>${loaded?"Board nicht gefunden":"Wird geladen …"}</h2></div>`;
-  const items=boardItems(b);const W=Math.max(2400,...items.map(i=>i.x+700)),H=Math.max(1500,...items.map(i=>i.y+900));
+  const items=boardItems(b);const W=Math.max(3000,...items.map(i=>i.x+800)),H=Math.max(2000,...items.map(i=>i.y+1000));
+  const ink=(b.strokes||[]).map(s=>`<path d="${s.d}" stroke="${s.c}" stroke-width="${s.w||3}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
   return `<div class="phead wbar"><button type="button" class="btn" data-back>← Mix &amp; Match</button><span class="sp"></span>
       <button type="button" class="btn ghost" id="bd-post">Post planen</button>${canWrite?`<button type="button" class="btn ${bDel?"sure":"danger"}" id="bd-del">${bDel?"Wirklich löschen?":"Löschen"}</button>`:""}</div>
-    <div class="board"><input class="bdtitle" id="bd-title" value="${esc(b.title||"")}" aria-label="Name des Boards" placeholder="Name des Boards">
-      <div class="bdstatus">${["Idee","In Arbeit","Getestet","Fertig"].map(s=>`<button type="button" class="chip" data-bst="${s}" aria-pressed="${b.status===s}">${s}</button>`).join("")}</div>
-      ${canWrite?`<div class="cbar"><div class="cadd"><input id="bd-q" type="search" placeholder="＋ Rezept suchen …" class="pesearch"><div id="bd-res" class="lres pop"></div></div><button type="button" class="btn ghost" id="bd-note">＋ Notiz</button><button type="button" class="btn ghost" id="bd-img">＋ Foto / Skizze</button><input type="file" id="bd-file" accept="image/*" multiple hidden><span class="sp"></span><button type="button" class="btn ghost" data-zoom="-1">−</button><button type="button" class="btn ghost" data-zoom="0">${Math.round(bZoom*100)} %</button><button type="button" class="btn ghost" data-zoom="1">＋</button></div>`:""}
-      <p class="ro chint">Karten am oberen Rand ziehen · nah an eine andere Karte legen = ankleben (bewegt sich mit) · Zeile antippen = anstreichen · ✎ = Kommentar</p>
-      <div class="cwrap" id="cwrap"><div class="canvas" id="canvas" style="width:${W}px;height:${H}px;transform:scale(${bZoom})">${items.map(it=>itemHTML(b,it)).join("")}</div></div>
-      <div class="paperwrap"><span class="pel">Meine Idee &amp; Notizen <small>wird automatisch gespeichert</small></span><textarea class="paper big" id="bd-notes" placeholder="Was will ich kombinieren? Welche Komponente von welchem Rezept? Mengen, Abwandlungen, Anrichte-Idee …">${esc(b.notes||"")}</textarea></div>
-      ${canWrite?`<div><button type="button" class="btn ghost" id="bd-make">Als neues Rezept anlegen</button></div>`:""}
+    <div class="board ${bFull?"full":""}" id="boardEl"><input class="bdtitle" id="bd-title" value="${esc(b.title||"")}" aria-label="Name des Boards" placeholder="Name des Boards">
+      ${canWrite?`<div class="cbar"><div class="cadd"><input id="bd-q" type="search" placeholder="＋ Rezept suchen …" class="pesearch"><div id="bd-res" class="lres pop"></div></div>
+        <button type="button" class="btn ghost" id="bd-note">＋ Post-it</button><button type="button" class="btn ghost" id="bd-img">＋ Foto / Skizze</button><input type="file" id="bd-file" accept="image/*" multiple hidden>
+        <span class="tsep"></span><button type="button" class="btn ghost ${bDraw?"on":""}" id="bd-draw" title="Zeichnen (Apple Pencil zeichnet immer)">✏︎ Stift</button>${["#3a2a28","#c0392b","#2f7a48","#2d6cb5","#e0a100"].map(c=>`<button type="button" class="pdot big ${bPen===c?"on":""}" data-pen="${c}" style="background:${c}" aria-label="Stiftfarbe"></button>`).join("")}<button type="button" class="btn ghost" id="bd-undo" title="Letzten Strich löschen">↶</button>
+        <span class="tsep"></span>${BGS.map(c=>`<button type="button" class="pdot big ${((b.bg||BGS[0])===c)?"on":""}" data-bg="${c}" style="background:${c}" aria-label="Hintergrund"></button>`).join("")}<input type="color" id="bd-bgc" value="${esc(b.bg||BGS[0])}" title="Eigene Hintergrundfarbe">
+        <span class="sp"></span><button type="button" class="btn ghost" data-zoom="-1">−</button><button type="button" class="btn ghost" data-zoom="0">${Math.round(bZoom*100)} %</button><button type="button" class="btn ghost" data-zoom="1">＋</button><button type="button" class="btn primary small" id="bd-full">${bFull?"✕ Schliessen":"⤢ Vollbild"}</button></div>`:""}
+      <div class="cwrap ${bDraw?"drawing":""}" id="cwrap" style="background-color:${esc(b.bg||BGS[0])}"><div class="canvas" id="canvas" style="width:${W}px;height:${H}px;transform:scale(${bZoom})">${items.map(it=>itemHTML(b,it)).join("")}<svg class="ink" width="${W}" height="${H}" id="ink">${ink}</svg></div></div>
+      <div id="hlbar" class="hlbar" hidden>${Object.keys(HLC).map(c=>`<button type="button" data-hl="${c}" style="background:${HLC[c]}" aria-label="Anstreichen"></button>`).join("")}<button type="button" data-hl="cm">✎</button></div>
+      <div class="paperwrap"><span class="pel">Meine Idee &amp; Notizen <small>wird automatisch gespeichert</small></span><textarea class="paper big" id="bd-notes">${esc(b.notes||"")}</textarea></div>
+      ${canWrite?`<div><button type="button" class="btn ghost" id="bd-make">Als neues Rezept in «Meine Rezepte» anlegen</button></div>`:""}
     </div>`}
-function bindBoard(){const pg=$("#page");const b=boards.find(x=>x.id===state.board);pg.querySelector("[data-back]").onclick=()=>showPage("mix");if(!b)return;
+function bindBoard(){const pg=$("#page");const b=boards.find(x=>x.id===state.board);pg.querySelector("[data-back]").onclick=()=>{bFull=false;showPage("mix")};if(!b)return;
   const save=async()=>{b.updatedAt=Date.now();try{await saveDoc(b.id,{...strip(b),type:"board"})}catch(x){toast(errText(x))}};const soon=()=>{clearTimeout(bT);bT=setTimeout(save,900)};
   const rer=()=>{const cw=$("#cwrap");const sx=cw?cw.scrollLeft:0,sy=cw?cw.scrollTop:0,wy=window.scrollY;renderPage();const c2=$("#cwrap");if(c2){c2.scrollLeft=sx;c2.scrollTop=sy}window.scrollTo({top:wy})};
   $("#bd-title").oninput=e=>{b.title=e.target.value;soon()};$("#bd-notes").oninput=e=>{b.notes=e.target.value;soon()};
-  pg.querySelectorAll("[data-bst]").forEach(x=>x.onclick=()=>{b.status=x.dataset.bst;save();rer()});
   pg.querySelectorAll(".ctit[data-rid]").forEach(x=>x.onclick=()=>openRecipe(x.dataset.rid));
-  pg.querySelectorAll("[data-zoom]").forEach(x=>x.onclick=()=>{const z=+x.dataset.zoom;bZoom=z===0?1:Math.min(1.5,Math.max(.4,bZoom+z*.15));rer()});
+  pg.querySelectorAll("[data-zoom]").forEach(x=>x.onclick=()=>{const z=+x.dataset.zoom;bZoom=z===0?1:Math.min(1.5,Math.max(.3,bZoom+z*.15));rer()});
+  const fb=$("#bd-full");if(fb)fb.onclick=()=>{bFull=!bFull;document.body.style.overflow=bFull?"hidden":"";rer()};
+  if(bFull)document.body.style.overflow="hidden";
   pg.querySelectorAll("details[data-open]").forEach(d=>d.ontoggle=()=>{const it=b.items.find(i=>i.id===d.dataset.open);if(it){it.open=d.open;soon()}});
-  // anstreichen & kommentieren
-  pg.querySelectorAll(".cit.rec").forEach(card=>{const it=b.items.find(i=>i.id===card.id);if(!it)return;const rid=it.rid;
-    card.querySelectorAll(".ln").forEach(li=>li.onclick=e=>{if(!canWrite||e.target.closest(".lc"))return;b.marks=b.marks||{};const m=b.marks[rid]=b.marks[rid]||{};const k=li.dataset.k;if(m[k])delete m[k];else m[k]={c:""};save();rer()});
-    card.querySelectorAll("[data-cm]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();const li=btn.closest(".ln");const k=btn.dataset.cm;b.marks=b.marks||{};const m=b.marks[rid]=b.marks[rid]||{};
-      const old=(m[k]&&m[k].c)||"";const ta=document.createElement("textarea");ta.className="cmin";ta.value=old;ta.placeholder="Kommentar …";li.appendChild(ta);ta.focus();
-      const done=()=>{const v=ta.value.trim();if(v||m[k])m[k]={c:v};save();rer()};ta.onblur=done;ta.onkeydown=ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();ta.blur()}}})});
   pg.querySelectorAll(".citimg").forEach(im=>im.onclick=()=>zoomImg(im));
   pg.querySelectorAll("[data-note]").forEach(t=>t.oninput=()=>{const it=b.items.find(i=>i.id===t.dataset.note);if(it){it.text=t.value;soon()}});
+  pg.querySelectorAll("[data-pc]").forEach(x=>x.onclick=()=>{const [id,c]=x.dataset.pc.split(":");const it=b.items.find(i=>i.id===id);if(it){it.color=c;save();rer()}});
+  pg.querySelectorAll("[data-bg]").forEach(x=>x.onclick=()=>{b.bg=x.dataset.bg;save();rer()});const bc=$("#bd-bgc");if(bc)bc.onchange=()=>{b.bg=bc.value;save();rer()};
+  pg.querySelectorAll("[data-pen]").forEach(x=>x.onclick=()=>{bPen=x.dataset.pen;bDraw=true;rer()});
+  const dr=$("#bd-draw");if(dr)dr.onclick=()=>{bDraw=!bDraw;rer()};
+  const un=$("#bd-undo");if(un)un.onclick=()=>{(b.strokes||[]).pop();save();rer()};
+  // Kommentare
+  pg.querySelectorAll(".cit.rec").forEach(card=>{const it=b.items.find(i=>i.id===card.id);if(!it)return;const rid=it.rid;
+    card.querySelectorAll("mark[data-hs]").forEach(mk=>mk.onclick=e=>{if(!canWrite)return;e.stopPropagation();const li=mk.closest(".ln");const m=((b.marks||{})[rid]||{})[li.dataset.k];if(!m)return;const st=+mk.dataset.hs;
+      if(!m.r){delete b.marks[rid][li.dataset.k]}else{m.r=m.r.filter(x=>!(Math.max(x[0],st)<x[1]&&x[0]<=st));if(!m.r.length&&!m.c)delete b.marks[rid][li.dataset.k]}save();rer()});
+    card.querySelectorAll("[data-cm]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();editComment(rid,btn.closest(".ln"))})});
+  function editComment(rid,li){const k=li.dataset.k;b.marks=b.marks||{};const m=b.marks[rid]=b.marks[rid]||{};const old=(m[k]&&m[k].c)||"";const ta=document.createElement("textarea");ta.className="cmin";ta.value=old;ta.placeholder="Kommentar …";li.appendChild(ta);ta.focus();
+    const done=()=>{const v=ta.value.trim();if(v){m[k]=m[k]||{r:[]};m[k].c=v}else if(m[k]){m[k].c="";if(m[k].r&&!m[k].r.length)delete m[k]}save();rer()};ta.onblur=done;ta.onkeydown=ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();ta.blur()}}}
+  // Anstreichen mit Textauswahl
+  const hb=$("#hlbar");let selInfo=null;
+  const readSel=()=>{const sel=getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return null;const rg=sel.getRangeAt(0);const card=(rg.commonAncestorContainer.nodeType===1?rg.commonAncestorContainer:rg.commonAncestorContainer.parentNode).closest(".cit.rec");if(!card)return null;
+    const it=b.items.find(i=>i.id===card.id);if(!it)return null;const out=[];
+    card.querySelectorAll(".ln").forEach(li=>{const lt=li.querySelector(".lt");if(!lt||!rg.intersectsNode(lt))return;const len=lt.textContent.length;
+      const off=(node,o)=>{const pr=document.createRange();pr.setStart(lt,0);pr.setEnd(node,o);return pr.toString().length};
+      const s0=lt.contains(rg.startContainer)?off(rg.startContainer,rg.startOffset):0;const e0=lt.contains(rg.endContainer)?off(rg.endContainer,rg.endOffset):len;if(e0>s0)out.push([li.dataset.k,s0,e0])});
+    return out.length?{rid:it.rid,parts:out,rect:rg.getBoundingClientRect()}:null};
+  const showBar=()=>{if(!canWrite)return;selInfo=readSel();if(!selInfo){hb.hidden=true;return}const r=selInfo.rect;hb.hidden=false;hb.style.left=Math.max(8,r.left+r.width/2-90)+"px";hb.style.top=Math.max(8,r.top-48)+"px"};
+  const cv=$("#canvas");if(cv){cv.addEventListener("mouseup",()=>setTimeout(showBar,10));cv.addEventListener("touchend",()=>setTimeout(showBar,250))}
+  document.onselectionchange=()=>{if(state.page!=="board"){document.onselectionchange=null;return}const s=getSelection();if(!s||s.isCollapsed)setTimeout(()=>{const t=getSelection();if(!t||t.isCollapsed)hb.hidden=true},150)};
+  hb.querySelectorAll("[data-hl]").forEach(x=>{x.onpointerdown=e=>e.preventDefault();x.onclick=()=>{if(!selInfo)return;const c=x.dataset.hl;b.marks=b.marks||{};const m=b.marks[selInfo.rid]=b.marks[selInfo.rid]||{};
+    for(const [k,a,e] of selInfo.parts){const cur=m[k]&&!m[k].r?{r:[[0,1e6,"y"]],c:m[k].c}:(m[k]||{r:[]});cur.r=cur.r||[];if(c!=="cm")cur.r.push([a,e,c]);else if(!cur.r.length)cur.r.push([a,e,"y"]);m[k]=cur}
+    getSelection().removeAllRanges();hb.hidden=true;save();
+    if(c==="cm"){const last=selInfo.parts[selInfo.parts.length-1][0];rer();const li=document.querySelector(`#${CSS.escape(b.items.find(i=>i.rid===selInfo.rid).id)} .ln[data-k="${last}"]`);if(li)editComment(selInfo.rid,li)}else rer()}});
   pg.querySelectorAll("[data-rmit]").forEach(x=>x.onclick=()=>{const it=b.items.find(i=>i.id===x.dataset.rmit);if(!it)return;b.items=b.items.filter(i=>i!==it);for(const o of b.items)if(o.glue===it.id)delete o.glue;if(it.kind==="rec")b.recipes=(b.recipes||[]).filter(r=>r!==it.rid);save();rer()});
   pg.querySelectorAll("[data-unglue]").forEach(x=>x.onclick=()=>{const it=b.items.find(i=>i.id===x.dataset.unglue);if(it){delete it.glue;it.x+=30;it.y+=30;save();rer()}});
-  const cw=$("#cwrap");const place=()=>{const z=bZoom;return {x:Math.round((cw.scrollLeft+40)/z),y:Math.round((cw.scrollTop+40)/z)}};
-  const nb=$("#bd-note");if(nb)nb.onclick=()=>{const p=place();b.items.push({id:uid("it"),kind:"note",text:"",x:p.x,y:p.y,w:240});save();rer()};
+  const cw=$("#cwrap");const place=()=>{const z=bZoom;return {x:Math.round((cw.scrollLeft+60)/z),y:Math.round((cw.scrollTop+60)/z)}};
+  const nb=$("#bd-note");if(nb)nb.onclick=()=>{const p=place();b.items.push({id:uid("it"),kind:"note",color:"y",text:"",x:p.x,y:p.y,w:230});save();rer()};
   const fi=$("#bd-file");const ib=$("#bd-img");if(ib)ib.onclick=()=>fi.click();
-  if(fi)fi.onchange=async()=>{const fs=[...fi.files];fi.value="";if(!fs.length)return;toast("Wird hochgeladen …");try{let p=place();for(const f of fs){const id=(await assets.upload(await shrink(f),{type:"image/jpeg"})).id;b.items.push({id:uid("it"),kind:"img",photo:id,x:p.x,y:p.y,w:280});p={x:p.x+300,y:p.y}}save();rer()}catch(x){toast(errText(x))}};
-  // Drag & Ankleben
+  if(fi)fi.onchange=async()=>{const fs=[...fi.files];fi.value="";if(!fs.length)return;toast("Wird hochgeladen …");try{let p=place();for(const f of fs){const id=await uploadImage(f,1600);b.items.push({id:uid("it"),kind:"img",photo:id,x:p.x,y:p.y,w:300});p={x:p.x+320,y:p.y}}await save();rer();toast("Eingefügt")}catch(x){toast((x&&x.message)||errText(x))}};
+  // Zeichnen (Stift/Apple Pencil)
+  if(cw&&canWrite){cw.onpointerdown=e=>{const pen=e.pointerType==="pen";if(!(bDraw||pen))return;if(e.target.closest("textarea,input,button,summary"))return;e.preventDefault();
+      const rect=cv.getBoundingClientRect();const z=bZoom;const P=ev=>[((ev.clientX-rect.left)/z).toFixed(1),((ev.clientY-rect.top)/z).toFixed(1)];let pts=[P(e)];
+      const svg=$("#ink");const path=document.createElementNS("http://www.w3.org/2000/svg","path");path.setAttribute("stroke",bPen);path.setAttribute("stroke-width",pen?Math.max(1.5,(e.pressure||.5)*5):3);path.setAttribute("fill","none");path.setAttribute("stroke-linecap","round");path.setAttribute("stroke-linejoin","round");svg.appendChild(path);
+      cw.setPointerCapture(e.pointerId);const draw=()=>path.setAttribute("d","M"+pts.map(p=>p.join(" ")).join(" L"));
+      cw.onpointermove=ev=>{pts.push(P(ev));draw()};cw.onpointerup=()=>{cw.onpointermove=null;cw.onpointerup=null;if(pts.length>1){b.strokes=b.strokes||[];b.strokes.push({c:bPen,w:+path.getAttribute("stroke-width"),d:path.getAttribute("d")});save()}else path.remove()}}}
+  // Karten ziehen & ankleben
   const kids=id=>{const out=[];const st=[id];while(st.length){const c=st.pop();for(const o of b.items)if(o.glue===c&&!out.includes(o)){out.push(o);st.push(o.id)}}return out};
-  pg.querySelectorAll("[data-drag]").forEach(h=>h.onpointerdown=e=>{if(!canWrite||e.target.closest("button"))return;e.preventDefault();const it=b.items.find(i=>i.id===h.dataset.drag);if(!it)return;
+  pg.querySelectorAll("[data-drag]").forEach(h=>h.onpointerdown=e=>{if(!canWrite||e.target.closest("button")||e.pointerType==="pen"&&bDraw)return;e.preventDefault();e.stopPropagation();const it=b.items.find(i=>i.id===h.dataset.drag);if(!it)return;
     const group=[it,...kids(it.id)];const start=group.map(g=>({g,x:g.x,y:g.y}));const sx=e.clientX,sy=e.clientY;const z=bZoom;h.setPointerCapture(e.pointerId);
     const els=group.map(g=>document.getElementById(g.id));els.forEach(el=>el.classList.add("drag"));
     h.onpointermove=ev=>{const dx=(ev.clientX-sx)/z,dy=(ev.clientY-sy)/z;start.forEach(({g,x,y},i)=>{g.x=Math.max(0,Math.round(x+dx));g.y=Math.max(0,Math.round(y+dy));els[i].style.left=g.x+"px";els[i].style.top=g.y+"px"})};
     h.onpointerup=()=>{h.onpointermove=null;h.onpointerup=null;els.forEach(el=>el.classList.remove("drag"));
       const me=document.getElementById(it.id);const R=el=>({x:parseFloat(el.style.left),y:parseFloat(el.style.top),w:el.offsetWidth,h:el.offsetHeight});const a=R(me);const ex=new Set(group.map(g=>g.id));let best=null;
       for(const o of b.items){if(ex.has(o.id))continue;const el=document.getElementById(o.id);if(!el)continue;const r=R(el);const S=28;
-        const cand=[{x:r.x+r.w+10,y:r.y,d:Math.hypot(a.x-(r.x+r.w+10),a.y-r.y)},{x:r.x,y:r.y+r.h+10,d:Math.hypot(a.x-r.x,a.y-(r.y+r.h+10))},{x:r.x-a.w-10,y:r.y,d:Math.hypot(a.x-(r.x-a.w-10),a.y-r.y)}];
+        const cand=[{x:r.x+r.w+10,y:r.y},{x:r.x,y:r.y+r.h+10},{x:r.x-a.w-10,y:r.y}].map(c=>({...c,d:Math.hypot(a.x-c.x,a.y-c.y)}));
         for(const c of cand){if(!(c.d<S*2&&(!best||c.d<best.d)))continue;const hit=b.items.some(q=>{if(ex.has(q.id)||q.id===o.id)return false;const qe=document.getElementById(q.id);if(!qe)return false;const qr=R(qe);return c.x<qr.x+qr.w&&c.x+a.w>qr.x&&c.y<qr.y+qr.h&&c.y+a.h>qr.y});if(!hit)best={...c,o}}}
       if(best){const dx=best.x-it.x,dy=best.y-it.y;for(const g of group){g.x+=dx;g.y+=dy}it.glue=best.o.id}
       else if(it.glue){const p=b.items.find(o=>o.id===it.glue);const pe=p&&document.getElementById(p.id);if(pe){const r=R(pe);const near=Math.abs(a.x-(r.x+r.w+10))<60||Math.abs(a.y-(r.y+r.h+10))<60;if(!near)delete it.glue}}
@@ -3346,13 +3447,15 @@ function bindBoard(){const pg=$("#page");const b=boards.find(x=>x.id===state.boa
     box.querySelectorAll("[data-add]").forEach(x=>x.onclick=()=>{b.recipes=[...(b.recipes||[]),x.dataset.add];const p=place();b.items.push({id:uid("it"),kind:"rec",rid:x.dataset.add,x:p.x,y:p.y});save();rer()})});
   $("#bd-post").onclick=()=>openPost(null,{recipes:[...(b.recipes||[])],caption:b.title||""});
   const del=$("#bd-del");if(del)del.onclick=async()=>{if(!bDel){bDel=true;renderPage();setTimeout(()=>{if(bDel){bDel=false;if(state.page==="board")renderPage()}},4000);return}bDel=false;try{await delDoc(b.id);boards=boards.filter(x=>x.id!==b.id);toast("Board gelöscht");showPage("mix")}catch(x){toast(errText(x))}};
-  const mk=$("#bd-make");if(mk)mk.onclick=()=>{const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);const ing=[],steps=[];
-    for(const r of rs){const m=(b.marks||{})[r.id]||{};(r.ingredients||[]).forEach((g,gi)=>(g.items||[]).forEach((i,ii)=>{const x=m[`i${gi}.${ii}`];if(x)ing.push([fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:"")+(x.c?" ("+x.c+")":""))}));(r.steps||[]).forEach((s,si)=>{const x=m["s"+si];if(x)steps.push(s+(x.c?" – "+x.c:""))})}
+  const mk=$("#bd-make");if(mk)mk.onclick=async()=>{const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);const ing=[],steps=[];
+    const cut=(t,m)=>{if(!m)return null;if(!m.r||!m.r.length)return m.c?t:null;const parts=[...m.r].sort((x,y)=>x[0]-y[0]).map(([a,e])=>t.slice(a,e).trim()).filter(Boolean);return parts.length?parts.join(" … "):t};
+    for(const r of rs){const m=(b.marks||{})[r.id]||{};(r.ingredients||[]).forEach((g,gi)=>(g.items||[]).forEach((i,ii)=>{const k=`i${gi}.${ii}`;const t=[fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:"");const x=cut(t,m[k]);if(x)ing.push(x+(m[k].c?" ("+m[k].c+")":""))}));(r.steps||[]).forEach((s,si)=>{const x=cut(s,m["s"+si]);if(x)steps.push(x+(m["s"+si].c?" – "+m["s"+si].c:""))})}
     const notes=[b.notes||"",...b.items.filter(i=>i.kind==="note"&&i.text).map(i=>i.text)].filter(Boolean).join("\n\n");
     const pics=b.items.filter(i=>i.kind==="img").map(i=>i.photo);
-    const d={...blank(),title:b.title||"Neues Rezept",ingredients:parseIng(ing.join("\n")),steps,tips:notes,source:"Mix aus: "+rs.map(r=>r.title).join(", "),own:true,collection:"Meine Rezepte",mixBoard:b.id,photo:pics[0]||"",photos:pics.slice(1)};
+    const d={...blank(),title:b.title||"Neues Rezept",ingredients:parseIng(ing.join("\n")),steps,tips:notes,source:"Mix aus: "+rs.map(r=>r.title).join(", "),own:true,collection:"Meine Rezepte",mixBoard:b.id,photo:pics[0]||"",photos:pics.slice(1),createdAt:Date.now()};
     d.mealTypes=[...new Set(rs.flatMap(r=>r.mealTypes||[]))];d.diet=rs.length&&rs.every(r=>(r.diet||[]).includes("vegan"))?["vegan"]:rs.length&&rs.every(r=>(r.diet||[]).some(x=>x==="vegan"||x==="vegetarisch"))?["vegetarisch"]:[];
-    importQueue=[d];draftTotal=1;openDraft();toast("Neues Rezept vorbereitet (angestrichene Zeilen + Notizen). Prüfen und speichern.")}}
+    let id=slug(d.title);if(recipes.some(x=>x.id===id))id+="-"+Math.random().toString(36).slice(2,6);
+    delete d.id;bFull=false;document.body.style.overflow="";try{await saveDoc(id,d)}catch(x){toast(errText(x));return}toast("In «Meine Rezepte» gespeichert");openRecipe(id)}}
 function addToBoardChooser(rid){
   const w=document.createElement("div");w.className="pmodal";const r=recipes.find(x=>x.id===rid);
   w.innerHTML=`<div class="scrim"></div><div class="pbox"><button type="button" class="pclose" aria-label="Schliessen">✕</button><h2>Zu Mix-Board</h2><p class="psub2">«${esc(r?r.title:"")}»</p>
