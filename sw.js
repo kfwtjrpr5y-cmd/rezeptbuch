@@ -1,5 +1,5 @@
 /* Offline-Speicher für die App-Dateien. Rezeptdaten und Fotos verwaltet store.js. */
-const SHELL = "rb-shell-v41";
+const SHELL = "rb-shell-v42";
 const FILES = ["./", "index.html", "store.js", "jszip.min.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png", "lang.js", "welt.js"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(SHELL).then((c) => c.addAll(FILES)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k.startsWith("rb-shell-") && k !== SHELL).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
