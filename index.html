@@ -424,7 +424,7 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .smleg{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.85rem;color:var(--muted)}.smleg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 .smlist{margin:10px 0 0;line-height:1.7}.smlist span.me{font-weight:700;color:var(--accent)}.smnote{margin:4px 0 0;font-size:.8rem}.soff{margin-top:14px;line-height:1.7}
 .picons{display:flex;flex-wrap:wrap;gap:6px}.picb{position:relative;width:46px;height:46px;border:0;border-radius:14px;background:var(--surface);cursor:pointer;padding:4px;display:grid;place-items:center;transition:transform .12s,box-shadow .12s}.picb:hover{transform:translateY(-2px);box-shadow:0 3px 10px rgba(125,70,66,.18)}.picb svg{width:36px;height:36px}
-.picb[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:var(--ink,#3a2a28);color:#fff;font:600 .78rem/1.2 var(--f-body,inherit);padding:5px 9px;border-radius:8px;white-space:nowrap;z-index:5;pointer-events:none}
+.picb[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 6px);transform:translateX(-50%);background:#fff;color:var(--accent);box-shadow:0 2px 10px rgba(125,70,66,.18);font:600 .78rem/1.2 var(--f-body,inherit);padding:5px 9px;border-radius:8px;white-space:nowrap;z-index:5;pointer-events:none}
 .mlink{border:0;background:none;color:var(--accent);font:600 .9rem/1.2 inherit;cursor:pointer;padding:4px 0;opacity:.85}.mlink:hover{opacity:1;text-decoration:underline}
 .stable th:first-child{width:1%}.thic{display:inline-block;width:22px;height:22px;vertical-align:-6px;margin-right:6px}.thic svg{width:22px;height:22px}
 .stable .bar2 span{margin:0}
@@ -432,7 +432,7 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .stable tbody tr:not(.scat):hover .bar2 span{background:color-mix(in srgb,var(--accent) 55%,var(--nude))}.bar2 button:hover span{background:var(--accent)!important;transform:scaleY(1.25)}
 .stable td.cur .bar2 span{background:color-mix(in srgb,var(--accent) 75%,var(--nude))}
 .world{width:100%;height:auto;aspect-ratio:960/470;display:block;border-radius:14px}.world path{stroke:#fff;stroke-width:.35;vector-effect:non-scaling-stroke}.world path:hover{filter:brightness(.93)}
-.regsel{border-color:#54aa70!important;color:#2f7a48!important}.smlist span.me{color:#2f7a48!important}
+.regsel{border:0!important;background:var(--sunk)!important;color:var(--ink,#3a2a28)!important}.picb.isnew{box-shadow:0 0 0 2.5px #54aa70}.picb.isnew:hover{box-shadow:0 0 0 2.5px #54aa70,0 3px 10px rgba(125,70,66,.18)}.sintro{max-width:none!important}.world path{cursor:pointer}.smr{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer}.smr:hover{color:#2f7a48;text-decoration:underline}.smr.me{font-weight:700;color:#2f7a48}.smlist span.me{color:#2f7a48!important}
 .galim{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s;z-index:1;pointer-events:none}.ph .mk,.ph .bkbadge{z-index:2}.galim.on{opacity:1}
 .mk.pot.haspics{box-shadow:0 0 0 2.5px #c0392b;background:#fff}
 .ownbox{margin:26px 0 8px;background:var(--surface);border-radius:20px;padding:18px 22px 20px;box-shadow:var(--shadow)}.ownbox h3{margin:0 0 12px;font-size:1.35rem}.ownbox h3 .c{font-size:.8rem;color:var(--muted)}
@@ -441,6 +441,25 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .ownact{display:flex;gap:14px;margin-top:10px}.ownadd{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 4px}
 .view>.wrap{padding-bottom:72px}
 .impmenu{max-width:520px;display:flex;flex-direction:column;gap:10px}.impmenu h2{margin:0 0 6px;font-size:1.5rem}.impopt{display:flex;flex-direction:column;gap:3px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit}.impopt:hover{border-color:var(--accent)}.impopt b{font-size:1.02rem}.impopt span{color:var(--muted);font-size:.88rem}.impopt:disabled{opacity:.5}
+.mxhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.btn.small{padding:6px 12px;font-size:.88rem}
+.namebox{max-width:440px;display:flex;flex-direction:column;gap:12px}.namebox h2{margin:0;font-size:1.4rem}.namebox input{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 14px;font:inherit}
+.cbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cbar .sp{flex:1}.cadd{position:relative;min-width:240px}.lres.pop{position:absolute;z-index:20;left:0;right:0;top:calc(100% + 4px);background:var(--surface);border-radius:14px;box-shadow:var(--shadow)}.lres.pop:empty{display:none}
+.chint{margin:-4px 0 0;font-size:.82rem}
+.cwrap{position:relative;overflow:auto;height:78vh;border-radius:20px;background:#f3eeeb radial-gradient(circle,#e3d9d4 1px,transparent 1.2px) 0 0/22px 22px;box-shadow:inset 0 0 0 1px var(--line)}
+.canvas{position:relative;transform-origin:0 0}
+.cit{position:absolute;width:310px;background:var(--surface);border-radius:16px;box-shadow:0 2px 10px rgba(80,40,30,.12);display:flex;flex-direction:column;overflow:visible}.cit.drag{box-shadow:0 10px 30px rgba(80,40,30,.25);z-index:5;opacity:.95}
+.chd{display:flex;align-items:center;gap:6px;padding:6px 8px;cursor:grab;border-bottom:1px solid var(--line);user-select:none;touch-action:none}.chd .sp{flex:1}.grip{color:var(--muted);letter-spacing:-2px}.chd button{border:0;background:none;cursor:pointer;color:var(--muted);font-size:1rem}.chd .unglue{font-size:.8rem}
+.cit .cimg{position:relative;height:120px;overflow:hidden}.cit .cimg img{width:100%;height:100%;object-fit:cover}.cit .cimg .illph svg{transform:none}
+.ctit{font-family:var(--f-display);font-weight:600;font-size:1.08rem;padding:8px 12px 2px;cursor:pointer}.ctit:hover{color:var(--accent)}
+.cing,.cit details{padding:0 12px 10px;font-size:.84rem}.cing h5{margin:8px 0 2px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}.cing ul,.cit ol{margin:0;padding:0 0 0 16px}.cit summary{cursor:pointer;color:var(--accent);font-weight:600;margin:4px 0}
+.ln{position:relative;padding:2px 22px 2px 2px;border-radius:5px;cursor:pointer;line-height:1.4}.ln:hover{background:#fbf3df}.ln.lnmark>span:first-child{background:linear-gradient(transparent 35%,#fde68a 35%,#fde68a 88%,transparent 88%)}
+.lc{position:absolute;right:0;top:1px;border:0;background:none;cursor:pointer;opacity:0;color:var(--accent)}.ln:hover .lc,.ln.lnmark .lc{opacity:1}
+.cmt2{display:block;font-family:Caveat,cursive;font-size:1.15rem;color:#b5523b;line-height:1.1;margin:2px 0 4px 6px}
+.cmin{width:100%;margin-top:4px;border:1px solid #f0c9a4;border-radius:8px;padding:6px 8px;font:1.05rem/1.2 Caveat,cursive;color:#b5523b;background:#fffaf0}
+.paper{width:100%;border:0;resize:vertical;background:#fff repeating-linear-gradient(#fff 0 27px,#dfe7f1 27px 28px);padding:6px 14px 6px 34px;line-height:28px;font:1rem/28px var(--f-body,inherit);color:var(--ink);background-attachment:local;box-shadow:inset 26px 0 0 -25px #f2b8b0;min-height:150px;border-radius:0 0 16px 16px}
+.paper.big{min-height:320px;border-radius:14px;box-shadow:inset 26px 0 0 -25px #f2b8b0,0 2px 10px rgba(80,40,30,.08)}
+.cit.note{width:240px}.citimg{display:block;width:100%;border-radius:0 0 16px 16px;cursor:zoom-in}
+.paperwrap{display:flex;flex-direction:column;gap:6px}
 /* ===== Buch «La cuisine de référence végétale»: hellblau ===== */
 .card.book .ph{background:#dcecf6}
 .illph{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}.illph svg.ill{width:100%;height:100%;display:block}.card .illph svg.ill{transform:scale(1.22);transform-origin:50% 60%}
@@ -873,7 +892,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
       <li><button type="button" data-page="mine">Meine Rezepte<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="insta">Feed<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="kalender">Kalender<span aria-hidden="true">›</span></button></li>
-      <li><button type="button" data-page="mix">Mix-Ideen<span aria-hidden="true">›</span></button></li>
+      <li><button type="button" data-page="mix">Mix &amp; Match<span aria-hidden="true">›</span></button></li>
     </ul>
   </nav>
 </div>
@@ -937,7 +956,7 @@ function setLang(l){wLang=l;try{localStorage.setItem("rb-wlang",l)}catch(e){}loa
 /* ---------- ganze Oberfläche übersetzen (lang.js = Wörterbuch Deutsch → FR/EN) ---------- */
 let UID=null,uiReady=null;let UI_ORIG_TITLE=document.title;
 function loadUI(){if(wLang==="de")return Promise.resolve();if(window.UI_DICT)return Promise.resolve();
-  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=43";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
+  return uiReady||(uiReady=new Promise(res=>{const sc=document.createElement("script");sc.src="lang.js?v=45";sc.onload=()=>{applyOwner();res()};sc.onerror=res;document.head.appendChild(sc)}))}
 const NUMRE=/\d+(?:[.,:/]\d+)*/g;
 function trUI(t){if(!UID||!t)return t;const m=/^(\s*)([\s\S]*?)(\s*)$/.exec(t);const core=m[2].replace(/\s+/g," ");if(!core)return t;
   let r=UID[core];if(r==null){const nums=core.match(NUMRE);if(nums){const v=UID[core.replace(NUMRE,"{n}")];if(v!=null){let i=0;r=v.replace(/\{n\}/g,()=>nums[i++]||"")}}}
@@ -2330,7 +2349,7 @@ function renderPage(){const pg=$("#page");if(state.page==="saison")pg.innerHTML=
   else if(state.page==="mix")pg.innerHTML=mixHTML(),bindMix();else if(state.page==="board")pg.innerHTML=boardHTML(),bindBoard()}
 const monthSpan=ms=>{const a=ms[0],b=ms[ms.length-1];const s=x=>MONTHS[x-1].slice(0,3);if(ms.length===12)return "ganzes Jahr";let start=ms.find((m,i)=>!ms.includes(m===1?12:m-1))||a;let end=start;while(ms.includes(end%12+1)&&end%12+1!==start)end=end%12+1;return ms.length>(R(start,end).length)?ms.map(s).join(", "):`${s(start)} – ${s(end)}`};
 function produceRecipes(name){const p=PRODUCE.find(x=>x[0]===name);hideView();showPage("recipes");for(const k in state.f)state.f[k].clear();
-  const stem=norm(name.split(/[ ,&/]/)[0]).replace(/(n|en|e)$/,"");$("#q").value=stem;state.q=stem;render();toast(`Rezepte mit ${name}`)}
+  const stem=norm(name.split(/[ ,&/]/)[0]).replace(/(n|en|e)$/,"");$("#q").value=wLang==="de"?stem:trUI(name);state.q=stem;render();toast(tf("Rezepte mit {p}",{p:trUI(name)}))}
 function monthRecipes(m){hideView();showPage("recipes");for(const k in state.f)state.f[k].clear();state.q="";$("#q").value="";state.f.season.add("m"+m);render();toast(`Rezepte für ${MONTHS[m-1]}`)}
 const PICON=(()=>{
   const L="#7d4642",G="#7ea35f",G2="#5e8a4a";
@@ -2399,42 +2418,44 @@ const GLOBE='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12"
 function regionSelect(id){const W=SW();if(!W)return "";const cur=regionInfo(REGION);const groups={};for(const r of W.regions)if(r[0]!==REGION)(groups[r[4]]=groups[r[4]]||[]).push(r);
   return `<select id="${id}" class="regsel" aria-label="Land für die Saisontabelle"><option value="${cur.id}" selected>${esc(regionName(cur.id))}</option>${Object.entries(groups).map(([g,rs])=>`<optgroup label="${esc(trUI(g))}">${rs.map(r=>`<option value="${r[0]}">${esc(regionName(r[0]))}</option>`).join("")}</optgroup>`).join("")}</select>`}
 const splitChip=(name,m)=>`<span class="spl"><button type="button" class="spm" data-map="${esc(name)}" data-m="${m}" title="Weltkarte: wo hat ${esc(name)} im ${MONTHS[m-1]} Saison?" aria-label="Weltkarte für ${esc(name)}">${GLOBE}</button><button type="button" class="spn" data-ing="${esc(name)}">${esc(name)}</button></span>`;
+const tf=(k,v={})=>{let t=trUI(k);for(const [a,b] of Object.entries(v))t=t.split("{"+a+"}").join(b);return t};
+const MN=m=>trUI(MONTHS[m-1]);const PN=n=>trUI(n);
 function saisonHTML(){
-  const now=new Date().getMonth()+1;const m=sMonth||now;const cats=["Gemüse","Früchte","Kräuter","Pilze"];
-  const list=PRODUCE.filter(p=>pm(p).includes(m));const ch=REGION==="ch";
-  const intro=ch?"Was gerade frisch aus der Schweiz kommt – Freiland und Lager.":`Was in ${esc(regionName(REGION))} aus lokalem Anbau Saison hat – ungefähre Angaben, innerhalb der Region je nach Gebiet unterschiedlich.${SOUTH.has(REGION)?" Südhalbkugel: Die Jahreszeiten sind gegenüber Europa verschoben.":""}`;
-  return `<div class="phead"><h2>Saisontabelle <em>${esc(regionName(REGION))}</em></h2><div class="regrow"><span class="ro">Land / Region</span>${regionSelect("sRegion")}</div><p class="ro">${intro} Tippe auf ein Produkt für passende Rezepte. In der Tabelle: linke Hälfte eines Balkens = Weltkarte, rechte Hälfte = Rezepte.</p></div>
-  <div class="snow"><div class="smonths">${MONTHS.map((x,i)=>`<button type="button" data-sm="${i+1}" aria-pressed="${i+1===m}" class="${i+1===now?"isnow":""}">${x.slice(0,3)}</button>`).join("")}</div>
-    <h3>${m===now?"Jetzt im":"Im"} ${MONTHS[m-1]} <span class="c">${list.length}</span></h3><div class="picons">${list.map(p=>`<button type="button" class="picb" data-prod="${esc(p[0])}" data-tip="${esc(p[0])}" aria-label="${esc(p[0])}: Rezepte">${PICON(p[0])}</button>`).join("")||'<p class="ro">In diesem Monat ist hier nichts aus lokalem Anbau in Saison.</p>'}</div>
-    <button type="button" class="mlink" data-month="${m}">Alle Rezepte für ${MONTHS[m-1]} →</button></div>
+  const now=new Date().getMonth()+1;const m=sMonth||now;const prev=(m+10)%12+1;const cats=["Gemüse","Früchte","Kräuter","Pilze"];
+  const list=PRODUCE.filter(p=>pm(p).includes(m));const ch=REGION==="ch";const RN=esc(regionName(REGION));
+  const intro=ch?tf("Was gerade frisch aus der Schweiz kommt – Freiland und Lager."):tf("Was in {r} aus lokalem Anbau Saison hat – ungefähre Angaben, innerhalb der Region je nach Gebiet unterschiedlich.",{r:RN})+(SOUTH.has(REGION)?" "+tf("Südhalbkugel: Die Jahreszeiten sind gegenüber Europa verschoben."):"");
+  return `<div class="phead"><h2>${tf("Saisontabelle")} <em>${RN}</em></h2><div class="regrow"><span class="ro">${tf("Land / Region")}</span>${regionSelect("sRegion")}</div><p class="ro sintro">${intro} ${tf("Bild links antippen = Weltkarte, rechts = Rezepte. Grüner Rahmen = neu in Saison. In der Tabelle: linke Hälfte eines Balkens = Weltkarte, rechte Hälfte = Rezepte.")}</p></div>
+  <div class="snow"><div class="smonths">${MONTHS.map((x,i)=>`<button type="button" data-sm="${i+1}" aria-pressed="${i+1===m}" class="${i+1===now?"isnow":""}">${esc(MN(i+1).slice(0,3))}</button>`).join("")}</div>
+    <h3>${esc(tf(m===now?"Jetzt im {m}":"Im {m}",{m:MN(m)}))} <span class="c">${list.length}</span></h3><div class="picons">${list.map(p=>{const nw=!pm(p).includes(prev)&&pm(p).length<12;return `<button type="button" class="picb ${nw?"isnew":""}" data-pic="${esc(p[0])}" data-m="${m}" data-tip="${esc(PN(p[0]))}${nw?" · "+esc(tf("neu"))+"":""}" aria-label="${esc(PN(p[0]))}">${PICON(p[0])}</button>`}).join("")||`<p class="ro">${tf("In diesem Monat ist hier nichts aus lokalem Anbau in Saison.")}</p>`}</div>
+    <button type="button" class="mlink" data-month="${m}">${esc(tf("Alle Rezepte für {m}",{m:MN(m)}))} →</button></div>
   <div id="smap" class="smap" ${sMap?"":"hidden"}></div>
-  <div class="stablewrap"><table class="stable"><thead><tr><th></th>${MONTHS.map((x,i)=>`<th class="${i+1===m?"cur":""}"><button type="button" data-sm="${i+1}" title="${x} auswählen">${x.slice(0,3)}</button></th>`).join("")}</tr></thead>
-  ${cats.map(c=>{const rows=PRODUCE.filter(p=>p[1]===c&&pm(p).length).sort((a,b)=>a[0].localeCompare(b[0],"de"));return rows.length?`<tbody><tr class="scat"><th colspan="13">${c}</th></tr>${rows.map(p=>`<tr><th><button type="button" data-prod="${esc(p[0])}"><span class="thic">${PICON(p[0])}</span>${esc(p[0])}</button></th>${MONTHS.map((x,i)=>pm(p).includes(i+1)?`<td class="on ${i+1===m?"cur":""}"><div class="bar2"><button type="button" class="bl" data-map="${esc(p[0])}" data-m="${i+1}" title="Weltkarte: ${esc(p[0])} im ${x}" aria-label="Weltkarte: ${esc(p[0])} im ${x}"><span></span></button><button type="button" class="br" data-prod="${esc(p[0])}" title="Rezepte mit ${esc(p[0])}" aria-label="Rezepte mit ${esc(p[0])}"><span></span></button></div></td>`:`<td class="${i+1===m?"cur":""}"><span></span></td>`).join("")}</tr>`).join("")}</tbody>`:""}).join("")}
+  <div class="stablewrap"><table class="stable"><thead><tr><th></th>${MONTHS.map((x,i)=>`<th class="${i+1===m?"cur":""}"><button type="button" data-sm="${i+1}">${esc(MN(i+1).slice(0,3))}</button></th>`).join("")}</tr></thead>
+  ${cats.map(c=>{const rows=PRODUCE.filter(p=>p[1]===c&&pm(p).length).sort((a,b)=>PN(a[0]).localeCompare(PN(b[0]),wLang));return rows.length?`<tbody><tr class="scat"><th colspan="13">${esc(trUI(c))}</th></tr>${rows.map(p=>`<tr><th><button type="button" data-prod="${esc(p[0])}"><span class="thic">${PICON(p[0])}</span>${esc(PN(p[0]))}</button></th>${MONTHS.map((x,i)=>pm(p).includes(i+1)?`<td class="on ${i+1===m?"cur":""}"><div class="bar2"><button type="button" class="bl" data-map="${esc(p[0])}" data-m="${i+1}" title="${esc(tf("Weltkarte"))}: ${esc(PN(p[0]))} · ${esc(MN(i+1))}"><span></span></button><button type="button" class="br" data-prod="${esc(p[0])}" title="${esc(tf("Rezepte"))}: ${esc(PN(p[0]))}"><span></span></button></div></td>`:`<td class="${i+1===m?"cur":""}"><span></span></td>`).join("")}</tr>`).join("")}</tbody>`:""}).join("")}
   </table></div>
-  ${(()=>{const off=PRODUCE.filter(p=>!pm(p).length);return off.length?`<p class="ro soff">Nicht aus lokalem Anbau in ${esc(regionName(REGION))}: ${off.map(p=>`<button type="button" class="ilink" data-map="${esc(p[0])}" data-m="${m}">${esc(p[0])}</button>`).join(", ")} – Globus zeigt, wo sie herkommen.</p>`:""})()}`}
-function goIngredient(name){const w=findProduce(name.split(/ [&\/] |, /)[0]);if(w&&w.id){hideView();openWissen(w.id)}else produceRecipes(name)}
-function mapHTML(name,m){const W=SW();if(!W)return '<p class="ro">Weltkarte wird geladen …</p>';
-  const st={};const on=[],off=[];for(const r of W.regions){const ms=monthsIn(r[0],name);st[r[0]]=!ms.length?0:ms.includes(m)?2:1;(st[r[0]]===2?on:st[r[0]]===1?off:[]).push(r[0])}
+  ${(()=>{const off=PRODUCE.filter(p=>!pm(p).length);return off.length?`<p class="ro soff">${esc(tf("Nicht aus lokalem Anbau in {r}:",{r:regionName(REGION)}))} ${off.map(p=>`<button type="button" class="ilink" data-map="${esc(p[0])}" data-m="${m}">${esc(PN(p[0]))}</button>`).join(", ")}</p>`:""})()}`}
+function mapHTML(name,m){const W=SW();if(!W)return `<p class="ro">${tf("Weltkarte wird geladen …")}</p>`;
+  const st={};const on=[];for(const r of W.regions){const ms=monthsIn(r[0],name);st[r[0]]=!ms.length?0:ms.includes(m)?2:1;if(st[r[0]]===2)on.push(r[0])}
   const M=W.map;const fill=k=>k===2?"#54aa70":"#d8d4d2";
-  const paths=M.c.map(([rid,cn,d])=>`<path d="${d}" fill="${fill(st[rid])}" data-r="${rid}"><title>${esc(regionName(rid))} · ${esc(cn)}${st[rid]===2?" – Saison":st[rid]===1?" – Saison: "+monthSpan(monthsIn(rid,name)):" – kaum lokaler Anbau"}</title></path>`).join("");
-  return `<div class="smhead"><button type="button" class="btn ghost" data-mprev aria-label="Vormonat">‹</button><h3>${esc(name)} im ${MONTHS[m-1]}</h3><button type="button" class="btn ghost" data-mnext aria-label="Nächster Monat">›</button><span class="sp"></span><button type="button" class="spn solo" data-ing="${esc(name)}">Zur Zutat →</button><button type="button" class="phx" data-mclose aria-label="Karte schliessen">×</button></div>
-    <svg class="world" viewBox="0 0 ${M.w} ${M.h}" width="${M.w}" height="${M.h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weltkarte ${esc(name)}"><rect width="${M.w}" height="${M.h}" fill="#cfe3f1"/>${paths}</svg>
-    <div class="smleg"><span><i style="background:#54aa70"></i>Saison im ${MONTHS[m-1]}</span><span><i style="background:#d8d4d2"></i>keine Saison</span></div>
-    <p class="smlist">${on.length?`<b>Saison:</b> ${on.map(r=>`<span class="${r===REGION?"me":""}">${esc(regionName(r))}</span>`).join(" · ")}`:`<b>Im ${MONTHS[m-1]} nirgends in Hauptsaison.</b>`}</p>
-    <p class="ro smnote">Ungefähre Angaben pro Region (Hauptanbaugebiete). Fahre über ein Land für Details.</p>`}
+  const paths=M.c.map(([rid,cn,d])=>`<path d="${d}" fill="${fill(st[rid])}" data-r="${rid}"><title>${esc(regionName(rid))}${st[rid]===2?" – "+tf("Saison"):st[rid]===1?" – "+tf("Saison")+": "+monthSpan(monthsIn(rid,name)):""} · ${esc(tf("Klicken = Land wählen"))}</title></path>`).join("");
+  return `<div class="smhead"><button type="button" class="btn ghost" data-mprev aria-label="‹">‹</button><h3>${esc(tf("{p} im {m}",{p:PN(name),m:MN(m)}))}</h3><button type="button" class="btn ghost" data-mnext aria-label="›">›</button><span class="sp"></span><button type="button" class="phx" data-mclose aria-label="×">×</button></div>
+    <svg class="world" viewBox="0 0 ${M.w} ${M.h}" width="${M.w}" height="${M.h}" preserveAspectRatio="xMidYMid meet" role="img"><rect width="${M.w}" height="${M.h}" fill="#cfe3f1"/>${paths}</svg>
+    <div class="smleg"><span><i style="background:#54aa70"></i>${esc(tf("Saison im {m}",{m:MN(m)}))}</span><span><i style="background:#d8d4d2"></i>${esc(tf("keine Saison"))}</span></div>
+    <p class="smlist">${on.length?`<b>${esc(tf("Saison"))}:</b> ${on.map(r=>`<button type="button" class="smr ${r===REGION?"me":""}" data-setr="${r}">${esc(regionName(r))}</button>`).join(" · ")}`:`<b>${esc(tf("Im {m} nirgends in Hauptsaison.",{m:MN(m)}))}</b>`}</p>
+    <p class="ro smnote">${esc(tf("Ungefähre Angaben pro Region (Hauptanbaugebiete). Klicke auf ein Land, um es auszuwählen."))}</p>`}
 function showMap(name,m){sMap={name,m};const el=$("#smap");if(!el)return;el.hidden=false;el.innerHTML=mapHTML(name,m);
   el.querySelector("[data-mclose]").onclick=()=>{sMap=null;el.hidden=true;el.innerHTML=""};
   el.querySelector("[data-mprev]").onclick=()=>showMap(name,(m+10)%12+1);el.querySelector("[data-mnext]").onclick=()=>showMap(name,m%12+1);
-  el.querySelector("[data-ing]").onclick=()=>goIngredient(name);
-  el.scrollIntoView({behavior:"smooth",block:"nearest"})}
+  const pick=r=>{if(r&&r!==REGION){const y=window.scrollY;setRegion(r,true);window.scrollTo({top:y});toast(regionName(r))}};
+  el.querySelectorAll("path[data-r]").forEach(p=>p.onclick=()=>pick(p.dataset.r));el.querySelectorAll("[data-setr]").forEach(b=>b.onclick=()=>pick(b.dataset.setr));
+  if(!showMap._noScroll)el.scrollIntoView({behavior:"smooth",block:"nearest"})}
 function bindSaison(){const pg=$("#page");
-  pg.querySelectorAll("[data-ing]").forEach(b=>b.onclick=()=>goIngredient(b.dataset.ing));
   pg.querySelectorAll("[data-prod]").forEach(b=>b.onclick=()=>produceRecipes(b.dataset.prod));
   pg.querySelectorAll("[data-map]").forEach(b=>b.onclick=()=>showMap(b.dataset.map,+b.dataset.m));
+  pg.querySelectorAll("[data-pic]").forEach(b=>b.onclick=e=>{const r=b.getBoundingClientRect();if(e.clientX-r.left<r.width/2)showMap(b.dataset.pic,+b.dataset.m);else produceRecipes(b.dataset.pic)});
   pg.querySelectorAll("[data-sm]").forEach(b=>b.onclick=()=>{sMonth=+b.dataset.sm;const keep=sMap;renderPage();if(keep)showMap(keep.name,sMonth)});
   pg.querySelectorAll("[data-month]").forEach(b=>b.onclick=()=>monthRecipes(+b.dataset.month));
-  const rs=$("#sRegion");if(rs)rs.onchange=()=>{const keep=sMap;setRegion(rs.value,true);if(keep)showMap(keep.name,keep.m)};
-  if(sMap)showMap(sMap.name,sMap.m)}
+  const rs=$("#sRegion");if(rs)rs.onchange=()=>setRegion(rs.value,true);
+  if(sMap){showMap._noScroll=true;showMap(sMap.name,sMap.m);showMap._noScroll=false}}
 
 /* ---------- Illustrationen für Wissen (gezeichnet, Pink-Nude, sprachneutral) ---------- */
 const IL=(()=>{
@@ -3243,53 +3264,95 @@ function bindKalender(){const pg=$("#page");
     const p=posts.find(x=>x.id===el.dataset.post);if(!p)return;const day=target.dataset.day||"";p.date=day;if(day&&p.status==="idee")p.status="geplant";if(!day&&p.status==="geplant")p.status="entwurf";
     renderPage();try{await saveDoc(p.id,{...strip(p),type:"post"})}catch(x){toast(errText(x))}},()=>openPost(el.dataset.post)))}
 
-/* ---------- Mix-Ideen ---------- */
+/* ---------- Mix & Match (Boards mit freier Arbeitsfläche) ---------- */
 function mixHTML(){
-  return `<div class="phead"><h2>Mix-<em>Ideen</em></h2><p class="ro">Sammle mehrere Rezepte als Inspiration auf einem Board, z. B. Traubenfocaccia + Ziegenkäse-Dip, schreib deine Notizen dazu und mach daraus ein neues Rezept.</p>
-    <div class="wtools">${canWrite?`<button type="button" class="btn primary" id="mx-new">+ Neues Mix-Board</button>`:""}</div></div>
-  ${boards.length?`<div class="wgrid">${[...boards].sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0)).map(b=>{const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);return `<button type="button" class="wcard mxcard" data-board="${esc(b.id)}">
+  return `<div class="phead mxhead"><h2>Mix <em>&amp; Match</em></h2>${canWrite?`<button type="button" class="btn ghost small" id="mx-new">＋ Neues Board</button>`:""}</div>
+  ${boards.length?`<div class="wgrid">${[...boards].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0)).map(b=>{const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);return `<button type="button" class="wcard mxcard" data-board="${esc(b.id)}">
       <span class="mxcol">${[0,1,2,3].map(i=>rs[i]&&rs[i].photo?`<img alt="" data-photo="${esc(rs[i].photo)}" src="${peek(rs[i].photo)}">`:`<span>${rs[i]?esc(rs[i].title[0]):""}</span>`).join("")}</span>
-      <span class="wc">${rs.length} Rezepte${b.status?" · "+esc(b.status):""}</span><b>${esc(b.title||"Ohne Titel")}</b><span class="wx">${esc((b.notes||"").slice(0,120))}</span></button>`}).join("")}</div>`
-   :`<div class="empty"><h2>Noch kein Mix-Board</h2><p>Lege eines an oder tippe in einem Rezept auf «＋ Mix-Board».</p></div>`}`}
+      <span class="wc">${rs.length} ${rs.length===1?"Rezept":"Rezepte"}${b.status?" · "+esc(b.status):""}${b.updatedAt?" · "+new Date(b.updatedAt).toLocaleDateString("de-CH"):""}</span><b>${esc(b.title||"Ohne Titel")}</b><span class="wx">${esc((b.notes||"").slice(0,120))}</span></button>`}).join("")}</div>`
+   :`<div class="empty"><h2>Noch kein Board</h2><p>Lege eines an oder tippe in einem Rezept auf «＋ Mix-Board».</p></div>`}`}
+function askName(def,title){return new Promise(res=>{const w=document.createElement("div");w.className="phsheet";
+  w.innerHTML=`<form class="phcard namebox"><h2>${esc(title||"Name für das Board")}</h2><input id="nmIn" required placeholder="z. B. Herbst-Tarte mit Feige" value="${esc(def||"")}"><div class="phact"><button type="submit" class="btn primary">Weiter</button><button type="button" class="btn ghost" id="nmX">Abbrechen</button></div></form>`;
+  document.body.appendChild(w);const i=w.querySelector("#nmIn");i.focus();i.select();
+  w.querySelector("form").onsubmit=e=>{e.preventDefault();const v=i.value.trim();if(!v){i.focus();return}w.remove();res(v)};w.querySelector("#nmX").onclick=()=>{w.remove();res(null)}})}
 function bindMix(){const n=$("#mx-new");if(n)n.onclick=()=>newBoard([]);$("#page").querySelectorAll("[data-board]").forEach(b=>b.onclick=()=>openBoard(b.dataset.board))}
-async function newBoard(recs,title){const id=uid("mix");const d={type:"board",title:title||"Neues Mix-Board",recipes:recs,notes:"",keep:[],status:"Idee",createdAt:Date.now()};
+async function newBoard(recs,title){const name=await askName(title||"","Wie soll das Board heissen?");if(!name)return;
+  const id=uid("mix");const d={type:"board",title:name,recipes:recs,notes:"",status:"Idee",items:[],createdAt:Date.now(),updatedAt:Date.now()};
   try{await saveDoc(id,d);boards.push({...d,id});openBoard(id)}catch(x){toast(errText(x))}}
 function openBoard(id,push=true){state.board=id;showPage("board",push)}
-let bT;
-function boardHTML(){const b=boards.find(x=>x.id===state.board);if(!b)return `<div class="phead"><button type="button" class="btn" data-back>← Mix-Ideen</button></div><div class="empty"><h2>${loaded?"Board nicht gefunden":"Wird geladen …"}</h2></div>`;
-  const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);
-  const merged=[];const seen=new Map();for(const r of rs)for(const g of r.ingredients||[])for(const i of g.items||[]){const k=norm(i.name);if(!k)continue;if(seen.has(k)){seen.get(k).from.push(r.title);continue}const e={k,txt:[fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:""),from:[r.title]};seen.set(k,e);merged.push(e)}
-  const keep=new Set(b.keep||[]);
-  return `<div class="phead wbar"><button type="button" class="btn" data-back>← Mix-Ideen</button><span class="sp"></span>
-      <button type="button" class="btn" id="bd-post">Post planen</button>${canWrite?`<button type="button" class="btn ${bDel?"sure":"danger"}" id="bd-del">${bDel?"Wirklich löschen?":"Löschen"}</button>`:""}</div>
-    <div class="board"><input class="bdtitle" id="bd-title" value="${esc(b.title||"")}" aria-label="Titel">
+let bT,bDel=false,bZoom=1;
+function boardItems(b){if(!Array.isArray(b.items))b.items=[];const have=new Set(b.items.filter(i=>i.kind==="rec").map(i=>i.rid));let n=b.items.length;
+  for(const rid of b.recipes||[])if(!have.has(rid)){b.items.push({id:uid("it"),kind:"rec",rid,x:40+(n%4)*340,y:40+Math.floor(n/4)*520});n++}
+  b.items=b.items.filter(i=>i.kind!=="rec"||(b.recipes||[]).includes(i.rid));return b.items}
+function recCardHTML(b,it){const r=recipes.find(x=>x.id===it.rid);if(!r)return "";const mk=(b.marks||{})[r.id]||{};
+  const line=(k,txt)=>{const m=mk[k];return `<li class="ln ${m?"lnmark":""}" data-k="${k}"><span>${esc(txt)}</span>${canWrite?`<button type="button" class="lc" data-cm="${k}" title="Kommentar">✎</button>`:""}${m&&m.c?`<span class="cmt2">${esc(m.c)}</span>`:""}</li>`};
+  const ing=(r.ingredients||[]).map((g,gi)=>`${g.group?`<h5>${esc(g.group)}</h5>`:""}<ul>${(g.items||[]).map((i,ii)=>line(`i${gi}.${ii}`,[fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:""))).join("")}</ul>`).join("");
+  const st=(r.steps||[]).length?`<details ${it.open?"open":""} data-open="${it.id}"><summary>Zubereitung (${r.steps.length})</summary><ol>${r.steps.map((x,i)=>line("s"+i,x)).join("")}</ol></details>`:"";
+  return `<div class="cimg">${hasPhoto(r)?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:recPh(r)}</div><b class="ctit" data-rid="${esc(r.id)}">${esc(trTitle(r))}</b><div class="cing">${ing}</div>${st}`}
+function itemHTML(b,it){const head=`<div class="chd" data-drag="${it.id}"><span class="grip">⋮⋮</span>${it.glue?`<button type="button" class="unglue" data-unglue="${it.id}" title="Lösen">⛓</button>`:""}<span class="sp"></span>${canWrite?`<button type="button" class="rmit" data-rmit="${it.id}" title="Entfernen">×</button>`:""}</div>`;
+  const body=it.kind==="rec"?recCardHTML(b,it):it.kind==="note"?`<textarea class="paper" data-note="${it.id}" placeholder="Notiz …">${esc(it.text||"")}</textarea>`:`<img alt="" class="citimg" data-photo="${esc(it.photo)}" src="${peek(it.photo)}">`;
+  return `<div class="cit ${it.kind}" id="${it.id}" style="left:${it.x}px;top:${it.y}px;${it.w?`width:${it.w}px`:""}">${head}${body}</div>`}
+function boardHTML(){const b=boards.find(x=>x.id===state.board);if(!b)return `<div class="phead"><button type="button" class="btn" data-back>← Mix &amp; Match</button></div><div class="empty"><h2>${loaded?"Board nicht gefunden":"Wird geladen …"}</h2></div>`;
+  const items=boardItems(b);const W=Math.max(2400,...items.map(i=>i.x+700)),H=Math.max(1500,...items.map(i=>i.y+900));
+  return `<div class="phead wbar"><button type="button" class="btn" data-back>← Mix &amp; Match</button><span class="sp"></span>
+      <button type="button" class="btn ghost" id="bd-post">Post planen</button>${canWrite?`<button type="button" class="btn ${bDel?"sure":"danger"}" id="bd-del">${bDel?"Wirklich löschen?":"Löschen"}</button>`:""}</div>
+    <div class="board"><input class="bdtitle" id="bd-title" value="${esc(b.title||"")}" aria-label="Name des Boards" placeholder="Name des Boards">
       <div class="bdstatus">${["Idee","In Arbeit","Getestet","Fertig"].map(s=>`<button type="button" class="chip" data-bst="${s}" aria-pressed="${b.status===s}">${s}</button>`).join("")}</div>
-      <div class="bdrecs">${rs.map(r=>`<div class="bdrec"><button type="button" class="bdimg" data-rid="${esc(r.id)}">${r.photo?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:`<span class="noimg">${esc(r.title[0])}</span>`}</button>
-          <b>${esc(r.title)}</b><ul>${(r.ingredients||[]).flatMap(g=>g.items||[]).slice(0,10).map(i=>`<li>${esc([fmtQty(i),i.name].filter(Boolean).join(" "))}</li>`).join("")}${(r.ingredients||[]).flatMap(g=>g.items||[]).length>10?"<li>…</li>":""}</ul>
-          <button type="button" class="btn ghost" data-unrec="${esc(r.id)}">Entfernen</button></div>`).join("")}
-        <div class="bdrec add"><span class="pel">Rezept hinzufügen</span><input id="bd-q" type="search" placeholder="Suchen, z. B. Focaccia …" class="pesearch"><div id="bd-res" class="lres"></div></div></div>
-      <div class="bdcols"><label class="pef bdnotes">Meine Idee & Notizen <small>wird automatisch gespeichert</small><textarea id="bd-notes" rows="12" placeholder="Was will ich kombinieren? Welche Komponente von welchem Rezept? Mengen, Abwandlungen, Anrichte-Idee …">${esc(b.notes||"")}</textarea></label>
-        <div class="pef"><span class="pel">Zutaten aller Rezepte <small>ankreuzen, was ins neue Rezept soll</small></span><div class="bdings">${merged.map(e=>`<label class="${keep.has(e.k)?"on":""}"><input type="checkbox" data-keep="${esc(e.k)}" ${keep.has(e.k)?"checked":""}><span>${esc(e.txt)}${rs.length>1?` <em>${esc(e.from.join(", "))}</em>`:""}</span></label>`).join("")||'<p class="ro">Füge Rezepte hinzu, dann erscheinen hier ihre Zutaten.</p>'}</div>
-          ${canWrite?`<button type="button" class="btn primary" id="bd-make">Als neues Rezept anlegen</button>`:""}</div></div></div>`}
-let bDel=false;
+      ${canWrite?`<div class="cbar"><div class="cadd"><input id="bd-q" type="search" placeholder="＋ Rezept suchen …" class="pesearch"><div id="bd-res" class="lres pop"></div></div><button type="button" class="btn ghost" id="bd-note">＋ Notiz</button><button type="button" class="btn ghost" id="bd-img">＋ Foto / Skizze</button><input type="file" id="bd-file" accept="image/*" multiple hidden><span class="sp"></span><button type="button" class="btn ghost" data-zoom="-1">−</button><button type="button" class="btn ghost" data-zoom="0">${Math.round(bZoom*100)} %</button><button type="button" class="btn ghost" data-zoom="1">＋</button></div>`:""}
+      <p class="ro chint">Karten am oberen Rand ziehen · nah an eine andere Karte legen = ankleben (bewegt sich mit) · Zeile antippen = anstreichen · ✎ = Kommentar</p>
+      <div class="cwrap" id="cwrap"><div class="canvas" id="canvas" style="width:${W}px;height:${H}px;transform:scale(${bZoom})">${items.map(it=>itemHTML(b,it)).join("")}</div></div>
+      <div class="paperwrap"><span class="pel">Meine Idee &amp; Notizen <small>wird automatisch gespeichert</small></span><textarea class="paper big" id="bd-notes" placeholder="Was will ich kombinieren? Welche Komponente von welchem Rezept? Mengen, Abwandlungen, Anrichte-Idee …">${esc(b.notes||"")}</textarea></div>
+      ${canWrite?`<div><button type="button" class="btn ghost" id="bd-make">Als neues Rezept anlegen</button></div>`:""}
+    </div>`}
 function bindBoard(){const pg=$("#page");const b=boards.find(x=>x.id===state.board);pg.querySelector("[data-back]").onclick=()=>showPage("mix");if(!b)return;
-  const save=async()=>{try{await saveDoc(b.id,{...strip(b),type:"board"})}catch(x){toast(errText(x))}};const soon=()=>{clearTimeout(bT);bT=setTimeout(save,1200)};
+  const save=async()=>{b.updatedAt=Date.now();try{await saveDoc(b.id,{...strip(b),type:"board"})}catch(x){toast(errText(x))}};const soon=()=>{clearTimeout(bT);bT=setTimeout(save,900)};
+  const rer=()=>{const cw=$("#cwrap");const sx=cw?cw.scrollLeft:0,sy=cw?cw.scrollTop:0,wy=window.scrollY;renderPage();const c2=$("#cwrap");if(c2){c2.scrollLeft=sx;c2.scrollTop=sy}window.scrollTo({top:wy})};
   $("#bd-title").oninput=e=>{b.title=e.target.value;soon()};$("#bd-notes").oninput=e=>{b.notes=e.target.value;soon()};
-  pg.querySelectorAll("[data-bst]").forEach(x=>x.onclick=()=>{b.status=x.dataset.bst;save();renderPage()});
-  pg.querySelectorAll("[data-rid]").forEach(x=>x.onclick=()=>openRecipe(x.dataset.rid));
-  pg.querySelectorAll("[data-unrec]").forEach(x=>x.onclick=()=>{b.recipes=b.recipes.filter(r=>r!==x.dataset.unrec);save();renderPage()});
-  pg.querySelectorAll("[data-keep]").forEach(x=>x.onchange=()=>{const s=new Set(b.keep||[]);x.checked?s.add(x.dataset.keep):s.delete(x.dataset.keep);b.keep=[...s];x.closest("label").classList.toggle("on",x.checked);soon()});
-  $("#bd-q").oninput=e=>{const s=norm(e.target.value.trim());const box=$("#bd-res");if(s.length<2){box.innerHTML="";return}
-    const hits=recipes.filter(r=>!b.recipes.includes(r.id)&&s.split(/\s+/).every(x=>r._hay.includes(x))).sort((x,y)=>(!x.photo-!y.photo)||(norm(y.title).includes(s)-norm(x.title).includes(s))).slice(0,6);
+  pg.querySelectorAll("[data-bst]").forEach(x=>x.onclick=()=>{b.status=x.dataset.bst;save();rer()});
+  pg.querySelectorAll(".ctit[data-rid]").forEach(x=>x.onclick=()=>openRecipe(x.dataset.rid));
+  pg.querySelectorAll("[data-zoom]").forEach(x=>x.onclick=()=>{const z=+x.dataset.zoom;bZoom=z===0?1:Math.min(1.5,Math.max(.4,bZoom+z*.15));rer()});
+  pg.querySelectorAll("details[data-open]").forEach(d=>d.ontoggle=()=>{const it=b.items.find(i=>i.id===d.dataset.open);if(it){it.open=d.open;soon()}});
+  // anstreichen & kommentieren
+  pg.querySelectorAll(".cit.rec").forEach(card=>{const it=b.items.find(i=>i.id===card.id);if(!it)return;const rid=it.rid;
+    card.querySelectorAll(".ln").forEach(li=>li.onclick=e=>{if(!canWrite||e.target.closest(".lc"))return;b.marks=b.marks||{};const m=b.marks[rid]=b.marks[rid]||{};const k=li.dataset.k;if(m[k])delete m[k];else m[k]={c:""};save();rer()});
+    card.querySelectorAll("[data-cm]").forEach(btn=>btn.onclick=e=>{e.stopPropagation();const li=btn.closest(".ln");const k=btn.dataset.cm;b.marks=b.marks||{};const m=b.marks[rid]=b.marks[rid]||{};
+      const old=(m[k]&&m[k].c)||"";const ta=document.createElement("textarea");ta.className="cmin";ta.value=old;ta.placeholder="Kommentar …";li.appendChild(ta);ta.focus();
+      const done=()=>{const v=ta.value.trim();if(v||m[k])m[k]={c:v};save();rer()};ta.onblur=done;ta.onkeydown=ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();ta.blur()}}})});
+  pg.querySelectorAll(".citimg").forEach(im=>im.onclick=()=>zoomImg(im));
+  pg.querySelectorAll("[data-note]").forEach(t=>t.oninput=()=>{const it=b.items.find(i=>i.id===t.dataset.note);if(it){it.text=t.value;soon()}});
+  pg.querySelectorAll("[data-rmit]").forEach(x=>x.onclick=()=>{const it=b.items.find(i=>i.id===x.dataset.rmit);if(!it)return;b.items=b.items.filter(i=>i!==it);for(const o of b.items)if(o.glue===it.id)delete o.glue;if(it.kind==="rec")b.recipes=(b.recipes||[]).filter(r=>r!==it.rid);save();rer()});
+  pg.querySelectorAll("[data-unglue]").forEach(x=>x.onclick=()=>{const it=b.items.find(i=>i.id===x.dataset.unglue);if(it){delete it.glue;it.x+=30;it.y+=30;save();rer()}});
+  const cw=$("#cwrap");const place=()=>{const z=bZoom;return {x:Math.round((cw.scrollLeft+40)/z),y:Math.round((cw.scrollTop+40)/z)}};
+  const nb=$("#bd-note");if(nb)nb.onclick=()=>{const p=place();b.items.push({id:uid("it"),kind:"note",text:"",x:p.x,y:p.y,w:240});save();rer()};
+  const fi=$("#bd-file");const ib=$("#bd-img");if(ib)ib.onclick=()=>fi.click();
+  if(fi)fi.onchange=async()=>{const fs=[...fi.files];fi.value="";if(!fs.length)return;toast("Wird hochgeladen …");try{let p=place();for(const f of fs){const id=(await assets.upload(await shrink(f),{type:"image/jpeg"})).id;b.items.push({id:uid("it"),kind:"img",photo:id,x:p.x,y:p.y,w:280});p={x:p.x+300,y:p.y}}save();rer()}catch(x){toast(errText(x))}};
+  // Drag & Ankleben
+  const kids=id=>{const out=[];const st=[id];while(st.length){const c=st.pop();for(const o of b.items)if(o.glue===c&&!out.includes(o)){out.push(o);st.push(o.id)}}return out};
+  pg.querySelectorAll("[data-drag]").forEach(h=>h.onpointerdown=e=>{if(!canWrite||e.target.closest("button"))return;e.preventDefault();const it=b.items.find(i=>i.id===h.dataset.drag);if(!it)return;
+    const group=[it,...kids(it.id)];const start=group.map(g=>({g,x:g.x,y:g.y}));const sx=e.clientX,sy=e.clientY;const z=bZoom;h.setPointerCapture(e.pointerId);
+    const els=group.map(g=>document.getElementById(g.id));els.forEach(el=>el.classList.add("drag"));
+    h.onpointermove=ev=>{const dx=(ev.clientX-sx)/z,dy=(ev.clientY-sy)/z;start.forEach(({g,x,y},i)=>{g.x=Math.max(0,Math.round(x+dx));g.y=Math.max(0,Math.round(y+dy));els[i].style.left=g.x+"px";els[i].style.top=g.y+"px"})};
+    h.onpointerup=()=>{h.onpointermove=null;h.onpointerup=null;els.forEach(el=>el.classList.remove("drag"));
+      const me=document.getElementById(it.id);const R=el=>({x:parseFloat(el.style.left),y:parseFloat(el.style.top),w:el.offsetWidth,h:el.offsetHeight});const a=R(me);const ex=new Set(group.map(g=>g.id));let best=null;
+      for(const o of b.items){if(ex.has(o.id))continue;const el=document.getElementById(o.id);if(!el)continue;const r=R(el);const S=28;
+        const cand=[{x:r.x+r.w+10,y:r.y,d:Math.hypot(a.x-(r.x+r.w+10),a.y-r.y)},{x:r.x,y:r.y+r.h+10,d:Math.hypot(a.x-r.x,a.y-(r.y+r.h+10))},{x:r.x-a.w-10,y:r.y,d:Math.hypot(a.x-(r.x-a.w-10),a.y-r.y)}];
+        for(const c of cand){if(!(c.d<S*2&&(!best||c.d<best.d)))continue;const hit=b.items.some(q=>{if(ex.has(q.id)||q.id===o.id)return false;const qe=document.getElementById(q.id);if(!qe)return false;const qr=R(qe);return c.x<qr.x+qr.w&&c.x+a.w>qr.x&&c.y<qr.y+qr.h&&c.y+a.h>qr.y});if(!hit)best={...c,o}}}
+      if(best){const dx=best.x-it.x,dy=best.y-it.y;for(const g of group){g.x+=dx;g.y+=dy}it.glue=best.o.id}
+      else if(it.glue){const p=b.items.find(o=>o.id===it.glue);const pe=p&&document.getElementById(p.id);if(pe){const r=R(pe);const near=Math.abs(a.x-(r.x+r.w+10))<60||Math.abs(a.y-(r.y+r.h+10))<60;if(!near)delete it.glue}}
+      save();rer()}});
+  $("#bd-q")&&($("#bd-q").oninput=e=>{const s=norm(e.target.value.trim());const box=$("#bd-res");if(s.length<2){box.innerHTML="";return}
+    const hits=recipes.filter(r=>!(b.recipes||[]).includes(r.id)&&s.split(/\s+/).every(x=>r._hay.includes(x))).sort((x,y)=>(!x.photo-!y.photo)||(norm(y.title).includes(s)-norm(x.title).includes(s))).slice(0,8);
     box.innerHTML=hits.map(r=>`<button type="button" class="mhit" data-add="${esc(r.id)}">${r.photo?`<img alt="" data-photo="${esc(r.photo)}" src="${peek(r.photo)}">`:`<span class="mi">${esc(r.title[0])}</span>`}<span>${esc(r.title)}</span><b class="plus">+</b></button>`).join("")||'<p class="ro">Kein Rezept gefunden.</p>';
-    box.querySelectorAll("[data-add]").forEach(x=>x.onclick=()=>{b.recipes.push(x.dataset.add);save();renderPage()})};
-  $("#bd-post").onclick=()=>openPost(null,{recipes:[...b.recipes],caption:b.title||""});
+    box.querySelectorAll("[data-add]").forEach(x=>x.onclick=()=>{b.recipes=[...(b.recipes||[]),x.dataset.add];const p=place();b.items.push({id:uid("it"),kind:"rec",rid:x.dataset.add,x:p.x,y:p.y});save();rer()})});
+  $("#bd-post").onclick=()=>openPost(null,{recipes:[...(b.recipes||[])],caption:b.title||""});
   const del=$("#bd-del");if(del)del.onclick=async()=>{if(!bDel){bDel=true;renderPage();setTimeout(()=>{if(bDel){bDel=false;if(state.page==="board")renderPage()}},4000);return}bDel=false;try{await delDoc(b.id);boards=boards.filter(x=>x.id!==b.id);toast("Board gelöscht");showPage("mix")}catch(x){toast(errText(x))}};
-  const mk=$("#bd-make");if(mk)mk.onclick=()=>{const rs=b.recipes.map(id=>recipes.find(r=>r.id===id)).filter(Boolean);const keep=new Set(b.keep||[]);
-    const lines=[];for(const r of rs)for(const g of r.ingredients||[])for(const i of g.items||[])if(keep.has(norm(i.name))&&!lines.some(l=>norm(l).endsWith(norm(i.name))))lines.push([fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:""));
-    const d={...blank(),title:b.title||"Neues Rezept",ingredients:parseIng(lines.join("\n")),steps:[],tips:b.notes||"",source:"Mix aus: "+rs.map(r=>r.title).join(", "),inspo:true,mixBoard:b.id};
-    d.mealTypes=[...new Set(rs.flatMap(r=>r.mealTypes||[]))];d.diet=rs.every(r=>(r.diet||[]).includes("vegan"))?["vegan"]:rs.every(r=>(r.diet||[]).some(x=>x==="vegan"||x==="vegetarisch"))?["vegetarisch"]:[];
-    importQueue=[d];draftTotal=1;openDraft();toast("Neues Rezept vorbereitet. Prüfen und speichern.")}}
+  const mk=$("#bd-make");if(mk)mk.onclick=()=>{const rs=(b.recipes||[]).map(id=>recipes.find(r=>r.id===id)).filter(Boolean);const ing=[],steps=[];
+    for(const r of rs){const m=(b.marks||{})[r.id]||{};(r.ingredients||[]).forEach((g,gi)=>(g.items||[]).forEach((i,ii)=>{const x=m[`i${gi}.${ii}`];if(x)ing.push([fmtQty(i),i.name].filter(Boolean).join(" ")+(i.note?", "+i.note:"")+(x.c?" ("+x.c+")":""))}));(r.steps||[]).forEach((s,si)=>{const x=m["s"+si];if(x)steps.push(s+(x.c?" – "+x.c:""))})}
+    const notes=[b.notes||"",...b.items.filter(i=>i.kind==="note"&&i.text).map(i=>i.text)].filter(Boolean).join("\n\n");
+    const pics=b.items.filter(i=>i.kind==="img").map(i=>i.photo);
+    const d={...blank(),title:b.title||"Neues Rezept",ingredients:parseIng(ing.join("\n")),steps,tips:notes,source:"Mix aus: "+rs.map(r=>r.title).join(", "),own:true,collection:"Meine Rezepte",mixBoard:b.id,photo:pics[0]||"",photos:pics.slice(1)};
+    d.mealTypes=[...new Set(rs.flatMap(r=>r.mealTypes||[]))];d.diet=rs.length&&rs.every(r=>(r.diet||[]).includes("vegan"))?["vegan"]:rs.length&&rs.every(r=>(r.diet||[]).some(x=>x==="vegan"||x==="vegetarisch"))?["vegetarisch"]:[];
+    importQueue=[d];draftTotal=1;openDraft();toast("Neues Rezept vorbereitet (angestrichene Zeilen + Notizen). Prüfen und speichern.")}}
 function addToBoardChooser(rid){
   const w=document.createElement("div");w.className="pmodal";const r=recipes.find(x=>x.id===rid);
   w.innerHTML=`<div class="scrim"></div><div class="pbox"><button type="button" class="pclose" aria-label="Schliessen">✕</button><h2>Zu Mix-Board</h2><p class="psub2">«${esc(r?r.title:"")}»</p>
@@ -3297,7 +3360,7 @@ function addToBoardChooser(rid){
     <div class="pact"><button type="button" class="btn primary big" id="nb">+ Neues Board mit diesem Rezept</button></div></div>`;
   const close=()=>w.remove();w.querySelector(".scrim").onclick=close;w.querySelector(".pclose").onclick=close;
   w.querySelectorAll("[data-b]").forEach(x=>x.onclick=async()=>{const b=boards.find(y=>y.id===x.dataset.b);if(!b.recipes.includes(rid))b.recipes.push(rid);close();try{await saveDoc(b.id,{...strip(b),type:"board"});toast(`Zu «${b.title}» hinzugefügt`)}catch(e){toast(errText(e))}});
-  w.querySelector("#nb").onclick=()=>{close();closeView();newBoard([rid],r?r.title+" – Mix":"")};document.body.appendChild(w)}
+  w.querySelector("#nb").onclick=()=>{close();closeView();newBoard([rid],"")};document.body.appendChild(w)}
 function rerenderPlanner(){if(["insta","kalender","board","mix"].includes(state.page))renderPage();if(current&&!editing&&!$("#view").hidden)showView()}
 
 /* ---------- boot ---------- */
