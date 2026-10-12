@@ -433,6 +433,14 @@ button.vbrand:hover .vbt{color:var(--accent)}
 .stable td.cur .bar2 span{background:color-mix(in srgb,var(--accent) 75%,var(--nude))}
 .world{width:100%;height:auto;aspect-ratio:960/470;display:block;border-radius:14px}.world path{stroke:#fff;stroke-width:.35;vector-effect:non-scaling-stroke}.world path:hover{filter:brightness(.93)}
 .regsel{border-color:#54aa70!important;color:#2f7a48!important}.smlist span.me{color:#2f7a48!important}
+.galim{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s;z-index:1;pointer-events:none}.ph .mk,.ph .bkbadge{z-index:2}.galim.on{opacity:1}
+.mk.pot.haspics{box-shadow:0 0 0 2.5px #c0392b;background:#fff}
+.ownbox{margin:26px 0 8px;background:var(--surface);border-radius:20px;padding:18px 22px 20px;box-shadow:var(--shadow)}.ownbox h3{margin:0 0 12px;font-size:1.35rem}.ownbox h3 .c{font-size:.8rem;color:var(--muted)}
+.sketch img{display:block;width:100%;max-height:80vh;object-fit:contain;border-radius:14px;background:#fff;cursor:zoom-in}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}.nimg{position:relative}.nimg img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:12px;cursor:zoom-in;background:#fff}.nimg button{position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;border:0;background:rgba(255,255,255,.92);cursor:pointer}
+.ownact{display:flex;gap:14px;margin-top:10px}.ownadd{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 4px}
+.view>.wrap{padding-bottom:72px}
+.impmenu{max-width:520px;display:flex;flex-direction:column;gap:10px}.impmenu h2{margin:0 0 6px;font-size:1.5rem}.impopt{display:flex;flex-direction:column;gap:3px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 16px;cursor:pointer;font:inherit;color:inherit}.impopt:hover{border-color:var(--accent)}.impopt b{font-size:1.02rem}.impopt span{color:var(--muted);font-size:.88rem}.impopt:disabled{opacity:.5}
 /* ===== Buch «La cuisine de référence végétale»: hellblau ===== */
 .card.book .ph{background:#dcecf6}
 .illph{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden}.illph svg.ill{width:100%;height:100%;display:block}.card .illph svg.ill{transform:scale(1.22);transform-origin:50% 60%}
@@ -821,7 +829,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
     </div>
     <button class="btn langb" id="langBtn" type="button" aria-label="Sprache wechseln" title="Sprache: Deutsch / Français / English">DE</button>
     <button class="btn" id="filterBtn" type="button" aria-label="Filter"><svg class="bi side" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M9.5 4.5v15"/></svg><svg class="bi funnel" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16l-6.2 7.3v5.4l-3.6 1.8v-7.2z"/></svg><span class="n" id="fcount" hidden>0</span></button>
-    <button class="btn" id="newBtn" type="button" hidden aria-label="Neues Rezept">+ <span class="hide-s">Neu</span></button>
+    <button class="btn" id="newBtn" type="button" hidden style="display:none" aria-label="Neues Rezept">+ <span class="hide-s">Neu</span></button>
     <button class="btn primary" id="importBtn" type="button" hidden><span class="hide-s">Rezept importieren</span><span class="show-s" aria-label="Rezept importieren"><svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.7l1.3-2h5l1.3 2h1.7A2.5 2.5 0 0 1 20 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 16.5z"/><circle cx="12" cy="12.5" r="3.4"/></svg></span></button>
   </div>
 </header>
@@ -859,13 +867,13 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
     <div id="mres"></div>
     <ul class="dnav">
       <li><button type="button" data-page="recipes">Rezepte<span aria-hidden="true">›</span></button></li>
-      <li><button type="button" data-page="mix">Mix-Ideen<span aria-hidden="true">›</span></button></li>
-      <li class="dsep">Content</li>
-      <li><button type="button" data-page="kalender">Kalender<span aria-hidden="true">›</span></button></li>
-      <li><button type="button" data-page="insta">Instafeed<span aria-hidden="true">›</span></button></li>
-      <li class="dsep">Nachschlagen</li>
       <li><button type="button" data-page="saison">Saisontabelle<span aria-hidden="true">›</span></button></li>
       <li><button type="button" data-page="wissen">Wissen<span aria-hidden="true">›</span></button></li>
+      <li class="dsep">Persönlich</li>
+      <li><button type="button" data-page="mine">Meine Rezepte<span aria-hidden="true">›</span></button></li>
+      <li><button type="button" data-page="insta">Feed<span aria-hidden="true">›</span></button></li>
+      <li><button type="button" data-page="kalender">Kalender<span aria-hidden="true">›</span></button></li>
+      <li><button type="button" data-page="mix">Mix-Ideen<span aria-hidden="true">›</span></button></li>
     </ul>
   </nav>
 </div>
@@ -902,7 +910,7 @@ body.selecting .card .mk{pointer-events:none;opacity:.5}
 <div class="toast" id="toast" hidden></div>
 
 <script src="welt.js?v=1"></script>
-<script src="store.js?v=43"></script>
+<script src="store.js?v=44"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
@@ -1117,15 +1125,15 @@ function sorted(list){
   return L.sort((a,b)=>(P.get(a.id)-P.get(b.id))||(s==="page"||s==="season"?(S.get(a.id)-S.get(b.id)):0)||(by[s]||by.page)(a,b));
 }
 function render(){
-  const list=sorted(recipes.filter(r=>matches(r)));
-  $("#count").textContent=`${list.length} ${list.length===1?"Rezept":"Rezepte"}`;
+  const list=sorted(recipes.filter(r=>matches(r)&&(!state.mine||isOwn(r))));
+  $("#count").textContent=`${state.mine?"Meine Rezepte · ":""}${list.length} ${list.length===1?"Rezept":"Rezepte"}`;
   $("#sub").textContent=loaded?`${recipes.length} ${recipes.length===1?"Rezept":"Rezepte"}`:"Rezepte werden geladen …";
   const g=$("#grid");
   for(const id of [...selected])if(!recipes.some(r=>r.id===id))selected.delete(id);
   if(state.dupOnly&&loaded&&!Object.keys(dupMap).length)state.dupOnly=false;
   document.body.classList.toggle("selecting",selecting);
   g.innerHTML=list.map(r=>`<div class="card ${selected.has(r.id)?"picked":""} ${r.inspo?"inspo":""} ${isBook(r)?"book":""} ${r.ref?"ref":""}" role="link" tabindex="0" data-id="${esc(r.id)}">
-    <div class="ph">${selecting?`<span class="pick" aria-hidden="true">${selected.has(r.id)?"✓":""}</span>`:""}${recPh(r)}${marks(r)}${r.inspo?'<span class="ibadge">✦ Inspo</span>':""}</div>
+    <div class="ph" ${galAttr(r)}>${selecting?`<span class="pick" aria-hidden="true">${selected.has(r.id)?"✓":""}</span>`:""}${recPh(r)}${marks(r)}${r.inspo?'<span class="ibadge">✦ Inspo</span>':""}</div>
     <div class="body"><h2>${esc(trTitle(r))}</h2>
     <div class="meta">${totalTime(r)?`<span>${totalTime(r)} Min.</span>`:""}${(r.nutrition||{}).kcal?`<span>${nutriLine(r)}</span>`:""}</div>
     <div class="tags">${(r.dishTypes||[]).slice(0,2).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}${dietTags(r)}</div></div></div>`).join("");
@@ -1137,6 +1145,7 @@ function render(){
   // active chips
   const act=[];
   for(const g of GROUPS)for(const v of state.f[g.key])act.push(`<button type="button" class="chip" data-g="${g.key}" data-v="${esc(v)}" aria-pressed="false">${esc(g.fixed?g.fixed[v].label:v)} ✕</button>`);
+  if(state.mine)act.unshift(`<button type="button" class="chip" id="mineOff" aria-pressed="false">Meine Rezepte ✕</button>`);
   if(state.dupOnly)act.unshift(`<button type="button" class="chip" id="dupOff" aria-pressed="false">Nur identische Doppelte ✕</button>`);
 
   if(act.length>1)act.push(`<button type="button" class="more" id="clearAll">Alle Filter löschen</button>`);
@@ -1152,7 +1161,7 @@ function render(){
   window.dispatchEvent(new Event("rb-rendered"));
 }
 $("#chaps").addEventListener("click",e=>{const b=e.target.closest("[data-chap]");if(!b)return;const v=b.dataset.chap,on=state.f.section.has(v);state.f.section.clear();if(!on)state.f.section.add(v);render()});
-$("#active").addEventListener("click",e=>{if(e.target.id==="dupOff"){state.dupOnly=false;render();return}if(e.target.id==="clearAll"){for(const k in state.f)state.f[k].clear();state.dupOnly=false;render();return}onFilterClick(e)});
+$("#active").addEventListener("click",e=>{if(e.target.id==="mineOff"){state.mine=false;render();return}if(e.target.id==="dupOff"){state.dupOnly=false;render();return}if(e.target.id==="clearAll"){for(const k in state.f)state.f[k].clear();state.dupOnly=false;render();return}onFilterClick(e)});
 
 
 /* ---------- Auswählen: mehrere löschen oder als PDF ---------- */
@@ -1484,7 +1493,7 @@ const IC={
 /* ---------- Logo: Symbol + Schriftzug, führt zur Startseite ---------- */
 const LOGO=`<svg class="logo" viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#c98f87"/><circle cx="24" cy="24" r="17.3" fill="#fbf6f3"/><circle cx="24" cy="24" r="13" fill="none" stroke="#f0e0da" stroke-width=".5"/><ellipse cx="22.6" cy="23.5" rx="2.2" ry="7.2" fill="#a8645f"/><path d="M22.6 17.6v11.2" stroke="#d6a099" stroke-width=".35"/><ellipse cx="26.6" cy="26.9" rx="2.6" ry="3" fill="#7d4642"/></svg>`;
 const brandHTML=(clickable=true)=>clickable?`<button type="button" class="vbrand" data-home aria-label="Zur Startseite"><span class="vbt">${esc(ownGen())} <em>Rezeptbuch</em></span></button>`:`<span class="vbrand static"><span class="vbt">${esc(ownGen())} <em>Rezeptbuch</em></span></span>`;
-function goHome(){for(const k in state.f)state.f[k].clear();state.q="";state.dupOnly=false;$("#q").value="";hideView();showPage("recipes");render();window.scrollTo({top:0,behavior:"smooth"})}
+function goHome(){for(const k in state.f)state.f[k].clear();state.mine=false;state.q="";state.dupOnly=false;$("#q").value="";hideView();showPage("recipes");render();window.scrollTo({top:0,behavior:"smooth"})}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-home]");if(b){e.preventDefault();goHome()}});
 
 /* ---------- Herz & Kochtopf ---------- */
@@ -1492,7 +1501,7 @@ const HEART=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-
 const POT=`<svg viewBox="0 0 24 24" aria-hidden="true"><path class="lid" d="M4 9.5h16M12 6.2v-1.7M9.5 4.5h5"/><path class="body" d="M5 9.5h14v7a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-7z"/><path class="lid" d="M5 12H2.5M19 12h2.5"/></svg>`;
 function marks(r){
   return `<span class="mk heart" role="button" tabindex="0" data-act="fav" data-id="${esc(r.id)}" aria-pressed="${!!r.favorite}" aria-label="${r.favorite?"Favorit entfernen":"Als Favorit markieren"}" ${canWrite?"":"hidden"}>${HEART}</span>
-  <span class="mk pot" role="button" tabindex="0" data-act="cooked" data-id="${esc(r.id)}" aria-pressed="${!!r.cooked}" aria-label="${r.cooked?"Als nicht gekocht markieren":"Als gekocht markieren"}" ${canWrite?"":"hidden"}>${POT}</span>`;
+  <span class="mk pot ${ownPics(r).length?"haspics":""}" role="button" tabindex="0" data-act="cooked" data-id="${esc(r.id)}" aria-pressed="${!!r.cooked||ownPics(r).length>0}" ${ownPics(r).length?`title="${ownPics(r).length} eigene${ownPics(r).length>1?" Fotos":"s Foto"} – Maus aufs Bild"`:""} aria-label="${r.cooked?"Als nicht gekocht markieren":"Als gekocht markieren"}" ${canWrite?"":"hidden"}>${POT}</span>`;
 }
 async function toggleMark(id,act){
   const r=recipes.find(x=>x.id===id);if(!r||!canWrite)return;
@@ -1613,7 +1622,7 @@ function photoSheet(r){
   const msg=t=>{const m=o.querySelector("#phMsg");if(m)m.textContent=t};
   const set=async b=>{if(!b)return;msg("Foto wird gespeichert …");o.querySelectorAll(".phact button").forEach(x=>x.disabled=true);
     const url=URL.createObjectURL(b);o.querySelector(".phbig").innerHTML=`<img alt="" src="${url}">`;
-    try{const res=await assets.upload(await shrink(b),{type:"image/jpeg"});await save(r.id,{...strip(r),photo:res.id},false);toast("Foto gespeichert");close()}
+    try{const res=await assets.upload(await shrink(b),{type:"image/jpeg"});const d=strip(r);if(!d.photo||!hasPhoto(r)||isBook(r))d.photo=d.photo&&hasPhoto(r)?d.photo:res.id;if(d.photo!==res.id)d.photos=[...(d.photos||[]),res.id];if(!d.cooked){d.cooked=true;d.cookedAt=Date.now()}await save(r.id,d,false);toast("Foto gespeichert");close()}
     catch(e){msg(errText(e));o.querySelectorAll(".phact button").forEach(x=>x.disabled=false)}};
   const onPaste=e=>{const f=[...((e.clipboardData&&e.clipboardData.files)||[])].find(f=>f.type.startsWith("image/"));if(f){e.preventDefault();set(f)}};
   const onKey=e=>{if(e.key==="Escape"){e.stopPropagation();close()}};
@@ -1623,6 +1632,58 @@ function photoSheet(r){
   o.querySelector("#phPaste").onclick=async()=>{const b=await clipImage();if(b)set(b);else msg("In der Zwischenablage ist kein Bild. Kopiere zuerst ein Bild (oder drücke ⌘V).")};
   const fi=o.querySelector("#phIn");o.querySelector("#phFile").onclick=()=>fi.click();fi.onchange=()=>fi.files[0]&&set(fi.files[0]);
   const rm=o.querySelector("#phRm");if(rm)rm.onclick=async()=>{const d=strip(r);delete d.photo;await save(r.id,d,false);toast("Foto entfernt");close()};
+}
+
+/* ---------- Meine Rezepte, eigene Fotos, Skizze, Notizen ---------- */
+const isOwn=r=>!!r&&(r.own===true||(r.own!==false&&(/instagram|cuisine\.atable/i.test(r.source||"")||/^(caros? rezepte|meine rezepte)$/i.test(r.collection||""))));
+function ownPics(r){const l=[...(r.photos||[])];if(r.sketch)l.push(r.sketch);for(const c of commentsOf(r))for(const p of c.photos||[])l.push(p);return l.filter(Boolean)}
+function galAttr(r,big){const own=ownPics(r);if(!own.length)return "";const all=[...(hasPhoto(r)?[r.photo]:[]),...own];return `data-gal="${esc(all.join("|"))}"`}
+function openMine(){for(const k in state.f)state.f[k].clear();state.q="";$("#q").value="";state.mine=true;showPage("recipes");render();window.scrollTo({top:0})}
+let galT=null;
+function galStart(ph){const L=(ph.dataset.gal||"").split("|").filter(Boolean);if(!L.length)return;let i=0;let im=ph.querySelector("img.galim");if(!im){im=document.createElement("img");im.className="galim";im.alt="";ph.appendChild(im)}
+  const show=()=>{const u=peek(L[i%L.length]);if(u)im.src=u;im.classList.add("on");i++};show();clearInterval(galT);if(L.length>1)galT=setInterval(show,1100)}
+function galStop(ph){clearInterval(galT);const im=ph.querySelector("img.galim");if(im)im.classList.remove("on")}
+document.addEventListener("mouseover",e=>{const ph=e.target.closest&&e.target.closest(".ph[data-gal]");if(!ph||ph._on)return;ph._on=true;galStart(ph);ph.addEventListener("mouseleave",()=>{ph._on=false;galStop(ph)},{once:true})});
+function ownHTML(r){
+  const own=isOwn(r),ph=r.photos||[],notes=r.notes||[],showNotes=r.notesOn||notes.length;
+  const img=p=>`<img alt="" data-photo="${esc(p)}" src="${peek(p)}">`;
+  let o="";
+  if(r.sketch)o+=`<section class="ownbox"><h3>Inspo-Skizze</h3><div class="sketch">${img(r.sketch)}</div>${canWrite?`<div class="ownact"><button type="button" class="mlink" data-own="sketch">Skizze ersetzen</button><button type="button" class="mlink" data-own="rmsketch">entfernen</button></div>`:""}</section>`;
+  if(showNotes)o+=`<section class="ownbox"><h3>Handschriftliche Notizen</h3>${notes.length?`<div class="notes">${notes.map((p,i)=>`<span class="nimg">${img(p)}${canWrite?`<button type="button" data-rmnote="${i}" aria-label="Notiz entfernen">×</button>`:""}</span>`).join("")}</div>`:`<p class="ro">Noch keine Notizen hochgeladen.</p>`}${canWrite?`<div class="ownact"><button type="button" class="btn" data-own="notes">＋ Notizen hochladen (Foto/Scan)</button></div>`:""}</section>`;
+  if(ph.length)o+=`<section class="ownbox"><h3>Meine Fotos <span class="c">${ph.length+(hasPhoto(r)?1:0)}</span></h3><div class="notes">${[...(hasPhoto(r)?[r.photo]:[]),...ph].map((p,i)=>`<span class="nimg">${img(p)}${canWrite&&i>0?`<button type="button" data-rmph="${esc(p)}" aria-label="Foto entfernen">×</button>`:""}</span>`).join("")}</div></section>`;
+  if(canWrite)o+=`<div class="ownadd">${own&&!r.sketch?`<button type="button" class="tag link" data-own="sketch">＋ Inspo-Skizze</button>`:""}${own&&!showNotes?`<button type="button" class="tag link" data-own="noteson">＋ Handschriftliche Notizen</button>`:""}<button type="button" class="tag link" data-own="photos">＋ Fotos</button>${own?"":`<button type="button" class="tag link" data-own="mine">＋ Zu «Meine Rezepte»</button>`}<input type="file" id="ownFile" accept="image/*" multiple hidden></div>`;
+  return o}
+function bindOwn(r){const v=$("#view");const fi=$("#ownFile");if(!fi)return;let mode="";
+  const upl=async files=>{const ids=[];toast("Wird hochgeladen …");for(const f of files)ids.push((await assets.upload(await shrink(f),{type:"image/jpeg"})).id);return ids};
+  fi.onchange=async()=>{const files=[...fi.files];fi.value="";if(!files.length)return;try{const ids=await upl(mode==="sketch"?files.slice(0,1):files);const d=strip(r);
+    if(mode==="sketch")d.sketch=ids[0];else if(mode==="notes"){d.notes=[...(d.notes||[]),...ids];d.notesOn=true}else{if(!hasPhoto(r)&&!isBook(r))d.photo=ids.shift();d.photos=[...(d.photos||[]),...ids];if(!d.cooked){d.cooked=true;d.cookedAt=Date.now()}}
+    await save(r.id,d,false);toast("Gespeichert")}catch(e){toast(errText(e))}};
+  v.querySelectorAll("[data-own]").forEach(b=>b.onclick=async()=>{const m=b.dataset.own;
+    if(m==="noteson"){await save(r.id,{...strip(r),notesOn:true},false);return}
+    if(m==="mine"){await save(r.id,{...strip(r),own:true},false);toast("Zu «Meine Rezepte» hinzugefügt");return}
+    if(m==="rmsketch"){const d=strip(r);delete d.sketch;await save(r.id,d,false);return}
+    mode=m;fi.multiple=m!=="sketch";fi.click()});
+  v.querySelectorAll("[data-rmnote]").forEach(b=>b.onclick=async()=>{const d=strip(r);d.notes=(d.notes||[]).filter((_,i)=>i!==+b.dataset.rmnote);await save(r.id,d,false)});
+  v.querySelectorAll("[data-rmph]").forEach(b=>b.onclick=async()=>{const d=strip(r);d.photos=(d.photos||[]).filter(p=>p!==b.dataset.rmph);await save(r.id,d,false)});
+  v.querySelectorAll(".ownbox img").forEach(im=>im.onclick=()=>zoomImg(im));
+}
+/* ---------- Import-Menü ---------- */
+function openImportMenu(){
+  const o=document.createElement("div");o.className="phsheet";
+  o.innerHTML=`<div class="phcard impmenu" role="dialog" aria-label="Rezept importieren"><button type="button" class="phx" aria-label="Schliessen">×</button><h2>Rezept importieren</h2>
+    <button type="button" class="impopt" data-k="pack"><b>Rezeptsammlung (.json)</b><span>Startpakete, Wissen-Dateien und Übersetzungen – wird automatisch erkannt.</span></button>
+    <button type="button" class="impopt" data-k="scan"><b>Einzelnes Rezept (Fotoerkennung)</b><span>Foto, Scan, PDF, Word oder Text – das Rezept wird ausgelesen.</span></button>
+    <button type="button" class="impopt" data-k="own"><b>Eigenes Rezept (Fotosammlung)</b><span>Fotos von deinem Gericht – landet direkt in «Meine Rezepte».</span></button>
+    <input type="file" id="impPackIn" accept=".json,application/json" multiple hidden><input type="file" id="impOwnIn" accept="image/*" multiple hidden><p class="ro" id="impMsg"></p></div>`;
+  document.body.appendChild(o);const close=()=>o.remove();o.onclick=e=>{if(e.target===o)close()};o.querySelector(".phx").onclick=close;const msg=t=>o.querySelector("#impMsg").textContent=t;
+  o.querySelector('[data-k="scan"]').onclick=()=>{close();openImport()};
+  const pi=o.querySelector("#impPackIn");o.querySelector('[data-k="pack"]').onclick=()=>pi.click();
+  pi.onchange=async()=>{const fs=[...pi.files];if(!fs.length)return;if(!window.RB||!window.RB.importFiles){msg("Import nicht verfügbar.");return}o.querySelectorAll(".impopt").forEach(b=>b.disabled=true);await window.RB.importFiles(fs,o.querySelector("#impMsg"))};
+  const oi=o.querySelector("#impOwnIn");o.querySelector('[data-k="own"]').onclick=()=>oi.click();
+  oi.onchange=async()=>{const fs=[...oi.files];if(!fs.length)return;o.querySelectorAll(".impopt").forEach(b=>b.disabled=true);
+    try{const ids=[];for(let i=0;i<fs.length;i++){msg(`Foto ${i+1} von ${fs.length} wird hochgeladen …`);ids.push((await assets.upload(await shrink(fs[i]),{type:"image/jpeg"})).id)}
+      close();importQueue=[{title:"",own:true,collection:"Meine Rezepte",photo:ids[0],photos:ids.slice(1),ingredients:[],steps:[],mealTypes:[],dishTypes:[],diet:[]}];draftTotal=1;openDraft()}
+    catch(e){msg(errText(e));o.querySelectorAll(".impopt").forEach(b=>b.disabled=false)}};
 }
 function showView(){
   const v=$("#view");const r=recipes.find(x=>x.id===current);
@@ -1644,7 +1705,7 @@ function showView(){
       <button class="btn" type="button" id="cookBtn" aria-label="Kochmodus"><svg class="bi show-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16v6.5a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"/><path d="M2 12.5h2M20 12.5h2M12 7v-2M9.5 5h5M4 10c0-1.4 3.6-2.5 8-2.5s8 1.1 8 2.5"/></svg><span class="hide-s">Kochmodus</span></button><button class="btn primary" type="button" id="editBtn" ${canWrite?"":"hidden"} aria-label="Bearbeiten"><svg class="bi show-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg><span class="hide-s">Bearbeiten</span></button></div></div>
     <div class="wrap">
       <div class="vhero">
-        <div class="big ph ${isBook(r)?"book":""}">${recPh(r)}${marks(r)}</div>
+        <div class="big ph ${isBook(r)?"book":""}" ${galAttr(r,true)}>${recPh(r)}${marks(r)}</div>
         <div class="vhead">
           <div class="tags">${[...(isComponent(r)?[["kind","component"]]:[]),...(r.collection?[["collection",r.collection]]:[]),...(r.mealTypes||[]).map(t=>["mealTypes",t]),...(r.dishTypes||[]).map(t=>["dishTypes",t]),...(r.diet||[]).map(t=>["diet",t]),...(r.ref?[]:suitsOf(r).map(k=>["suits",k])),...(r.ref?[]:seasonKeys(r).filter(k=>SEASONS[k]).map(k=>["season",k]))].map(([g,t])=>`<button type="button" class="tag link ${g==="diet"?(t==="Fleisch"||t==="Fisch"?"meat":"veg"):""}" data-g="${g}" data-v="${esc(t)}">${g==="kind"?"Komponente":g==="suits"?esc(SUITS[t]):g==="season"?esc(GROUPS.find(x=>x.key==="season").fixed[t].label):esc(t)}</button>`).join("")}</div>
           <h2>${esc(X.title)}</h2>${X.subtitle&&(wLang==="de"||T&&T.subtitle)?`<p class="sub">${esc(X.subtitle)}</p>`:""}${trNote?`<p class="trnote">${esc(trNote)}</p>`:""}
@@ -1671,7 +1732,7 @@ function showView(){
           <p class="src">${[r.page?(isBook(r)?(r.source||BOOK)+", "+trUI("S.")+" "+r.page:"PDF «Apéro», S. "+r.page):"",r.section?`Kapitel: <button type="button" class="ilink" data-g="section" data-v="${esc(r.section)}">${esc(r.section)}</button>`:""].filter(Boolean).join(" · ")}</p>
         </div>
       </div>
-      ${useHTML(r)}
+      ${ownHTML(r)}${useHTML(r)}
     </div>`;
   $("#back").onclick=closeView;
   v.querySelectorAll("[data-setlang]").forEach(b=>b.onclick=()=>setLang(b.dataset.setlang));
@@ -1687,13 +1748,13 @@ function showView(){
     if(!dv.classList.contains("sure")){dv.classList.add("sure","danger");dv.querySelector(".dl-txt").textContent=" Wirklich löschen?";setTimeout(()=>{if(dv.isConnected){dv.classList.remove("sure","danger");dv.querySelector(".dl-txt").textContent=""}},4000);return}
     dv.disabled=true;try{await db.collection("recipes").doc(r.id).delete();toast(`«${r.title}» gelöscht`);closeView()}catch(e){toast(errText(e));dv.disabled=false}};
   $("#editBtn").onclick=()=>{editing=true;showView();v.scrollTop=0};
-  bindCommentImgs(r);
+  bindCommentImgs(r);bindOwn(r);
   const cs=$("#cmtSave");if(cs)cs.onclick=async()=>{const t=$("#cmt").value.trim();const pend=cPend[r.id]||[];if(!t&&!pend.length){toast("Schreib zuerst einen Kommentar oder füge ein Bild ein");return}
     cs.disabled=true;let photos=[];
     if(pend.length){cs.textContent="Bild wird hochgeladen …";try{for(const x of pend)photos.push((await assets.upload(await shrink(x.blob),{type:"image/jpeg"})).id)}catch(e){toast(errText(e));cs.disabled=false;cs.textContent="Kommentar speichern";return}}
     pend.forEach(x=>URL.revokeObjectURL(x.url));cPend[r.id]=[];
     const c={text:t,at:Date.now()};if(photos.length)c.photos=photos;
-    const list=[...commentsOf(r),c];await save(r.id,withComments(r,list),false);toast("Kommentar gespeichert")};
+    const list=[...commentsOf(r),c];const d=withComments(r,list);if(photos.length&&!d.cooked){d.cooked=true;d.cookedAt=Date.now()}await save(r.id,d,false);toast("Kommentar gespeichert")};
   v.querySelectorAll(canWrite?".cph img":".cph img,.big.ph img[data-photo]").forEach(im=>im.onclick=e=>{e.stopPropagation();zoomImg(im)});
   const bp=v.querySelector(".big.ph");if(bp&&canWrite){bp.classList.add("clickable");bp.onclick=e=>{if(e.target.closest("button,a"))return;photoSheet(r)};
     const pb=document.createElement("button");pb.type="button";pb.className="phedit";pb.title="Foto ändern";pb.setAttribute("aria-label","Foto ändern");pb.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2l1.5-2h6l1.5 2h2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="13" r="3.5"/></svg>';pb.onclick=e=>{e.stopPropagation();photoSheet(r)};bp.appendChild(pb)}
@@ -1758,7 +1819,7 @@ function editorHTML(r){
     <div><div style="font-weight:600;font-size:.85rem;margin-bottom:4px">Passt für <small style="font-weight:400;color:var(--muted)">automatisch erkannt, hier anpassen</small></div>
       <div class="checks">${Object.entries(SUITS).map(([k,v])=>`<label><input type="checkbox" name="suits" value="${k}" ${suitsOf(r).includes(k)?"checked":""}>${v}</label>`).join("")}</div></div>
     <label class="edinspo"><input type="checkbox" id="f-inspo" ${r.inspo?"checked":""}> ✦ Nur Inspo-Idee (wird hell burgunder hinterlegt)</label>
-    <div class="checks"><label><input type="checkbox" id="f-comp" ${isComponent(r)?"checked":""}>Komponente / Grundrezept <small style="font-weight:400;color:var(--muted)">&nbsp;z. B. Coulis, Creme, Sauce, Teig für Kombinationen</small></label></div>
+    <div class="checks"><label><input type="checkbox" id="f-own" ${r&&isOwn(r)?"checked":""}>Eigenes Rezept <small style="font-weight:400;color:var(--muted)">&nbsp;erscheint unter «Meine Rezepte»</small></label><label><input type="checkbox" id="f-comp" ${isComponent(r)?"checked":""}>Komponente / Grundrezept <small style="font-weight:400;color:var(--muted)">&nbsp;z. B. Coulis, Creme, Sauce, Teig für Kombinationen</small></label></div>
     <label>Art <small>mit Komma trennen, z. B. Dip, Madeleine, Kuchen</small><input id="f-dish" value="${esc(list(r.dishTypes))}"></label>
     <label>Hauptzutaten <small>für den Zutaten-Filter, mit Komma trennen: tofu, brokkoli, feta</small><input id="f-main" value="${esc(list(r.mainIngredients))}"></label>
     <div class="row">
@@ -1843,7 +1904,7 @@ function bindEditor(r){
       time:{prep:num("f-prep"),total:num("f-total")},
       nutrition:{per:g("f-per")||"Portion",kcal:num("f-kcal"),protein:num("f-protein"),fat:num("f-fat"),carbs:num("f-carbs"),estimated:$("#f-est").checked},
       ingredients:parseIng($("#f-ing").value),steps,tips:$("#f-tips").value.trim(),source:g("f-source"),sourceUrl:g("f-url"),
-      favorite:$("#f-fav").checked,cooked:$("#f-cooked").checked};
+      favorite:$("#f-fav").checked,cooked:$("#f-cooked").checked,own:$("#f-own").checked};
     if(data.cooked&&!data.cookedAt)data.cookedAt=Date.now();if(!data.cooked)delete data.cookedAt;
     if(pendingPhoto!==undefined)data.photo=pendingPhoto;
     if(!data.title){toast("Bitte einen Titel eingeben");return}
@@ -2119,7 +2180,7 @@ async function takeOver(){
   d.inspo=!(d.ingredients.some(g=>g.items.some(i=>i.qty))&&d.steps.length);
   importQueue=[d];draftTotal=1;openDraft();
 }
-$("#importBtn").onclick=openImport;
+$("#importBtn").onclick=openImportMenu;
 
 let lastTree=null,lastMiss=0;window.addEventListener("rb-photo",()=>{const RB=window.RB||{};const ms=RB.missing?RB.missing.size:0;if((RB.tree&&RB.tree!==lastTree)||(ms!==lastMiss&&window.scrollY<300)){lastTree=RB.tree;lastMiss=ms;if(state.page==="recipes"&&$("#view").hidden)try{render()}catch(e){}}});
 window.addEventListener("rb-photo",()=>{document.querySelectorAll("img[data-photo]").forEach(im=>{if(!im.getAttribute("src")){const u=peek(im.dataset.photo);if(u)im.src=u}})});
@@ -2238,10 +2299,10 @@ document.addEventListener("DOMContentLoaded",()=>{const w=$(".top .wrap");const 
   w.appendChild(menuBtn)});
 applyOwner();{const lb=$("#langBtn");if(lb){lb.textContent=wLang.toUpperCase();lb.onclick=()=>setLang(wLang==="de"?"fr":wLang==="fr"?"en":"de")}}
 if(wLang!=="de"){loadUI().then(applyUI);setTimeout(()=>loadLang(wLang),300)}
-function openMenu(){$("#menuWrap").hidden=false;document.querySelectorAll(".dnav [data-page]").forEach(b=>b.classList.toggle("on",b.dataset.page===(state.page==="article"?"wissen":state.page==="board"?"mix":state.page)));setTimeout(()=>$("#mq").focus(),60)}
+function openMenu(){$("#menuWrap").hidden=false;document.querySelectorAll(".dnav [data-page]").forEach(b=>b.classList.toggle("on",b.dataset.page===(state.mine&&state.page==="recipes"?"mine":state.page==="article"?"wissen":state.page==="board"?"mix":state.page)));setTimeout(()=>$("#mq").focus(),60)}
 function closeMenu(){$("#menuWrap").hidden=true;$("#mq").value="";$("#mres").innerHTML=""}
 menuBtn.onclick=openMenu;$("#menuClose").onclick=closeMenu;$("#menuScrim").onclick=closeMenu;
-document.querySelectorAll(".dnav [data-page]").forEach(b=>b.onclick=()=>{closeMenu();hideView();showPage(b.dataset.page)});
+document.querySelectorAll(".dnav [data-page]").forEach(b=>b.onclick=()=>{closeMenu();hideView();if(b.dataset.page==="mine"){openMine();return}state.mine=false;showPage(b.dataset.page)});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#menuWrap").hidden)closeMenu()});
 $("#mq").addEventListener("input",e=>{const q=norm(e.target.value.trim());const box=$("#mres");if(q.length<2){box.innerHTML="";return}
   const words=q.split(/\s+/);const has=t=>words.every(w=>t.includes(w));

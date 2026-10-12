@@ -355,52 +355,6 @@
       pack.value = "";
       if (reload || files.length > 1) { m0.textContent = `Fertig: ${files.length} Dateien importiert. Lädt neu …`; setTimeout(() => location.reload(), 1200); }
     };
-    async function importPack(f, m) {
-      try {
-        m.textContent = "Datei wird gelesen …";
-        const j = JSON.parse(await f.text());
-        if (j.format === "rezeptbuch-uebersetzung" && j.lang && j.items) {
-          m.textContent = "Übersetzung wird gespeichert … (grosse Datei, bitte warten)";
-          let n = 0;
-          await writeJSON("i18n/" + j.lang + ".json", (mm) => { for (const id in j.items) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.items[id] }; n++; } }, "Übersetzung " + j.lang.toUpperCase() + " importiert");
-          m.textContent = `Fertig: ${n} Rezepte auf ${j.lang === "fr" ? "Französisch" : "Englisch"} gespeichert.`;
-          return "reload";
-        }
-        if (j.format === "rezeptbuch-wissen" || (Array.isArray(j.entries) && !j.recipes)) {
-          let n = 0;
-          await writeAll((mm) => { for (const x of j.entries || []) { if (!x || !x.id || !x.title) continue; const old = mm[x.id]; mm[x.id] = { ...x, type: "wissen", links: old && old.links ? old.links : (x.links || []), updatedAt: Date.now() }; n++; } }, "Wissen importiert: " + (j.entries || []).length);
-          if (j.photos) {
-            m.textContent = `${n} Wissen-Einträge gespeichert. Fotos werden gespeichert (eine Datei, bitte warten) …`;
-            await writeJSON("wissen-fotos.json", (mm) => { Object.assign(mm, j.photos); }, "Wissen: Fotos (" + Object.keys(j.photos).length + ")");
-            wfP = null;
-          }
-          m.textContent = `Fertig: ${n} Wissen-Einträge gespeichert.`;
-          return "reload";
-        }
-        if (!j.recipes || !j.photos) throw 0;
-        m.textContent = "Rezepte werden gespeichert …";
-        let added = 0;
-        await writeAll((mm) => { const KEEP = ["favorite", "cooked", "cookedAt", "comment", "comments", "photo", "links"]; for (const id in j.recipes) { if (!mm[id]) { mm[id] = j.recipes[id]; added++; } else if (j.update) { const keep = {}; for (const k of KEEP) if (mm[id][k] !== undefined) keep[k] = mm[id][k]; mm[id] = { ...j.recipes[id], ...keep }; added++; } } }, "Startpaket: Rezepte");
-        if (j.i18n) for (const L of Object.keys(j.i18n)) {
-          m.textContent = "Übersetzungen (" + L.toUpperCase() + ") werden gespeichert …";
-          await writeJSON("i18n/" + L + ".json", (mm) => { for (const id in j.i18n[L]) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.i18n[L][id] }; } }, "Startpaket: Übersetzung " + L.toUpperCase());
-        }
-        m.textContent = "Prüfe, welche Fotos schon hochgeladen sind …";
-        const have = await existingPaths();
-        const todo = Object.keys(j.photos).filter((p) => !have.has(p));
-        let i = 0; const t0 = Date.now();
-        const tick = setInterval(() => {
-          const left = todo.length - i;
-          const w = waitInfo && waitInfo.until > Date.now() ? ` GitHub-Pause, weiter in ${Math.ceil((waitInfo.until - Date.now()) / 60000)} Min.` : "";
-          m.textContent = `${added} Rezepte gespeichert. Fotos: ${i} von ${todo.length} hochgeladen (noch ca. ${eta(left)}).${w} Fenster offen lassen. Du kannst jederzeit abbrechen und später dieselbe Datei nochmals wählen, es geht dort weiter.`;
-        }, 1000);
-        try { for (const p of todo) { await putFile(p, bytesFromB64(j.photos[p]), "Startpaket: Foto"); i++; } }
-        finally { clearInterval(tick); }
-        m.textContent = `Fertig: ${added} neue Rezepte, ${todo.length} Fotos hochgeladen` + (Object.keys(j.photos).length > todo.length ? `, ${Object.keys(j.photos).length - todo.length} Fotos waren schon da.` : ".");
-        Object.keys(urls).length; notify();
-        return "ok";
-      } catch (x) { m.textContent = x && x.message ? x.message + " Wähle dieselbe Datei nochmals, um fortzufahren." : "Das ist keine gültige Startpaket-Datei."; return "error"; }
-    }
     const mi = document.getElementById("s-mela");
     if (mi) mi.onchange = async () => { const f = mi.files[0]; if (!f) return; const m = document.getElementById("s-melamsg"); try { await window.RBMela.importFile(f, m); } catch (x) { m.textContent = (x && x.message) || "Import fehlgeschlagen."; } mi.value = ""; };
     const mo = document.getElementById("s-melaout");
@@ -410,6 +364,61 @@
     const lo = document.getElementById("s-logout");
     if (lo) lo.onclick = () => { localStorage.removeItem(CFG_KEY); localStorage.removeItem(CACHE_KEY); location.reload(); };
   }
+
+  async function importPack(f, m) {
+    try {
+      m.textContent = "Datei wird gelesen …";
+      const j = JSON.parse(await f.text());
+      if (j.format === "rezeptbuch-uebersetzung" && j.lang && j.items) {
+        m.textContent = "Übersetzung wird gespeichert … (grosse Datei, bitte warten)";
+        let n = 0;
+        await writeJSON("i18n/" + j.lang + ".json", (mm) => { for (const id in j.items) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.items[id] }; n++; } }, "Übersetzung " + j.lang.toUpperCase() + " importiert");
+        m.textContent = `Fertig: ${n} Rezepte auf ${j.lang === "fr" ? "Französisch" : "Englisch"} gespeichert.`;
+        return "reload";
+      }
+      if (j.format === "rezeptbuch-wissen" || (Array.isArray(j.entries) && !j.recipes)) {
+        let n = 0;
+        await writeAll((mm) => { for (const x of j.entries || []) { if (!x || !x.id || !x.title) continue; const old = mm[x.id]; mm[x.id] = { ...x, type: "wissen", links: old && old.links ? old.links : (x.links || []), updatedAt: Date.now() }; n++; } }, "Wissen importiert: " + (j.entries || []).length);
+        if (j.photos) {
+          m.textContent = `${n} Wissen-Einträge gespeichert. Fotos werden gespeichert (eine Datei, bitte warten) …`;
+          await writeJSON("wissen-fotos.json", (mm) => { Object.assign(mm, j.photos); }, "Wissen: Fotos (" + Object.keys(j.photos).length + ")");
+          wfP = null;
+        }
+        m.textContent = `Fertig: ${n} Wissen-Einträge gespeichert.`;
+        return "reload";
+      }
+      if (!j.recipes || !j.photos) throw 0;
+      m.textContent = "Rezepte werden gespeichert …";
+      let added = 0;
+      await writeAll((mm) => { const KEEP = ["favorite", "cooked", "cookedAt", "comment", "comments", "photo", "links"]; for (const id in j.recipes) { if (!mm[id]) { mm[id] = j.recipes[id]; added++; } else if (j.update) { const keep = {}; for (const k of KEEP) if (mm[id][k] !== undefined) keep[k] = mm[id][k]; mm[id] = { ...j.recipes[id], ...keep }; added++; } } }, "Startpaket: Rezepte");
+      if (j.i18n) for (const L of Object.keys(j.i18n)) {
+        m.textContent = "Übersetzungen (" + L.toUpperCase() + ") werden gespeichert …";
+        await writeJSON("i18n/" + L + ".json", (mm) => { for (const id in j.i18n[L]) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.i18n[L][id] }; } }, "Startpaket: Übersetzung " + L.toUpperCase());
+      }
+      m.textContent = "Prüfe, welche Fotos schon hochgeladen sind …";
+      const have = await existingPaths();
+      const todo = Object.keys(j.photos).filter((p) => !have.has(p));
+      let i = 0; const t0 = Date.now();
+      const tick = setInterval(() => {
+        const left = todo.length - i;
+        const w = waitInfo && waitInfo.until > Date.now() ? ` GitHub-Pause, weiter in ${Math.ceil((waitInfo.until - Date.now()) / 60000)} Min.` : "";
+        m.textContent = `${added} Rezepte gespeichert. Fotos: ${i} von ${todo.length} hochgeladen (noch ca. ${eta(left)}).${w} Fenster offen lassen. Du kannst jederzeit abbrechen und später dieselbe Datei nochmals wählen, es geht dort weiter.`;
+      }, 1000);
+      try { for (const p of todo) { await putFile(p, bytesFromB64(j.photos[p]), "Startpaket: Foto"); i++; } }
+      finally { clearInterval(tick); }
+      m.textContent = `Fertig: ${added} neue Rezepte, ${todo.length} Fotos hochgeladen` + (Object.keys(j.photos).length > todo.length ? `, ${Object.keys(j.photos).length - todo.length} Fotos waren schon da.` : ".");
+      Object.keys(urls).length; notify();
+      return "ok";
+    } catch (x) { m.textContent = x && x.message ? x.message + " Wähle dieselbe Datei nochmals, um fortzufahren." : "Das ist keine gültige Startpaket-Datei."; return "error"; }
+  }
+  window.RB.importFiles = async (files, m0) => {
+    files = [...files].sort((a, b) => (/uebersetzung|wissen/i.test(a.name) ? 1 : 0) - (/uebersetzung|wissen/i.test(b.name) ? 1 : 0));
+    let k = 0;
+    for (const f of files) { k++;
+      const m = { set textContent(t) { m0.textContent = (files.length > 1 ? `Datei ${k} von ${files.length} («${f.name}»): ` : "") + t; } };
+      const r = await importPack(f, m); if (r === "error") return; }
+    m0.textContent = `Fertig: ${files.length} ${files.length > 1 ? "Dateien" : "Datei"} importiert. Lädt neu …`; setTimeout(() => location.reload(), 1200);
+  };
 
   document.addEventListener("DOMContentLoaded", () => {
     const w = document.querySelector(".top .wrap");
