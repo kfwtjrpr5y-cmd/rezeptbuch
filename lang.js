@@ -31,3 +31,7 @@ Object.assign(window.UI_DICT.en,{"Zitronen": "Lemons", "Limetten": "Limes", "Ora
 /* Update 46: Aromen, Küche */
 Object.assign(window.UI_DICT.fr,{"Inspiration":"Inspiration","Ganzes Aromenrad":"Roue des saveurs complète","Alle Küchen":"Toutes les cuisines","Tippe auf eine Küche zum Vergrössern":"Touche une cuisine pour l'agrandir","Aromen & Inspiration":"Saveurs & inspiration"});
 Object.assign(window.UI_DICT.en,{"Inspiration":"Inspiration","Ganzes Aromenrad":"Full flavour wheel","Alle Küchen":"All cuisines","Tippe auf eine Küche zum Vergrössern":"Tap a cuisine to zoom in","Aromen & Inspiration":"Flavour & inspiration"});
+
+/* Update 47: Aroma-Basen */
+Object.assign(window.UI_DICT.fr,{"Aromatische Basis":"Base aromatique","Alle Basen":"Toutes les bases"});
+Object.assign(window.UI_DICT.en,{"Aromatische Basis":"Aromatic base","Alle Basen":"All bases"});
