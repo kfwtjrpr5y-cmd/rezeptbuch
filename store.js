@@ -17,9 +17,25 @@
     return { Authorization: "Bearer " + cfg.token, Accept: raw ? "application/vnd.github.raw" : "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
   }
   const contentsURL = (path) => `${API}/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}`;
+  let upInfo = null; // {loaded,total,path} beim Hochladen grosser Dateien
+  function xhrPut(url, hdrs, bodyText, path) {
+    return new Promise((res, rej) => {
+      const x = new XMLHttpRequest(); x.open("PUT", url);
+      for (const k in hdrs) x.setRequestHeader(k, hdrs[k]);
+      upInfo = { loaded: 0, total: bodyText.length, path };
+      x.upload.onprogress = (e) => { upInfo = { loaded: e.loaded, total: e.total || bodyText.length, path }; };
+      x.onload = () => { upInfo = null; const h = new Headers(); for (const line of x.getAllResponseHeaders().trim().split(/[\r\n]+/)) { const i = line.indexOf(":"); if (i > 0) try { h.append(line.slice(0, i).trim(), line.slice(i + 1).trim()); } catch (e) {} }
+        res(new Response(x.responseText, { status: x.status < 200 ? 599 : x.status, headers: h })); };
+      x.onerror = () => { upInfo = null; rej(new TypeError("Failed to fetch")); };
+      x.timeout = Math.max(180e3, bodyText.length / 30e3 * 1000); // min. 30 KB/s, sonst neu versuchen
+      x.ontimeout = x.onerror; x.send(bodyText);
+    });
+  }
   async function gh(path, opts = {}) {
-    const r = await fetch(contentsURL(path), { method: opts.method || "GET", headers: { ...headers(opts.raw), ...(opts.body ? { "Content-Type": "application/json" } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: "no-store" });
-    return r;
+    if (opts.method === "PUT" && opts.body && typeof XMLHttpRequest !== "undefined") return xhrPut(contentsURL(path), { ...headers(false), "Content-Type": "application/json" }, JSON.stringify(opts.body), path);
+    const ac = typeof AbortController !== "undefined" ? new AbortController() : null; const to = ac ? setTimeout(() => ac.abort(), opts.raw ? 300e3 : 120e3) : 0;
+    try { return await fetch(contentsURL(path), { method: opts.method || "GET", headers: { ...headers(opts.raw), ...(opts.body ? { "Content-Type": "application/json" } : {}) }, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: "no-store", signal: ac ? ac.signal : undefined }); }
+    finally { clearTimeout(to); }
   }
   const err = (code, message) => ({ code, message });
 
@@ -43,12 +59,14 @@
   async function ghWrite(path, body) {
     for (let attempt = 0; attempt < 6; attempt++) {
       await throttle();
-      const r = await gh(path, { method: "PUT", body });
+      let r;
+      try { r = await gh(path, { method: "PUT", body }); }
+      catch (e) { if (attempt < 3) { waitInfo = { until: Date.now() + 5e3 }; await new Promise((res) => setTimeout(res, 5e3)); waitInfo = null; continue; } throw err("unavailable", "Verbindung zu GitHub unterbrochen. Bitte nochmals versuchen."); }
       if ((r.status === 403 || r.status === 429) && attempt < 5) {
         const txt = await r.clone().text().catch(() => "");
         if (/rate limit|secondary/i.test(txt) || r.status === 429) {
-          const ra = +(r.headers.get("retry-after") || 0);
-          const wait = (ra ? ra * 1000 : 60e3 * (attempt + 1));
+          const ra = +(r.headers.get("retry-after") || 0), rs = +(r.headers.get("x-ratelimit-reset") || 0);
+          const wait = ra ? ra * 1000 : (rs && /^0$/.test(r.headers.get("x-ratelimit-remaining") || "") ? Math.max(5e3, rs * 1000 - Date.now() + 1000) : 60e3 * (attempt + 1));
           waitInfo = { until: Date.now() + wait };
           await new Promise((res) => setTimeout(res, wait));
           continue;
@@ -365,6 +383,18 @@
     if (lo) lo.onclick = () => { localStorage.removeItem(CFG_KEY); localStorage.removeItem(CACHE_KEY); location.reload(); };
   }
 
+  function saveTicker(m, label) {
+    const t0 = Date.now();
+    const show = () => {
+      const s = Math.round((Date.now() - t0) / 1000), el = s < 60 ? s + " Sek." : Math.floor(s / 60) + " Min. " + (s % 60) + " Sek.";
+      let x = "";
+      if (waitInfo && waitInfo.until > Date.now()) x = ` GitHub-Pause (zu viele Speicherungen kurz hintereinander), weiter in ca. ${Math.max(1, Math.ceil((waitInfo.until - Date.now()) / 60000))} Min.`;
+      else if (upInfo && upInfo.total) x = upInfo.loaded >= upInfo.total ? " Hochgeladen, GitHub verarbeitet die Datei …" : ` ${(upInfo.loaded / 1048576).toFixed(1)} von ${(upInfo.total / 1048576).toFixed(1)} MB hochgeladen.`;
+      else x = " Lade aktuellen Stand …";
+      m.textContent = `${label} (${el})${x} Fenster offen lassen.`;
+    };
+    show(); const id = setInterval(show, 1000); return () => clearInterval(id);
+  }
   async function importPack(f, m) {
     try {
       m.textContent = "Datei wird gelesen …";
@@ -377,14 +407,14 @@
         return "reload";
       }
       if (j.format === "rezeptbuch-patch" && j.patch) {
-        let n = 0;
-        await writeAll((mm) => { for (const id in j.patch) { if (mm[id]) { Object.assign(mm[id], j.patch[id]); n++; } } }, "Ergänzungen: " + (j.title || "Patch"));
+        let n = 0; const stop = saveTicker(m, "Ergänzungen werden gespeichert");
+        try { await writeAll((mm) => { for (const id in j.patch) { if (mm[id]) { Object.assign(mm[id], j.patch[id]); n++; } } }, "Ergänzungen: " + (j.title || "Patch")); } finally { stop(); }
         m.textContent = `Fertig: ${n} Rezepte ergänzt.`;
         return "reload";
       }
       if (j.format === "rezeptbuch-wissen" || (Array.isArray(j.entries) && !j.recipes)) {
-        let n = 0;
-        await writeAll((mm) => { for (const x of j.entries || []) { if (!x || !x.id || !x.title) continue; const old = mm[x.id]; mm[x.id] = { ...x, type: "wissen", links: old && old.links ? old.links : (x.links || []), updatedAt: Date.now() }; n++; } }, "Wissen importiert: " + (j.entries || []).length);
+        let n = 0; const stopW = saveTicker(m, "Wissen wird gespeichert");
+        try { await writeAll((mm) => { for (const x of j.entries || []) { if (!x || !x.id || !x.title) continue; const old = mm[x.id]; mm[x.id] = { ...x, type: "wissen", links: old && old.links ? old.links : (x.links || []), updatedAt: Date.now() }; n++; } }, "Wissen importiert: " + (j.entries || []).length); } finally { stopW(); }
         if (j.photos) {
           m.textContent = `${n} Wissen-Einträge gespeichert. Fotos werden gespeichert (eine Datei, bitte warten) …`;
           await writeJSON("wissen-fotos.json", (mm) => { Object.assign(mm, j.photos); }, "Wissen: Fotos (" + Object.keys(j.photos).length + ")");
@@ -394,12 +424,12 @@
         return "reload";
       }
       if (!j.recipes || !j.photos) throw 0;
-      m.textContent = "Rezepte werden gespeichert …";
       let added = 0;
-      await writeAll((mm) => { const KEEP = ["favorite", "cooked", "cookedAt", "comment", "comments", "photo", "links"]; for (const id in j.recipes) { if (!mm[id]) { mm[id] = j.recipes[id]; added++; } else if (j.update) { const keep = {}; for (const k of KEEP) if (mm[id][k] !== undefined) keep[k] = mm[id][k]; mm[id] = { ...j.recipes[id], ...keep }; added++; } } }, "Startpaket: Rezepte");
+      let stop = saveTicker(m, "Rezepte werden gespeichert");
+      try { await writeAll((mm) => { const KEEP = ["favorite", "cooked", "cookedAt", "comment", "comments", "photo", "links"]; for (const id in j.recipes) { if (!mm[id]) { mm[id] = j.recipes[id]; added++; } else if (j.update) { const keep = {}; for (const k of KEEP) if (mm[id][k] !== undefined) keep[k] = mm[id][k]; mm[id] = { ...j.recipes[id], ...keep }; added++; } } }, "Startpaket: Rezepte"); } finally { stop(); }
       if (j.i18n) for (const L of Object.keys(j.i18n)) {
-        m.textContent = "Übersetzungen (" + L.toUpperCase() + ") werden gespeichert …";
-        await writeJSON("i18n/" + L + ".json", (mm) => { for (const id in j.i18n[L]) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.i18n[L][id] }; } }, "Startpaket: Übersetzung " + L.toUpperCase());
+        stop = saveTicker(m, "Übersetzungen (" + L.toUpperCase() + ") werden gespeichert");
+        try { await writeJSON("i18n/" + L + ".json", (mm) => { for (const id in j.i18n[L]) { if (mm[id] && mm[id].edited) continue; mm[id] = { ...(mm[id] || {}), ...j.i18n[L][id] }; } }, "Startpaket: Übersetzung " + L.toUpperCase()); } finally { stop(); }
       }
       m.textContent = "Prüfe, welche Fotos schon hochgeladen sind …";
       const have = await existingPaths();
